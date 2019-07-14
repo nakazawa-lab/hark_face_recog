@@ -5,15 +5,15 @@
 Pythonで書かれているのでROSのPythonを実行ファイルとして認識させる以下のコマンドを一度行う必要があります。
 
 ```
-$ roscd nakbot_ROS
-$ cd src/face_recog
+$ roscd hark_face_recog
+$ cd src
 $ chmod 755 getXYZ.py
 ```
 
 実行コマンドは、
 
 ```
-$ rosrun nakbot_ROS getXYZ.py
+$ rosrun hark_face_recog getXYZ.py
 ```
 
 です。
