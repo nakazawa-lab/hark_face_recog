@@ -43,10 +43,6 @@ class GetFace:
                 # landmarkを画像に書き込む 48:68が口。
                 for (x, y) in shape[0:68]:
                     cv2.circle(clone, (x, y), 5, (0, 0, 255), -1)
-                # # shapeで指定した個所の切り取り画像(ROI)を取得
-                # (x, y, w, h) = cv2.boundingRect(np.array([shape[48:68]])) #口の部位のみ切り出し
-                # roi = img[y:y + h, x:x + w]
-                # roi = cv2.resize(roi,(100,100))
             return clone
         else :
             return img
@@ -62,10 +58,6 @@ if __name__ == '__main__':
         frame = imutils.resize(frame, width=500)
         frame  = gets.face_shape_detector_dlib(frame)
         cv2.imshow('img', frame)
-        # if roi is not None :
-        #     cv2.imshow('roi', roi)
-        # else :
-        #     cv2.destroyWindow('roi')
         c = cv2.waitKey(1)
         if c == 27:#ESCを押してウィンドウを閉じる
             break
