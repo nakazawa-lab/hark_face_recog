@@ -9,6 +9,9 @@ import pylab
 import time
 import sensor_msgs.point_cloud2 as pc2
 
+def xy_to_xyz():
+    pass
+
 def callback(data):
     resolution = (data.height, data.width)
 

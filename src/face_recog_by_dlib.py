@@ -11,13 +11,13 @@ import os
 import imutils
 from imutils import face_utils
 
-class GetFace:
+class FaceDLib:
 
     def __init__(self, predictor_path):
         self.predictor = dlib.shape_predictor(predictor_path)
         self.detector = dlib.get_frontal_face_detector()
 
-    def face_shape_detector_dlib(self, img):
+    def face_shape_detector_display(self, img):
         img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
         # The 1 in the second argument indicates that we should upsample the image
@@ -43,29 +43,34 @@ class GetFace:
                 # landmarkを画像に書き込む 48:68が口。
                 for (x, y) in shape[0:68]:
                     cv2.circle(clone, (x, y), 5, (0, 0, 255), -1)
-                # # shapeで指定した個所の切り取り画像(ROI)を取得
-                # (x, y, w, h) = cv2.boundingRect(np.array([shape[48:68]])) #口の部位のみ切り出し
-                # roi = img[y:y + h, x:x + w]
-                # roi = cv2.resize(roi,(100,100))
             return clone
         else :
             return img
 
+    def get_mouth_xy(self, img):
+        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        dets, scores, idx = self.detector.run(img_rgb, 1, 0)
+        if len(dets) > 0:
+            for i, rect in enumerate(dets):
+                shape = self.predictor(img_rgb, rect)
+                mouth_point = shape.part(63) # 唇の上の点を取得
+                x = mouth_point.x
+                y = mouth_point.y
+            return x, y  # x, yはそれぞれlong型で、それらをタプルとして返す。
+        else :
+            return None
+
 if __name__ == '__main__':
     predictor_path = "./shape_predictor_68_face_landmarks.dat"
-    gets = GetFace(predictor_path)
+    gets = FaceDLib(predictor_path)
     cap = cv2.VideoCapture(0)
     count = 0
 
     while True:
         ret, frame = cap.read()
         frame = imutils.resize(frame, width=500)
-        frame  = gets.face_shape_detector_dlib(frame)
+        frame  = gets.face_shape_detector_display(frame)
         cv2.imshow('img', frame)
-        # if roi is not None :
-        #     cv2.imshow('roi', roi)
-        # else :
-        #     cv2.destroyWindow('roi')
         c = cv2.waitKey(1)
         if c == 27:#ESCを押してウィンドウを閉じる
             break
@@ -73,5 +78,7 @@ if __name__ == '__main__':
             count += 1
             cv2.imwrite('./filename%03.f'%(count)+'.jpg', frame) #001~連番で保存
             print('save done')
+        gets.get_mouth_xy(frame)
+        print("get_mouth_xy: " + str(gets.get_mouth_xy(frame)))
     cap.release()
     cv2.destroyAllWindows()
