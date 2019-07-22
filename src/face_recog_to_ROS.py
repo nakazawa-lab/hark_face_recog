@@ -35,6 +35,7 @@ class SendFaceToROS:
     def callback(self, data):
         cv_image = self._bridge.imgmsg_to_cv2(data, 'bgr8')
         cv_image = imutils.resize(cv_image, width=512)
+        # print(cv_image.shape)
 
         # デバッグ用表示
         display_image = self.face.face_shape_detector_display(cv_image)
@@ -47,7 +48,7 @@ class SendFaceToROS:
             y = face_recog_result[1]
             self.send_to_ROS(x, y)
             print(x, y)
-        
+
 if __name__ == "__main__":
     rospy.init_node('face_recog_to_ROS',anonymous=True)
     face_recognition = SendFaceToROS()
