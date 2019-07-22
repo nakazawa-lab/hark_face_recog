@@ -35,7 +35,7 @@ class SendFaceXYZToHark:
         if id==0:
             self.face_xy = data.data
             self.sync_flag = 1
-            # print (self.face_xy)
+            print (self.face_xy)
 
         if id==1 and self.sync_flag == 1:
             self.sync_flag = 0
