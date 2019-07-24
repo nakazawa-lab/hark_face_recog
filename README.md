@@ -7,7 +7,7 @@
 - getXYZ.py：pythonで三次元位置情報を扱えるかどうか確かめるためのテスト用ファイルです。
 
 ## 使用方法
-ターミナルを4つ開いて以下をそれぞれ実行。
+ターミナルを5つ開いて以下をそれぞれ実行。
 
 ```
 $ roscore
@@ -29,6 +29,9 @@ $ cd src
 $ python face_xyz_to_HARK.py
 ```
 
+```
+$ rosrun hark_face_recog hark_face_recog_face_xyz_to_HARK_cpp
+```
 
 ### rosrunで実行したい場合
 Pythonで書かれているのでROS上でPythonの実行ファイルとして認識させるには以下のコマンドを一度行う必要があります。

@@ -8,6 +8,8 @@ import sensor_msgs.point_cloud2 as pc2
 from hark_msgs.msg import HarkSource
 from hark_msgs.msg import HarkSourceVal
 from std_msgs.msg import Int64MultiArray
+from std_msgs.msg import Float32MultiArray
+
 
 import numpy
 import pylab
@@ -21,64 +23,27 @@ class SendFaceXYZToHark:
         self.face_xy = []
         self.sync_flag = 0
         # メソッド
-        self._face_xyz_pub = rospy.Publisher('face_xyz', HarkSource, queue_size=10)
+        # self._face_xyz_pub = rospy.Publisher('face_xyz', HarkSource, queue_size=10)
         self._face_recog_sub = rospy.Subscriber('/face_recog_result', Int64MultiArray, self.callback, callback_args=0)
         self._pcl_sub = rospy.Subscriber('/kinect2/sd/points', PointCloud2, self.callback, callback_args=1)
 
     def coordinate_publish(self, xyz_dict):
 
-        pub = rospy.Publisher('HarkSource', HarkSource, queue_size=10) # chatterという名前のTopicを生成し型やらを定義
+        pub = rospy.Publisher('face_xyz', Float32MultiArray, queue_size=10)
         rate = rospy.Rate(10) # 10Hzで動かすrateというクラスを生成
         print("Conection started...")
-        while not rospy.is_shutdown():
 
-            data_to_HARK = []
-            header = {}
-            src = {}
-            count = 0
-            exist_src_num = 0
+        print(xyz_dict)
 
-            #print("x", xyz_dict["x"], "y", xyz_dict["y"], "z", xyz_dict["z"])
-            print(xyz_dict)
+        """
+        args should be ['header', 'count', 'exist_src_num', 'src']
+        """
 
+        xyz_array = Float32MultiArray(data=[xyz_dict["x"], xyz_dict["y"], xyz_dict["z"]])
 
-            """
-            args should be ['header', 'count', 'exist_src_num', 'src']
-            """
-
-            oHarkTime = rospy.Time.now()
-
-            header["stamp"] = oHarkTime
-            header["frame_id"] = "HarkRosFrameID"
-
-            src["id"] = 0
-            src["power"] = 38.5952
-            src["x"] = xyz_dict["x"]
-            src["y"] = xyz_dict["y"]
-            src["z"] = xyz_dict["z"]
-            src["azimuth"] = 180 / math.pi * math.atan2(xyz_dict["y"], xyz_dict["x"])
-            src["elevation"] = 180 / math.pi * math.atan2(xyz_dict["z"], math.sqrt(xyz_dict["x"] * xyz_dict["x"] + xyz_dict["y"] * xyz_dict["y"]))
-
-            data_to_HARK.append(header)
-            data_to_HARK.append(count)
-            data_to_HARK.append(exist_src_num)
-            data_to_HARK.append(src)
-            print(data_to_HARK)
-
-            # send_list = []
-            # src = []
-            # header = None
-            # count = 0
-            # exis_src_num = 0
-            # send_list.append(header)
-            # send_list.append(count)
-            # send_list.append(exist_src_num)
-            # send_list.append(src)
-
-
-            pub.publish(data_to_HARK) # HARKへ送信
-            #pub.publish(send_list)
-            rate.sleep() # 先程定義したrateをここで動かす
+        pub.publish(xyz_array) # face_xyz_to_HARK.cppへ送信
+        #pub.publish(send_list)
+        rate.sleep() # 先程定義したrateをここで動かす
 
     def callback(self, data, id):
         if id==0:
@@ -89,7 +54,7 @@ class SendFaceXYZToHark:
         if id==1 and self.sync_flag == 1:
             self.sync_flag = 0
             resolution = (data.height, data.width)
-            print("resolution", resolution)
+            #print("resolution", resolution)
 
             # 3D position for each pixel
             img = numpy.fromstring(data.data, numpy.float32)
@@ -112,7 +77,7 @@ class SendFaceXYZToHark:
 
             # print ("x0: " + str(x[self.face_xy[0] , self.face_xy[1]]) + ", y0: " + str(y[self.face_xy[0] , self.face_xy[1]]) + ", z0: " + str(z[self.face_xy[0] , self.face_xy[1]]))
 
-            #取得したx,y,z座標をディクショナリに格納してHARKへ送る
+            #取得したx,y,z座標をディクショナリに格納してface_xyz_to_HARK.cppへ送る
             xyz_dict = {}
             xyz_dict["x"] = x[self.face_xy[0] , self.face_xy[1]]
             xyz_dict["y"] = y[self.face_xy[0] , self.face_xy[1]]
@@ -122,6 +87,6 @@ class SendFaceXYZToHark:
 
 
 if __name__ == "__main__":
-    rospy.init_node('face_xyz_to_HARK', anonymous=True)
+    rospy.init_node('face_xyz_to_HARK_py', anonymous=True)
     FaceXYZ = SendFaceXYZToHark()
     rospy.spin()
