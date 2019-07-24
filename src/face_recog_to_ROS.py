@@ -6,11 +6,11 @@ import roslib
 import rospy
 from sensor_msgs.msg import Image
 from std_msgs.msg import Int64MultiArray
+from sensor_msgs.msg import CameraInfo
 
 # ros以外
 import cv2
 import numpy
-import time
 from cv_bridge import CvBridge, CvBridgeError
 import imutils
 from imutils import face_utils
@@ -20,21 +20,25 @@ import dlib_module as dm
 
 class SendFaceToROS:
     def __init__(self):
-        # メンバ変数
+        # 顔認識に関する記述
         self.predictor_path = "./shape_predictor_68_face_landmarks.dat"
         self.face = dm.FaceDLib(self.predictor_path)
-        # メソッド
+        # ROSのメソッド
         self._face_recog_pub = rospy.Publisher('face_recog_result', Int64MultiArray, queue_size=10)
-        self._bridge = CvBridge()
         self._image_sub = rospy.Subscriber('/kinect2/hd/image_color', Image, self.callback)
+        # OpenCVのメソッド
+        self._bridge = CvBridge()
+        # kinectカメラの情報を取得
+        self.camera_info = rospy.wait_for_message("/kinect2/sd/camera_info", CameraInfo)
 
     def send_to_ROS(self, camera_x, camera_y):
         array = Int64MultiArray(data=[camera_x, camera_y])
         self._face_recog_pub.publish(array)
 
     def callback(self, data):
+        kinect_width = self.camera_info.width
         cv_image = self._bridge.imgmsg_to_cv2(data, 'bgr8')
-        cv_image = imutils.resize(cv_image, width=512)
+        cv_image = imutils.resize(cv_image, kinect_width)
 
         # デバッグ用表示
         display_image = self.face.face_shape_detector_display(cv_image)

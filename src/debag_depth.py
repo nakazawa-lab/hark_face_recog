@@ -23,9 +23,8 @@ class DepthTeleopTurtle:
         self.mf = message_filters.ApproximateTimeSynchronizer([rgb_sub, depth_sub], 30, 0.5)
         self.mf.registerCallback(self.callback)
 
-        self.pub = rospy.Publisher('turtle1/cmd_vel', Twist, queue_size=10)
-
     def callback(self, rgb_data , depth_data):
+        info = self.camera_info
         try:
             rgb_image = self.bridge.imgmsg_to_cv2(rgb_data, 'passthrough')
             depth_image = self.bridge.imgmsg_to_cv2(depth_data, 'passthrough')
@@ -34,8 +33,8 @@ class DepthTeleopTurtle:
 
         depth_array = np.array(depth_image, dtype=np.float32)
 
-        image_point =np.array([self.camera_info.height/2, self.camera_info.width/2, 1])
-        z = depth_array[self.camera_info.height/2, self.camera_info.height/2]
+        image_point =np.array([info.height/2, info.width/2, 1])
+        z = depth_array[info.height/2, info.height/2]
         xyz_point = np.matmul(self.invK, image_point) * z 
         
         x = round(xyz_point[0]/1000, 2)
