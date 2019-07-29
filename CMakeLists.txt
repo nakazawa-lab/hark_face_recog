@@ -118,7 +118,8 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
-  /home/ubuntu/for_HARK/hark-ros-msgs-melodic-3.0.7/devel/include
+  /home/ubuntu/catkin_ws/devel/include
+  # /home/ubuntu/for_HARK/hark-ros-msgs-melodic-3.0.7/devel/include
 )
 
 ## Declare a C++ library
