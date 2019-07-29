@@ -118,6 +118,7 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  /home/ubuntu/for_HARK/hark-ros-msgs-melodic-3.0.7/devel/include
 )
 
 ## Declare a C++ library
@@ -134,6 +135,7 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/hark_face_recog_node.cpp)
+add_executable(${PROJECT_NAME}_face_xyz_to_HARK_cpp src/face_xyz_to_HARK.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -149,6 +151,9 @@ include_directories(
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
+target_link_libraries(${PROJECT_NAME}_face_xyz_to_HARK_cpp
+  ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##
