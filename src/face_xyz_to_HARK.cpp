@@ -81,9 +81,9 @@ void callback(const std_msgs::Float32MultiArray::ConstPtr& msg)
       i++;
   }
 
-  x = face_xyz_array[0];
-  y = face_xyz_array[1];
-  z = face_xyz_array[2];
+  x = face_xyz_array[2];
+  y = face_xyz_array[0];
+  z = face_xyz_array[1];
 
   publish_to_HARK(x, y, z); //HARKへx,y,zの座標を送信
 
@@ -95,7 +95,7 @@ int main(int argc, char **argv)
   //Subscriber (face_xyz_to_HARK.pyから角度情報を取得)
   ros::init(argc, argv, "face_xyz_to_HARK_cpp");
   ros::NodeHandle n;
-  ros::Subscriber sub = n.subscribe("face_xyz", 1000, callback);
+  ros::Subscriber sub = n.subscribe("face_recog_result", 1000, callback);
   ROS_INFO("Waiting for message ...");
   ros::spin();
 
