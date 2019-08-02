@@ -48,6 +48,12 @@ $ python face_recog_to_ROS.py
 $ rosrun hark_face_recog hark_face_recog_face_xyz_to_HARK_cpp
 ```
 
+```
+$ roscd hark_face_recog
+$ cd src
+$ batchflow hark_ros_main.n
+```
+
 ### rosrunで実行したい場合
 Pythonで書かれているのでROS上でPythonの実行ファイルとして認識させるには以下のコマンドを一度行う必要があります。
 
