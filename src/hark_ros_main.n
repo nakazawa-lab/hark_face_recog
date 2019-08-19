@@ -5,9 +5,9 @@
     <Node name="node_LOOP0_1" type="LOOP0" x="110" y="100">
       <Parameter name="LENGTH" type="int" value="512" description="The frame length of each channel (in samples) [default: 512]."/>
       <Parameter name="ADVANCE" type="int" value="160" description="The shift length beween adjacent frames (in samples)[default: 160]."/>
-      <Parameter name="TF_CONJ_FILENAME" type="string" value="/usr/lib/hark-designer/userdata/tamago_geotf.zip" description="subnet_param"/>
+      <Parameter name="TF_CONJ_FILENAME" type="string" value="/usr/lib/hark-designer/userdata/config/tamago_geotf.zip" description="subnet_param"/>
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="subnet_param"/>
-      <Parameter name="A_MATRIX" type="string" value="/usr/lib/hark-designer/userdata/tamago_geotf.zip" description="subnet_param"/>
+      <Parameter name="A_MATRIX" type="string" value="/usr/lib/hark-designer/userdata/config/tamago_geotf.zip" description="subnet_param"/>
       <Parameter name="DEVICE" type="string" value="plughw:2,0" description="subnet_param"/>
       <Parameter name="BASENAME" type="string" value="/usr/lib/hark-designer/userdata/samples-hark-2_1_0/Separation/sep_dir/online" description="subnet_param"/>
     </Node>
