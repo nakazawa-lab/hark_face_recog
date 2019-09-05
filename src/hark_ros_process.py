@@ -31,8 +31,8 @@ class HarkNode(harkbasenode.HarkBaseNode):
         # いずれは顔の方位角が検出できない場合でも、音源の方位角のみで分離できるようにする
         if len(self.SOURCES)<1 or len(self.SOURCES2)<1:
             print("音源方向または顔方向のデータがありません")
-            self.outputValues["OUTPUT"] = []　
-
+            self.outputValues["OUTPUT"] = []
+            
         else:
             # 音源の位置座標を取得
             sound_xyz_coordinate = self.SOURCES[0]['x']

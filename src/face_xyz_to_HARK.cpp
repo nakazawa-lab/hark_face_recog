@@ -80,6 +80,7 @@ void callback(const std_msgs::Float32MultiArray::ConstPtr& msg)
       face_xyz_array[i] = *it;
       i++;
   }
+  // kinectの座標系とHARKの座標系を合わせる
 
   x = face_xyz_array[2];
   y = face_xyz_array[0];

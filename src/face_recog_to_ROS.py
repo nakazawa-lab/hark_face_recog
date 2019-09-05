@@ -65,13 +65,13 @@ class SendFaceToROS:
             u = face_recog_result[0]
             v = face_recog_result[1]
             theta = self.acquire_face_angle(u)
-            print("face angle: " + str(theta) + " [degree]")
+            print("face angle: " + str(-theta) + " [degree]")
 
-            x = (u - self.width/2)
+            x = -(u - self.width/2)
             y = (v - self.height/2)
             z = self.f
             self.send_to_ROS(x, y, z)
-        
+
 if __name__ == "__main__":
     rospy.init_node('face_recog_to_ROS',anonymous=True)
     face_recognition = SendFaceToROS()
