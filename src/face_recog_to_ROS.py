@@ -61,18 +61,15 @@ class SendFaceToROS:
             if self.past_point == None:
                 self.past_point = (x, y)
                 self.id = 1
-
             else:
                 past_x = self.past_point[0]
                 past_y = self.past_point[1]
 
                 if past_x - 30 < x and x < past_x + 30 and past_y - 30 < y and y < past_y + 30:
                     print("同一人物")
-
                 else:
                     print("別人")
                     self.id += 1
-
                 self.past_point = (x, y)
 
         else:

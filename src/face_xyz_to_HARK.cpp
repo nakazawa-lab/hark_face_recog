@@ -66,7 +66,6 @@ void publish_to_HARK(float x, float y, float z, int id)
     ros::spinOnce();
     loop_rate.sleep();
     ++count;
-    std::cout << count << std::endl;
   }
 }
 
@@ -77,8 +76,6 @@ void callback(const std_msgs::Float32MultiArray::ConstPtr& msg)
 {
   ROS_INFO("Received message!");
   // std::cout << *msg;
-  // ROS_INFO("============================");
-  // ROS_INFO("I heard: [%s]", msg->data.c_str());
 
   int i = 0;
   int x, y, z, id;
