@@ -2,7 +2,7 @@
 このファイルは顔認識をして認識した顔の方向を出力するパッケージです。
 
 - face_recog_to_ROS.py：顔認識をdlibで行い、相対的なカメラ座標系(x, y, z)における顔の位置をROS通信システム上に送信します。
-- dlib_module.py：dlibの顔認識についてまとめたファイルです。
+- dlib_module.py：dlibの顔認識についてまとめたファイルです。python dlib_module.pyで簡単なサンプルを動かせます。
 - getXYZ.py：pythonで三次元位置情報を扱えるかどうか確かめるためのテスト用ファイルです。
 
 ## 依存ライブラリ
