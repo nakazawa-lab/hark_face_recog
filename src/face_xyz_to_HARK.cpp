@@ -10,11 +10,11 @@
 #include <vector>
 #include <typeinfo>
 
-//Subscriber (face_xyz_to_HARK.pyから角度情報を取得)
+//Subscriber (face_recog_to_ROS.pyから角度情報を取得)
 
 int face_xyz_array[90];
 
-void publish_to_HARK(float x, float y, float z)
+void publish_to_HARK(float x, float y, float z, int id)
 {
   //Publisher (HARKへ角度データを送信)
   // ros::init(argc, argv, "talker");
@@ -28,7 +28,7 @@ void publish_to_HARK(float x, float y, float z)
 
     hark_msgs::HarkSource HarkSourceMsg;
 
-    HarkSourceMsg.count = 1;
+    HarkSourceMsg.count = count;
     ros::Time oHarkTime = ros::Time::now();
     HarkSourceMsg.header.stamp = oHarkTime;
     //HarkSourceMsg.header.stamp.sec        = BaseTime.time.tv_sec;
@@ -39,26 +39,34 @@ void publish_to_HARK(float x, float y, float z)
     //header
     hark_msgs::HarkSourceVal HarkSourceValMsg;
 
-    std::cout << "x:" << x << std::endl;
-    std::cout << "y:" << y << std::endl;
-    std::cout << "z:" << z << std::endl;
-
-
-    HarkSourceValMsg.id    = 0;
-  	HarkSourceValMsg.power = 38.5952;
+    HarkSourceValMsg.id    = id;
+    HarkSourceValMsg.power = 40.5952;
   	HarkSourceValMsg.x     = x;
   	HarkSourceValMsg.y     = y;
   	HarkSourceValMsg.z     = z;
-  	HarkSourceValMsg.azimuth   = 180.0 / M_PI * atan2(y, x);
+    HarkSourceValMsg.azimuth   = 180.0 / M_PI * atan2(y, x);
   	HarkSourceValMsg.elevation = 180.0 / M_PI * atan2(z, sqrt(x * x + y * y));
   	HarkSourceMsg.src.push_back(HarkSourceValMsg);
 
+    // 顔認識結果がない場合
+    if(x==0 && y==0 && z==0){
+      std::cout << "No recognition result" << std::endl;
+    }
+    // 認識結果がある場合
+    else{
+      std::cout << "id:" << id << std::endl;
+      std::cout << "x:" << x << std::endl;
+      std::cout << "y:" << y << std::endl;
+      std::cout << "z:" << z << std::endl;
+      std::cout << "azimuth:" << 180.0 / M_PI * atan2(y, x) << std::endl;
+      std::cout << "sending messsages!" << std::endl;
+      HarkSource_pub.publish(HarkSourceMsg);
+    }
 
-    ROS_INFO("sending a message");
-    HarkSource_pub.publish(HarkSourceMsg);
     ros::spinOnce();
     loop_rate.sleep();
     ++count;
+    std::cout << count << std::endl;
   }
 }
 
@@ -68,26 +76,26 @@ void publish_to_HARK(float x, float y, float z)
 void callback(const std_msgs::Float32MultiArray::ConstPtr& msg)
 {
   ROS_INFO("Received message!");
-  std::cout << *msg;
-  ROS_INFO("============================");
+  // std::cout << *msg;
+  // ROS_INFO("============================");
   // ROS_INFO("I heard: [%s]", msg->data.c_str());
 
   int i = 0;
-  int x, y, z;
+  int x, y, z, id;
   // print all the remaining numbers
   for(std::vector<float>::const_iterator it = msg->data.begin(); it != msg->data.end(); ++it)
   {
       face_xyz_array[i] = *it;
       i++;
   }
-  // kinectの座標系とHARKの座標系を合わせる
 
+  // kinectの座標系とHARKの座標系を合わせる
   x = face_xyz_array[2];
   y = face_xyz_array[0];
   z = face_xyz_array[1];
+  id = face_xyz_array[3];
 
-  publish_to_HARK(x, y, z); //HARKへx,y,zの座標を送信
-
+  publish_to_HARK(x, y, z, id); //HARKへx,y,zの座標を送信
 
 }
 

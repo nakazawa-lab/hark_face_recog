@@ -28,7 +28,7 @@ $ catkin_make
 この`catkin_make`によってROS-HARK関連のヘッダーファイルは`catkin_ws/devel/include/hark_msgs`へとインストールされます。
 
 ## 使用方法
-ターミナルを4つ開いて以下をそれぞれ実行。
+ターミナルを5つ開いて以下をそれぞれ実行。
 
 ```
 $ roscore

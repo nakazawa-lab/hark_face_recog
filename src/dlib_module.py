@@ -60,6 +60,20 @@ class FaceDLib:
         else :
             return None
 
+    # IDを割り振る際の人物判定用に作成
+    def get_nose_xy(self, img):
+        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        dets, scores, idx = self.detector.run(img_rgb, 1, 0)
+        if len(dets) > 0:
+            for i, rect in enumerate(dets):
+                shape = self.predictor(img_rgb, rect)
+                mouth_point = shape.part(30) # 鼻の点を取得
+                x = mouth_point.x
+                y = mouth_point.y
+            return x, y  # x, yはそれぞれlong型で、それらをタプルとして返す。
+        else :
+            return None
+
 if __name__ == '__main__':
     predictor_path = "./shape_predictor_68_face_landmarks.dat"
     gets = FaceDLib(predictor_path)
@@ -79,6 +93,8 @@ if __name__ == '__main__':
             cv2.imwrite('./filename%03.f'%(count)+'.jpg', frame) #001~連番で保存
             print('save done')
         gets.get_mouth_xy(frame)
+        gets.get_nose_xy(frame)
+        print("get_nose_xy: " + str(gets.get_nose_xy(frame)))
         print("get_mouth_xy: " + str(gets.get_mouth_xy(frame)))
     cap.release()
     cv2.destroyAllWindows()
