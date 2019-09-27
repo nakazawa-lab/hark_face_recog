@@ -23,6 +23,7 @@ void publish_to_HARK(float x, float y, float z, int id)
   ros::Publisher HarkSource_pub = n.advertise<hark_msgs::HarkSource>("HarkSource", 1000);
   ros::Rate loop_rate(10);
   int count = 0;
+  // static int id = 0;
   while (ros::ok())
   {
 
@@ -40,17 +41,18 @@ void publish_to_HARK(float x, float y, float z, int id)
     hark_msgs::HarkSourceVal HarkSourceValMsg;
 
     HarkSourceValMsg.id    = id;
-    HarkSourceValMsg.power = 40.5952;
+    // HarkSourceValMsg.power = 40.5952;
   	HarkSourceValMsg.x     = x;
   	HarkSourceValMsg.y     = y;
   	HarkSourceValMsg.z     = z;
     HarkSourceValMsg.azimuth   = 180.0 / M_PI * atan2(y, x);
   	HarkSourceValMsg.elevation = 180.0 / M_PI * atan2(z, sqrt(x * x + y * y));
-  	HarkSourceMsg.src.push_back(HarkSourceValMsg);
+  	// HarkSourceMsg.src.push_back(HarkSourceValMsg);
 
     // 顔認識結果がない場合
     if(x==0 && y==0 && z==0){
       std::cout << "No recognition result" << std::endl;
+      HarkSourceValMsg.power = 0;
     }
     // 認識結果がある場合
     else{
@@ -60,8 +62,12 @@ void publish_to_HARK(float x, float y, float z, int id)
       std::cout << "z:" << z << std::endl;
       std::cout << "azimuth:" << 180.0 / M_PI * atan2(y, x) << std::endl;
       std::cout << "sending messsages!" << std::endl;
-      HarkSource_pub.publish(HarkSourceMsg);
+      HarkSourceValMsg.power = 40.5952;
+      // HarkSource_pub.publish(HarkSourceMsg);
     }
+
+    HarkSourceMsg.src.push_back(HarkSourceValMsg);
+    HarkSource_pub.publish(HarkSourceMsg);
 
     ros::spinOnce();
     loop_rate.sleep();
