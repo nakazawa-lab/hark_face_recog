@@ -107,6 +107,7 @@ class SendFaceToROS:
             self.send_to_ROS(x, y, z, id)
 
         # 顔認識結果がない場合は0を送る
+        
         else:
             x = 0
             y = 0
@@ -115,6 +116,7 @@ class SendFaceToROS:
             self.rerecog_flag = 1
 
             self.send_to_ROS(x, y, z, id)
+        
 
 if __name__ == "__main__":
     rospy.init_node('face_recog_to_ROS',anonymous=True)
