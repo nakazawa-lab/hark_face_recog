@@ -36,7 +36,7 @@ class SendFaceToROS:
         K = np.array(camera_info.K).reshape(3,3) # 参照：http://docs.ros.org/melodic/api/sensor_msgs/html/msg/CameraInfo.html
         self.f = K[0][0] # 焦点距離f
         self.past_point = None # 前のフレームの顔(鼻)の位置を保持するために作成
-        self.id = 0 # 人物判定用のid
+        self.id = 10000 # 人物判定用のid
         self.rerecog_flag = 0 # 人の顔が画面から外れたあとに、再び画面に写った際にidを変えるために用意
 
     def send_to_ROS(self, x, y, z, id):
@@ -60,7 +60,7 @@ class SendFaceToROS:
 
             if self.past_point == None:
                 self.past_point = (x, y)
-                self.id = 1
+                self.id = 10001
             else:
                 past_x = self.past_point[0]
                 past_y = self.past_point[1]

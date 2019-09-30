@@ -145,7 +145,7 @@ userdata
 6. Julius_mftを起動しつつ、音声認識結果を`result.txt`に書き込む。
 
    ```
-   cd userdata/speech_recognition
+   $ cd userdata/speech_recognition
    $ julius_mft -C julius.jconf | tee result.txt
    ```
 
