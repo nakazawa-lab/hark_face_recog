@@ -49,12 +49,12 @@ void publish_to_HARK(float x, float y, float z, int id)
   	HarkSourceValMsg.elevation = 180.0 / M_PI * atan2(z, sqrt(x * x + y * y));
   	// HarkSourceMsg.src.push_back(HarkSourceValMsg);
 
-    // 顔認識結果がない場合
+    // 口が動いていない場合
     if(x==0 && y==0 && z==0){
       std::cout << "No recognition result" << std::endl;
       HarkSourceValMsg.power = 0;
     }
-    // 認識結果がある場合
+    // 口が動いている場合
     else{
       std::cout << "id:" << id << std::endl;
       std::cout << "x:" << x << std::endl;

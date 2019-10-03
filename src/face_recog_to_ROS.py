@@ -35,9 +35,15 @@ class SendFaceToROS:
         self.height = camera_info.height
         K = np.array(camera_info.K).reshape(3,3) # 参照：http://docs.ros.org/melodic/api/sensor_msgs/html/msg/CameraInfo.html
         self.f = K[0][0] # 焦点距離f
-        self.past_point = None # 前のフレームの顔(鼻)の位置を保持するために作成
+        # 人物のID判定用
+        self.past_point = None # 前のフレームの顔(鼻)の位置を保持するために用意
         self.id = 10000 # 人物判定用のid
         self.rerecog_flag = 0 # 人の顔が画面から外れたあとに、再び画面に写った際にidを変えるために用意
+        # 口が動いているかの判定用
+        self.past_mouth_distance = None # 前のフレームの口の開き具合を保持するために用意
+        self.mouth_count = 0 # 口の形状がどれくらいの時間維持されているかをカウントするために用意
+        self.start_flag = 0 # 口の動きを判定し始める際の合図
+
 
     def send_to_ROS(self, x, y, z, id):
         array = Float32MultiArray(data=[x, y, z, id])
@@ -55,9 +61,7 @@ class SendFaceToROS:
 
     # １つ前のフレームの鼻の位置と現在のフレームの鼻の位置から同一人物を判定
     def human_identify(self, x, y, flag):
-
         if flag == 0:
-
             if self.past_point == None:
                 self.past_point = (x, y)
                 self.id = 10001
@@ -71,13 +75,42 @@ class SendFaceToROS:
                     print("別人")
                     self.id += 1
                 self.past_point = (x, y)
-
         else:
             self.id += 1
             self.rerecog_flag = 0
-
         print(self.id)
         return self.id
+
+    # 口が動いているかを判定(口が動いているときはTrueを返し、口が動いていないときはFalseを返す)
+    def mouth_motion(self, mouth_upper, mouth_lower):
+        print("mouth_distance:", self.past_mouth_distance)
+        print("mouth_count:", self.mouth_count)
+        now_mouth_distance = mouth_lower - mouth_upper
+        if self.past_mouth_distance == None:
+            pass
+        else:
+            # 口の開き具合が1フレーム前の開き具合と同じ場合カウントを1ずつ増やしていく
+            if self.past_mouth_distance-2 <= now_mouth_distance and now_mouth_distance <= self.past_mouth_distance+2:
+                self.mouth_count += 1
+            # 口の開き具合が１フレーム前の開き具合と異なる場合カウントを0にする
+            else:
+                self.mouth_count = 0
+
+        self.past_mouth_distance = now_mouth_distance
+
+        # カウントが3以上の場合人が話していないと判断する
+        if self.mouth_count >= 5:
+            print("話していません")
+            self.start_flag = 1 # 1度カウントが3を超えたらフラグを立てて(1にして)、以後はカウントが3より小さい場合に口が動いていると判定する
+            return False
+        else:
+            if self.start_flag == 1:
+                print("話しています")
+                return True
+
+            else:
+                print("話していません")
+                return False
 
     def callback(self, data):
         cv_image = self._bridge.imgmsg_to_cv2(data, 'bgr8')
@@ -103,6 +136,24 @@ class SendFaceToROS:
             y = (v - self.height/2)
             z = self.f
             id = self.human_identify(x, y, self.rerecog_flag)
+
+            # 口の座標データを取得
+            mouth_recog_result = self.face.get_mouth_xy(cv_image)
+            # 口の上部のy座標を算出
+            v_upper = mouth_recog_result[1]
+            y_upper = (v_upper - self.height/2)
+            # 口の下部のy座標を算出
+            v_lower = mouth_recog_result[3]
+            y_lower = (v_lower - self.height/2)
+
+            # 口が動いていないときは顔認識結果がないと判定し、0を送る
+            is_mouth_moving = self.mouth_motion(y_upper, y_lower)
+            print(is_mouth_moving)
+            if not is_mouth_moving:
+                x = 0
+                y = 0
+                z = 0
+                id = 0
 
             self.send_to_ROS(x, y, z, id)
 
