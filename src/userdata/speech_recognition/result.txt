@@ -1,0 +1,259 @@
+STAT: include config: julius.jconf
+STAT: loading plugins at "/usr/lib/julius_plugin":
+STAT: file: calcmix_safe.jpi        #0 [Gaussian calculation plugin for Julius.(ADD_MASK_TO_SAFE)]
+STAT: file: calcmix_none.jpi        #1 [Gaussian calculation plugin for Julius.(ADD_MASK_TO_NONE)]
+STAT: file: mfcnet.jpi              #2 [Feature vector input plugin for Julius.(MFCNET)]
+STAT: file: calcmix_heu.jpi         #3 [Gaussian calculation plugin for Julius.(ADD_MASK_TO_HEU)]
+STAT: file: calcmix_beam.jpi        #4 [Gaussian calculation plugin for Julius.(ADD_MASK_TO_BEAM)]
+STAT: 5 files loaded
+STAT: jconf successfully finalized
+STAT: *** loading AM00 _default
+Stat: init_phmm: Reading in HMM definition
+Stat: rdhmmdef: ascii format HMM definition
+Stat: rdhmmdef: limit check passed
+Stat: rdhmmdef: this HMM does not need multipath handling
+Stat: init_phmm: defined HMMs:  7925
+Stat: init_phmm: loading ascii hmmlist
+Stat: init_phmm: logical names: 20468 in HMMList
+Stat: init_phmm: base phones:    42 used in logical
+Stat: init_phmm: finished reading HMM definitions
+STAT: making pseudo bi/mono-phone for IW-triphone
+Stat: hmm_lookup: 18 pseudo phones are added to logical HMM list
+STAT: *** AM00 _default loaded
+STAT: *** loading LM00 _default
+STAT: reading [LM/nakbot_words.dfa] and [LM/nakbot_words.dict]...
+Stat: init_voca: read 14 words
+STAT: done
+STAT: Gram #0 nakbot_words registered
+STAT: Gram #0 nakbot_words: new grammar loaded, now mash it up for recognition
+STAT: Gram #0 nakbot_words: extracting category-pair constraint for the 1st pass
+STAT: Gram #0 nakbot_words: installed
+STAT: multigram_exec_activate() hook = 2
+STAT: Gram #0 nakbot_words: turn on active
+STAT: grammar update completed
+STAT: *** LM00 _default loaded
+STAT: ------
+STAT: All models are ready, go for final fusion
+STAT: [1] create MFCC extraction instance(s)
+STAT: [2] create recognition processing instance(s) with AM and LM
+STAT: composing recognizer instance SR00 _default (AM00 _default, LM00 _default)
+STAT: Building HMM lexicon tree
+STAT: lexicon size: 159+0=159
+STAT: coordination check passed
+STAT: wchmm (re)build completed
+STAT: SR00 _default composed
+STAT: [3] initialize for acoustic HMM calculation
+Stat: outprob_init: state-level mixture PDFs, use calc_mix()
+Stat: addlog: generating addlog table (size = 1953 kB)
+Stat: addlog: addlog table generated
+STAT: [4] prepare MFCC storage(s)
+STAT: All init successfully done
+
+semaphor open succeded. value is 1.
+Stat: server-client: socket ready as server
+///////////////////////////////
+///  Module mode ready
+///  waiting client at 10500
+///////////////////////////////
+///  Stat: server-client: connect from 127.0.0.1
+Stat: server-client: socket ready as server
+----------------------- System Information begin ---------------------
+JuliusLib rev.4.2.3 (fast)
+
+Engine specification:
+ -  Base setup   : fast
+ -  Supported LM : DFA, N-gram, Word
+ -  Extension    : LibSndFile
+ -  Compiled by  : gcc -g -O2
+
+------------------------------------------------------------
+Configuration of Modules
+
+ Number of defined modules: AM=1, LM=1, SR=1
+
+ Acoustic Model (with input parameter spec.):
+ - AM00 "_default"
+	hmmfilename=AM/hmmdefs.gz
+	hmmmapfilename=AM/allTriphones
+
+ Language Model:
+ - LM00 "_default"
+	grammar #1:
+	    dfa  = LM/nakbot_words.dfa
+	    dict = LM/nakbot_words.dict
+
+ Recognizer:
+ - SR00 "_default" (AM00, LM00)
+
+------------------------------------------------------------
+Acoustic Model(s)
+
+[AM00 "_default"]
+
+ HMM Info:
+    7925 models, 2000 states, 2000 mpdfs, 32000 Gaussians are defined
+	      model type = context dependency handling ON
+      training parameter = USER
+	   vector length = 27
+	number of stream = 1
+	     stream info = [0-26]
+	cov. matrix type = DIAGC
+	   duration type = NULLD
+	max mixture size = 16 Gaussians
+     max length of model = 5 states
+     logical base phones = 42
+       model skip trans. = not exist, no multi-path handling
+
+ AM Parameters:
+        Gaussian pruning = safe  (-gprune)
+  top N mixtures to calc = 2 / 0  (-tmix)
+    short pause HMM name = "sp" specified, "sp" applied (physical)  (-sp)
+  cross-word CD on pass1 = handle by approx. (use average prob. of same LC)
+
+------------------------------------------------------------
+Language Model(s)
+
+[LM00 "_default"] type=grammar
+
+ DFA grammar info:
+      4 nodes, 3 arcs, 3 terminal(category) symbols
+      category-pair matrix: 16 bytes (448 bytes allocated)
+
+ Vocabulary Info:
+        vocabulary size  = 14 words, 56 models
+        average word len = 4.0 models, 12.0 states
+       maximum state num = 21 nodes per word
+       transparent words = not exist
+       words under class = not exist
+
+ Parameters:
+   found sp category IDs =
+
+------------------------------------------------------------
+Recognizer(s)
+
+[SR00 "_default"]  AM00 "_default"  +  LM00 "_default"
+
+ Lexicon tree:
+	 total node num =    159
+	  root node num =     12
+	  leaf node num =     14
+
+	(-penalty1) IW penalty1 = +0.0
+	(-penalty2) IW penalty2 = +0.0
+	(-cmalpha)CM alpha coef = 0.050000
+
+ Search parameters: 
+	    multi-path handling = no
+	(-b) trellis beam width = 159
+	(-bs)score pruning thres= disabled
+	(-n)search candidate num= 1
+	(-s)  search stack size = 500
+	(-m)    search overflow = after 2000 hypothesis poped
+	        2nd pass method = searching sentence, generating N-best
+	(-b2)  pass2 beam width = 30
+	(-lookuprange)lookup range= 5  (tm-5 <= t <tm+5)
+	(-sb)2nd scan beamthres = 500.0 (in logscore)
+	(-n)        search till = 1 candidates found
+	(-output)    and output = 1 candidates out of above
+	 IWCD handling:
+	   1st pass: approximation (use average prob. of same LC)
+	   2nd pass: loose (apply when hypo. is popped and scanned)
+	 all possible words will be expanded in 2nd pass
+	 build_wchmm2() used
+	 lcdset limited by word-pair constraint
+	short pause segmentation = off
+	fall back on search fail = off, returns search failure
+
+------------------------------------------------------------
+Decoding algorithm:
+
+	1st pass input processing = buffered, batch
+	1st pass method = 1-best approx. generating indexed trellis
+	output word confidence measure based on search-time scores
+
+------------------------------------------------------------
+FrontEnd:
+
+ Input stream:
+	             input type = feature vector sequence
+	           input source = plugin
+	   zero frames stripping = on
+	      reject short input = off
+	      reject  long input = off
+
+----------------------- System Information end -----------------------
+
+------
+### read waveform input
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [18392] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 4, azimuth = 84.998909, elevation = 16.702362, sec = 1569559131, usec = 634845
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [18393] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 3, azimuth = -14.999619, elevation = 16.702362, sec = 1569559131, usec = 89509
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 272
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [18394] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 5, azimuth = 60.000622, elevation = 16.702362, sec = 1569559133, usec = 358905
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [18395] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 6, azimuth = 70.000542, elevation = 16.702362, sec = 1569559135, usec = 489409
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [18396] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 7, azimuth = 60.000622, elevation = 16.702362, sec = 1569559140, usec = 357085
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [18398] handles this request
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [18400] handles this request
+input name function was called
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [18401] handles this request
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [18402] handles this request
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [18403] handles this request
