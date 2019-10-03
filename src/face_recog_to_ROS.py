@@ -43,6 +43,7 @@ class SendFaceToROS:
         self.past_mouth_distance = None # 前のフレームの口の開き具合を保持するために用意
         self.mouth_count = 0 # 口の形状がどれくらいの時間維持されているかをカウントするために用意
         self.start_flag = 0 # 口の動きを判定し始める際の合図
+        self.speaking_flag = 0 # 話している間１にし、話していないときは0にする
 
 
     def send_to_ROS(self, x, y, z, id):
@@ -82,7 +83,8 @@ class SendFaceToROS:
         return self.id
 
     # 口が動いているかを判定(口が動いているときはTrueを返し、口が動いていないときはFalseを返す)
-    def mouth_motion(self, mouth_upper, mouth_lower):
+    def mouth_motion(self, mouth_upper, mouth_lower, flag):
+
         print("mouth_distance:", self.past_mouth_distance)
         print("mouth_count:", self.mouth_count)
         now_mouth_distance = mouth_lower - mouth_upper
@@ -98,19 +100,23 @@ class SendFaceToROS:
 
         self.past_mouth_distance = now_mouth_distance
 
-        # カウントが3以上の場合人が話していないと判断する
-        if self.mouth_count >= 5:
+        # カウントが4以上の場合人が話していないと判断する
+        if self.mouth_count >= 4:
             print("話していません")
-            self.start_flag = 1 # 1度カウントが3を超えたらフラグを立てて(1にして)、以後はカウントが3より小さい場合に口が動いていると判定する
+            self.start_flag = 1 # 1度カウントが4を超えたらフラグを立てて(1にして)、以後はカウントが4より小さい場合に口が動いていると判定する
             return False
         else:
             if self.start_flag == 1:
                 print("話しています")
-                return True
+                if self.speaking_flag == 0:
+                    self.id += 1
+                    self.speaking_flag = 1
 
+                return True
             else:
                 print("話していません")
                 return False
+
 
     def callback(self, data):
         cv_image = self._bridge.imgmsg_to_cv2(data, 'bgr8')
@@ -147,13 +153,14 @@ class SendFaceToROS:
             y_lower = (v_lower - self.height/2)
 
             # 口が動いていないときは顔認識結果がないと判定し、0を送る
-            is_mouth_moving = self.mouth_motion(y_upper, y_lower)
+            is_mouth_moving = self.mouth_motion(y_upper, y_lower, self.speaking_flag)
             print(is_mouth_moving)
             if not is_mouth_moving:
                 x = 0
                 y = 0
                 z = 0
                 id = 0
+                self.speaking_flag = 0
 
             self.send_to_ROS(x, y, z, id)
 
