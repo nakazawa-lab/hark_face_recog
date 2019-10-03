@@ -1,3 +1,3 @@
 #!/bin/bash
 
-julius_mft -C julius.jconf | tee result.txt
+julius_mft -C julius.jconf -module | tee result.txt

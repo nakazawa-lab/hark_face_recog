@@ -19,7 +19,7 @@
 ##
 ## DFA ファイルと単語辞書ファイルを指定
 ## order.dfa と order.dic を指定している
--gram LM/order
+-gram LM/nakbot_words
 
 ##
 ## 音響HMM定義ファイル
