@@ -46,7 +46,7 @@
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate (Hz) [default: 16000]."/>
       <Parameter name="DEVICETYPE" type="string" value="ALSA" description="Device type [default: WS]."/>
       <Parameter name="GAIN" type="string" value="0dB" description="capture gain (dB)  [default: 0dB]."/>
-      <Parameter name="DEVICE" type="string" value="plughw:2,0" description="Device name or IP address [default: 127.0.0.1]"/>
+      <Parameter name="DEVICE" type="string" value="plughw:3,0" description="Device name or IP address [default: 127.0.0.1]"/>
     </Node>
     <Node name="node_RosHarkMsgsSubscriber_1" type="RosHarkMsgsSubscriber" x="300" y="430">
       <Parameter name="STREAM_SELECTION" type="string" value="HarkSource" description="Selector of stream you want to realize. All other subscription will be disabled."/>
