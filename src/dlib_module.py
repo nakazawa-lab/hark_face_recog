@@ -53,10 +53,13 @@ class FaceDLib:
         if len(dets) > 0:
             for i, rect in enumerate(dets):
                 shape = self.predictor(img_rgb, rect)
-                mouth_point = shape.part(63) # 唇の上の点を取得
-                x = mouth_point.x
-                y = mouth_point.y
-            return x, y  # x, yはそれぞれlong型で、それらをタプルとして返す。
+                mouth_point_upper = shape.part(51) # 唇の上の点を取得
+                x_upper = mouth_point_upper.x
+                y_upper = mouth_point_upper.y
+                mouth_point_lower = shape.part(57) # 唇の下の点を取得
+                x_lower = mouth_point_lower.x
+                y_lower = mouth_point_lower.y
+            return x_upper, y_upper, x_lower, y_lower  # x, yはそれぞれlong型で、それらをタプルとして返す。
         else :
             return None
 
@@ -67,9 +70,9 @@ class FaceDLib:
         if len(dets) > 0:
             for i, rect in enumerate(dets):
                 shape = self.predictor(img_rgb, rect)
-                mouth_point = shape.part(30) # 鼻の点を取得
-                x = mouth_point.x
-                y = mouth_point.y
+                nose_point = shape.part(30) # 鼻の点を取得
+                x = nose_point.x
+                y = nose_point.y
             return x, y  # x, yはそれぞれlong型で、それらをタプルとして返す。
         else :
             return None
