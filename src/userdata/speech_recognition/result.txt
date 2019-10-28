@@ -22,7 +22,7 @@ Stat: hmm_lookup: 18 pseudo phones are added to logical HMM list
 STAT: *** AM00 _default loaded
 STAT: *** loading LM00 _default
 STAT: reading [LM/nakbot_words.dfa] and [LM/nakbot_words.dict]...
-Stat: init_voca: read 14 words
+Stat: init_voca: read 15 words
 STAT: done
 STAT: Gram #0 nakbot_words registered
 STAT: Gram #0 nakbot_words: new grammar loaded, now mash it up for recognition
@@ -38,7 +38,7 @@ STAT: [1] create MFCC extraction instance(s)
 STAT: [2] create recognition processing instance(s) with AM and LM
 STAT: composing recognizer instance SR00 _default (AM00 _default, LM00 _default)
 STAT: Building HMM lexicon tree
-STAT: lexicon size: 159+0=159
+STAT: lexicon size: 189+0=189
 STAT: coordination check passed
 STAT: wchmm (re)build completed
 STAT: SR00 _default composed
@@ -50,12 +50,6 @@ STAT: [4] prepare MFCC storage(s)
 STAT: All init successfully done
 
 semaphor open succeded. value is 1.
-Stat: server-client: socket ready as server
-///////////////////////////////
-///  Module mode ready
-///  waiting client at 10500
-///////////////////////////////
-///  Stat: server-client: connect from 127.0.0.1
 Stat: server-client: socket ready as server
 ----------------------- System Information begin ---------------------
 JuliusLib rev.4.2.3 (fast)
@@ -120,9 +114,9 @@ Language Model(s)
       category-pair matrix: 16 bytes (448 bytes allocated)
 
  Vocabulary Info:
-        vocabulary size  = 14 words, 56 models
-        average word len = 4.0 models, 12.0 states
-       maximum state num = 21 nodes per word
+        vocabulary size  = 15 words, 66 models
+        average word len = 4.4 models, 13.2 states
+       maximum state num = 30 nodes per word
        transparent words = not exist
        words under class = not exist
 
@@ -135,9 +129,9 @@ Recognizer(s)
 [SR00 "_default"]  AM00 "_default"  +  LM00 "_default"
 
  Lexicon tree:
-	 total node num =    159
-	  root node num =     12
-	  leaf node num =     14
+	 total node num =    189
+	  root node num =     13
+	  leaf node num =     15
 
 	(-penalty1) IW penalty1 = +0.0
 	(-penalty2) IW penalty2 = +0.0
@@ -145,7 +139,7 @@ Recognizer(s)
 
  Search parameters: 
 	    multi-path handling = no
-	(-b) trellis beam width = 159
+	(-b) trellis beam width = 189
 	(-bs)score pruning thres= disabled
 	(-n)search candidate num= 1
 	(-s)  search stack size = 500
@@ -188,165 +182,573 @@ FrontEnd:
 ### read waveform input
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
-forked process [10979] handles this request
+forked process [11996] handles this request
 input name function was called
 STAT: multigram_exec_activate() hook = 2
-source_id = 0, azimuth = -49.997585, elevation = 16.702362, sec = 1570438884, usec = 427967
+source_id = 0, azimuth = 40.002411, elevation = 16.702362, sec = 1572235354, usec = 630548
+### Recognition: 1st pass (LR beam)
 read_count < 0, read_count=-1, veclen=54
-STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 272
+pass1_best: <s> come </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | k a m u | silE
+pass1_best_score: 1119.953003
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 172
+sentence1: <s> come </s>
+wseq1: 0 2 1
+phseq1: silB | k a m u | silE
+cmscore1: 1.000 0.862 1.000
+score1: 1119.951294
 
 connection end
 ERROR: an error occured while recognition, terminate stream
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
-forked process [10981] handles this request
-waiting connection...
-Stat: server-client: connect from 127.0.0.1
-forked process [10982] handles this request
+forked process [11997] handles this request
 input name function was called
 STAT: multigram_exec_activate() hook = 2
-source_id = 1, azimuth = 0.000000, elevation = 16.702362, sec = 1570438898, usec = 336977
+source_id = 1, azimuth = -65.000092, elevation = 16.702362, sec = 1572235367, usec = 781412
+### Recognition: 1st pass (LR beam)
 read_count < 0, read_count=-1, veclen=54
-STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 172
-
-input name function was called
-STAT: multigram_exec_activate() hook = 2
-source_id = 2, azimuth = -29.999376, elevation = 16.702362, sec = 1570438898, usec = 336982
-read_count < 0, read_count=-1, veclen=54
-STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 172
-
-connection end
-ERROR: an error occured while recognition, terminate stream
-connection end
-ERROR: an error occured while recognition, terminate stream
-waiting connection...
-Stat: server-client: connect from 127.0.0.1
-forked process [10983] handles this request
-input name function was called
-STAT: multigram_exec_activate() hook = 2
-source_id = 4, azimuth = -40.002411, elevation = 16.702362, sec = 1570438902, usec = 325746
-read_count < 0, read_count=-1, veclen=54
-STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 172
+pass1_best: <s> go
+pass1_best_wordseq: 0 2
+pass1_best_phonemeseq: silB | g o:
+pass1_best_score: 728.763855
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 172
+sentence1: <s> go </s>
+wseq1: 0 2 1
+phseq1: silB | g o: | silE
+cmscore1: 1.000 0.651 1.000
+score1: 723.483032
 
 connection end
 ERROR: an error occured while recognition, terminate stream
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
-forked process [10985] handles this request
+forked process [11998] handles this request
 input name function was called
 STAT: multigram_exec_activate() hook = 2
-source_id = 3, azimuth = -5.001091, elevation = 16.702362, sec = 1570438902, usec = 325740
+source_id = 2, azimuth = -5.001091, elevation = 16.702362, sec = 1572235368, usec = 380968
+### Recognition: 1st pass (LR beam)
 read_count < 0, read_count=-1, veclen=54
-STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 222
+pass1_best: <s> nakbot </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | n a q k u b o q t o | silE
+pass1_best_score: 664.882507
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 222
+sentence1: <s> nakbot </s>
+wseq1: 0 2 1
+phseq1: silB | n a q k u b o q t o | silE
+cmscore1: 1.000 0.900 1.000
+score1: 664.881409
 
 connection end
 ERROR: an error occured while recognition, terminate stream
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
-forked process [10987] handles this request
-waiting connection...
-Stat: server-client: connect from 127.0.0.1
-forked process [10988] handles this request
+forked process [11999] handles this request
 input name function was called
 STAT: multigram_exec_activate() hook = 2
-source_id = 6, azimuth = -29.999376, elevation = 16.702362, sec = 1570438906, usec = 831135
+source_id = 3, azimuth = -49.997585, elevation = 16.702362, sec = 1572235369, usec = 668755
+### Recognition: 1st pass (LR beam)
 read_count < 0, read_count=-1, veclen=54
-STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 172
-
-connection end
-ERROR: an error occured while recognition, terminate stream
-input name function was called
-STAT: multigram_exec_activate() hook = 2
-source_id = 5, azimuth = -24.999910, elevation = 16.702362, sec = 1570438905, usec = 832686
-read_count < 0, read_count=-1, veclen=54
-STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 272
-
-connection end
-ERROR: an error occured while recognition, terminate stream
-waiting connection...
-Stat: server-client: connect from 127.0.0.1
-forked process [10989] handles this request
-input name function was called
-STAT: multigram_exec_activate() hook = 2
-source_id = 7, azimuth = 14.999619, elevation = 16.702362, sec = 1570438910, usec = 825853
-read_count < 0, read_count=-1, veclen=54
-STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 172
+pass1_best: <s> go </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | g o: | silE
+pass1_best_score: 534.731018
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 272
+sentence1: <s> go </s>
+wseq1: 0 2 1
+phseq1: silB | g o: | silE
+cmscore1: 1.000 0.769 1.000
+score1: 534.732178
 
 connection end
 ERROR: an error occured while recognition, terminate stream
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
-forked process [10990] handles this request
+forked process [12000] handles this request
 input name function was called
 STAT: multigram_exec_activate() hook = 2
-source_id = 8, azimuth = -24.999910, elevation = 16.702362, sec = 1570438915, usec = 823886
+source_id = 10017, azimuth = 0.473508, elevation = nan, sec = 1572235353, usec = 442941
+### Recognition: 1st pass (LR beam)
 read_count < 0, read_count=-1, veclen=54
-STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 172
+pass1_best: <s> nakbot </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | n a q k u b o q t o | silE
+pass1_best_score: 9716.681641
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 1680
+sentence1: <s> nakbot </s>
+wseq1: 0 2 1
+phseq1: silB | n a q k u b o q t o | silE
+cmscore1: 1.000 0.977 1.000
+score1: 9716.704102
 
 connection end
 ERROR: an error occured while recognition, terminate stream
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
-forked process [10992] handles this request
-waiting connection...
-Stat: server-client: connect from 127.0.0.1
-forked process [10993] handles this request
+forked process [12001] handles this request
 input name function was called
 STAT: multigram_exec_activate() hook = 2
-source_id = 9, azimuth = 5.001091, elevation = 16.702362, sec = 1570438919, usec = 329828
+source_id = 4, azimuth = -19.999460, elevation = 16.702362, sec = 1572235371, usec = 652609
+### Recognition: 1st pass (LR beam)
 read_count < 0, read_count=-1, veclen=54
-STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 172
-
-connection end
-ERROR: an error occured while recognition, terminate stream
-input name function was called
-STAT: multigram_exec_activate() hook = 2
-source_id = 10, azimuth = -29.999376, elevation = 16.702362, sec = 1570438919, usec = 329833
-read_count < 0, read_count=-1, veclen=54
-STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 172
-
-connection end
-ERROR: an error occured while recognition, terminate stream
-waiting connection...
-Stat: server-client: connect from 127.0.0.1
-forked process [10994] handles this request
-waiting connection...
-Stat: server-client: connect from 127.0.0.1
-forked process [10995] handles this request
-input name function was called
-STAT: multigram_exec_activate() hook = 2
-source_id = 11, azimuth = -9.998278, elevation = 16.702362, sec = 1570438924, usec = 328689
-read_count < 0, read_count=-1, veclen=54
-STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 172
-
-input name function was called
-STAT: multigram_exec_activate() hook = 2
-source_id = 12, azimuth = 14.999619, elevation = 16.702362, sec = 1570438924, usec = 328694
-read_count < 0, read_count=-1, veclen=54
-STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 172
-
-connection end
-ERROR: an error occured while recognition, terminate stream
-connection end
-ERROR: an error occured while recognition, terminate stream
-waiting connection...
-Stat: server-client: connect from 127.0.0.1
-forked process [10997] handles this request
-input name function was called
-STAT: multigram_exec_activate() hook = 2
-source_id = 13, azimuth = 9.998278, elevation = 16.702362, sec = 1570438931, usec = 323576
-read_count < 0, read_count=-1, veclen=54
-STAT: 00 _default: 14 generated, 14 pushed, 4 nodes popped in 172
+pass1_best: <s> come </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | k a m u | silE
+pass1_best_score: 645.213501
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 272
+sentence1: <s> come </s>
+wseq1: 0 2 1
+phseq1: silB | k a m u | silE
+cmscore1: 1.000 0.597 1.000
+score1: 645.212585
 
 connection end
 ERROR: an error occured while recognition, terminate stream
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
-forked process [11000] handles this request
-waiting connection...
-Stat: server-client: connect from 127.0.0.1
-forked process [11001] handles this request
+forked process [12002] handles this request
 input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 5, azimuth = 0.000000, elevation = 16.702362, sec = 1572235374, usec = 265572
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> come </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | k a m u | silE
+pass1_best_score: 925.583801
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 222
+sentence1: <s> come </s>
+wseq1: 0 2 1
+phseq1: silB | k a m u | silE
+cmscore1: 1.000 0.913 1.000
+score1: 925.580750
+
+connection end
+ERROR: an error occured while recognition, terminate stream
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
-forked process [11002] handles this request
+forked process [12003] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 6, azimuth = -29.999376, elevation = 16.702362, sec = 1572235376, usec = 21027
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> come </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | k a m u | silE
+pass1_best_score: 911.612061
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 222
+sentence1: <s> come </s>
+wseq1: 0 2 1
+phseq1: silB | k a m u | silE
+cmscore1: 1.000 0.488 1.000
+score1: 911.612183
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12004] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 7, azimuth = 29.999376, elevation = 16.702362, sec = 1572235377, usec = 215633
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> stop </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | s u t o q p u | silE
+pass1_best_score: 802.405945
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 172
+sentence1: <s> stop </s>
+wseq1: 0 2 1
+phseq1: silB | s u t o q p u | silE
+cmscore1: 1.000 0.361 1.000
+score1: 802.405212
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12005] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 8, azimuth = 29.999376, elevation = 16.702362, sec = 1572235379, usec = 995742
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> go </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | g o: | silE
+pass1_best_score: 1439.669922
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 322
+sentence1: <s> go </s>
+wseq1: 0 2 1
+phseq1: silB | g o: | silE
+cmscore1: 1.000 0.952 1.000
+score1: 1439.666992
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12006] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 9, azimuth = 0.000000, elevation = 16.702362, sec = 1572235383, usec = 401670
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> come </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | k a m u | silE
+pass1_best_score: 1067.658081
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 222
+sentence1: <s> come </s>
+wseq1: 0 2 1
+phseq1: silB | k a m u | silE
+cmscore1: 1.000 0.573 1.000
+score1: 1067.657593
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12007] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 10, azimuth = 29.999376, elevation = 16.702362, sec = 1572235384, usec = 625359
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> left </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | r e f u t o | silE
+pass1_best_score: 493.461151
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 172
+sentence1: <s> left </s>
+wseq1: 0 2 1
+phseq1: silB | r e f u t o | silE
+cmscore1: 1.000 0.220 1.000
+score1: 493.460754
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12008] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 11, azimuth = -9.998278, elevation = 16.702362, sec = 1572235385, usec = 902806
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> come </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | k a m u | silE
+pass1_best_score: 895.203247
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 222
+sentence1: <s> come </s>
+wseq1: 0 2 1
+phseq1: silB | k a m u | silE
+cmscore1: 1.000 0.891 1.000
+score1: 895.202332
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12009] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 10018, azimuth = 1.420266, elevation = nan, sec = 1572235381, usec = 730825
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> nakbot </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | n a q k u b o q t o | silE
+pass1_best_score: 2172.457520
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 736
+sentence1: <s> nakbot </s>
+wseq1: 0 2 1
+phseq1: silB | n a q k u b o q t o | silE
+cmscore1: 1.000 0.984 1.000
+score1: 2172.458740
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12010] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 12, azimuth = -60.000622, elevation = 16.702362, sec = 1572235387, usec = 203357
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> ok </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | o: k e: | silE
+pass1_best_score: 1528.806152
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 372
+sentence1: <s> ok </s>
+wseq1: 0 2 1
+phseq1: silB | o: k e: | silE
+cmscore1: 1.000 0.609 1.000
+score1: 1528.801880
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12013] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 13, azimuth = -49.997585, elevation = 16.702362, sec = 1572235393, usec = 356685
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> come </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | k a m u | silE
+pass1_best_score: 509.626312
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 372
+sentence1: <s> come </s>
+wseq1: 0 2 1
+phseq1: silB | k a m u | silE
+cmscore1: 1.000 0.999 1.000
+score1: 509.623932
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12014] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 14, azimuth = -24.999910, elevation = 16.702362, sec = 1572235395, usec = 975233
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> push </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | p u q sh u | silE
+pass1_best_score: 480.502014
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 222
+sentence1: <s> push </s>
+wseq1: 0 2 1
+phseq1: silB | p u q sh u | silE
+cmscore1: 1.000 0.998 1.000
+score1: 480.502960
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12015] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 15, azimuth = 29.999376, elevation = 16.702362, sec = 1572235397, usec = 131578
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> left </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | r e f u t o | silE
+pass1_best_score: 631.941895
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 172
+sentence1: <s> left </s>
+wseq1: 0 2 1
+phseq1: silB | r e f u t o | silE
+cmscore1: 1.000 0.440 1.000
+score1: 631.942322
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12016] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 16, azimuth = 5.001091, elevation = 16.702362, sec = 1572235399, usec = 831295
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> come </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | k a m u | silE
+pass1_best_score: 1702.584595
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 322
+sentence1: <s> come </s>
+wseq1: 0 2 1
+phseq1: silB | k a m u | silE
+cmscore1: 1.000 0.601 1.000
+score1: 1702.586060
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12017] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 18, azimuth = 35.000839, elevation = 16.702362, sec = 1572235403, usec = 962408
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> go
+pass1_best_wordseq: 0 2
+pass1_best_phonemeseq: silB | g o:
+pass1_best_score: 484.057159
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 172
+sentence1: <s> go </s>
+wseq1: 0 2 1
+phseq1: silB | g o: | silE
+cmscore1: 1.000 0.741 1.000
+score1: 464.598236
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12018] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 17, azimuth = 5.001091, elevation = 16.702362, sec = 1572235403, usec = 429889
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> nakbot </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | n a q k u b o q t o | silE
+pass1_best_score: 1061.721680
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 422
+sentence1: <s> nakbot </s>
+wseq1: 0 2 1
+phseq1: silB | n a q k u b o q t o | silE
+cmscore1: 1.000 0.951 1.000
+score1: 1061.723999
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12019] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 19, azimuth = 49.997585, elevation = 16.702362, sec = 1572235406, usec = 721787
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> nakbot </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | n a q k u b o q t o | silE
+pass1_best_score: 987.714417
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 322
+sentence1: <s> nakbot </s>
+wseq1: 0 2 1
+phseq1: silB | n a q k u b o q t o | silE
+cmscore1: 1.000 0.646 1.000
+score1: 987.714050
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12020] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 21, azimuth = 35.000839, elevation = 16.702362, sec = 1572235410, usec = 708555
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> nakbot
+pass1_best_wordseq: 0 2
+pass1_best_phonemeseq: silB | n a q k u b o q t o
+pass1_best_score: 586.230347
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 222
+sentence1: <s> nakbot </s>
+wseq1: 0 2 1
+phseq1: silB | n a q k u b o q t o | silE
+cmscore1: 1.000 0.950 1.000
+score1: 568.929016
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12021] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 20, azimuth = 5.001091, elevation = 16.702362, sec = 1572235407, usec = 847515
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> come </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | k a m u | silE
+pass1_best_score: 2151.618652
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 872
+sentence1: <s> come </s>
+wseq1: 0 2 1
+phseq1: silB | k a m u | silE
+cmscore1: 1.000 1.000 1.000
+score1: 2151.608887
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12022] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 22, azimuth = 0.000000, elevation = 16.702362, sec = 1572235416, usec = 557601
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> go </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | g o: | silE
+pass1_best_score: 928.205994
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 172
+sentence1: <s> go </s>
+wseq1: 0 2 1
+phseq1: silB | g o: | silE
+cmscore1: 1.000 0.997 1.000
+score1: 928.205383
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12039] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 23, azimuth = -49.997585, elevation = 16.702362, sec = 1572235418, usec = 227257
+### Recognition: 1st pass (LR beam)
+read_count < 0, read_count=-1, veclen=54
+pass1_best: <s> push </s>
+pass1_best_wordseq: 0 2 1
+pass1_best_phonemeseq: silB | p u q sh u | silE
+pass1_best_score: 1014.187561
+### Recognition: 2nd pass (RL heuristic best-first)
+STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 600
+sentence1: <s> push </s>
+wseq1: 0 2 1
+phseq1: silB | p u q sh u | silE
+cmscore1: 1.000 1.000 1.000
+score1: 1014.176208
+
+connection end
+ERROR: an error occured while recognition, terminate stream
