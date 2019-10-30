@@ -85,33 +85,31 @@ class SendFaceToROS:
     # 口が動いているかを判定(口が動いているときはTrueを返し、口が動いていないときはFalseを返す)
     def mouth_motion(self, mouth_upper, mouth_lower, flag):
 
-        print("mouth_distance:", self.past_mouth_distance)
-        print("mouth_count:", self.mouth_count)
         now_mouth_distance = mouth_lower - mouth_upper
         if self.past_mouth_distance == None:
             pass
         else:
             # 口の開き具合が1フレーム前の開き具合と同じ場合カウントを1ずつ増やしていく
-            if self.past_mouth_distance-2 <= now_mouth_distance and now_mouth_distance <= self.past_mouth_distance+2:
+            if self.past_mouth_distance-1 <= now_mouth_distance and now_mouth_distance <= self.past_mouth_distance+1:
                 self.mouth_count += 1
             # 口の開き具合が１フレーム前の開き具合と異なる場合カウントを0にする
             else:
                 self.mouth_count = 0
 
         self.past_mouth_distance = now_mouth_distance
+        print("mouth_distance:", self.past_mouth_distance)
+        print("mouth_count:", self.mouth_count)
 
         # カウントが4以上の場合人が話していないと判断する
-        if self.mouth_count >= 4:
-            print("話していません")
+        if self.mouth_count >= 3:
             self.start_flag = 1 # 1度カウントが4を超えたらフラグを立てて(1にして)、以後はカウントが4より小さい場合に口が動いていると判定する
+            print("話していません")
             return False
         else:
             if self.start_flag == 1:
-                print("話しています")
                 if self.speaking_flag == 0:
-                    self.id += 1
                     self.speaking_flag = 1
-
+                print("話しています")
                 return True
             else:
                 print("話していません")
@@ -141,7 +139,8 @@ class SendFaceToROS:
             x = -(u - self.width/2)
             y = (v - self.height/2)
             z = self.f
-            id = self.human_identify(x, y, self.rerecog_flag)
+            # id = self.human_identify(x, y, self.rerecog_flag)
+            id = self.id
 
             # 口の座標データを取得
             mouth_recog_result = self.face.get_mouth_xy(cv_image)
@@ -160,8 +159,12 @@ class SendFaceToROS:
                 y = 0
                 z = 0
                 id = 0
+                # 話し終わったタイミングでidを1増やす
+                if self.speaking_flag == 1:
+                    self.id += 1
                 self.speaking_flag = 0
 
+            print("id", id)
             self.send_to_ROS(x, y, z, id)
 
         # 顔認識結果がない場合は0を送る
@@ -172,7 +175,9 @@ class SendFaceToROS:
             id = 0
             self.rerecog_flag = 1
 
+            print("id", id)
             self.send_to_ROS(x, y, z, id)
+
 
 if __name__ == "__main__":
     rospy.init_node('face_recog_to_ROS',anonymous=True)
