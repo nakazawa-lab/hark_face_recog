@@ -117,20 +117,22 @@ class SendFaceToROS:
 
 
     def callback(self, data):
-        cv_image = self._bridge.imgmsg_to_cv2(data, 'bgr8')
-        cv_image = imutils.resize(cv_image, self.width)
+        cv_img = self._bridge.imgmsg_to_cv2(data, 'bgr8')
+        cv_img = imutils.resize(cv_img, self.width)
 
+        # グレースケールの画像を取得
+        img_gray = cv2.cvtColor(cv_img, cv2.COLOR_BGR2GRAY)
         # デバッグ用表示
-        display_image = self.face.face_shape_detector_display(cv_image)
+        display_image, img_gray = self.face.face_shape_detector_display(cv_img, img_gray)
+
         cv2.imshow('img', display_image)
         cv2.waitKey(1)
 
-        # face_recog_result = self.face.get_mouth_xy(cv_image)
-
-        face_recog_result = self.face.get_nose_xy(cv_image)
+        # 鼻の座標データを取得
+        face_recog_result = self.face.get_nose_xy(img_gray)
 
         # 顔認識結果がある場合
-        if not face_recog_result == None:
+        if not face_recog_result[0] == None:
             u = face_recog_result[0]
             v = face_recog_result[1]
             theta = self.acquire_face_angle(u)
@@ -143,7 +145,7 @@ class SendFaceToROS:
             id = self.id
 
             # 口の座標データを取得
-            mouth_recog_result = self.face.get_mouth_xy(cv_image)
+            mouth_recog_result = self.face.get_mouth_xy(img_gray)
             # 口の上部のy座標を算出
             v_upper = mouth_recog_result[1]
             y_upper = (v_upper - self.height/2)
@@ -163,8 +165,6 @@ class SendFaceToROS:
                 if self.speaking_flag == 1:
                     self.id += 1
                 self.speaking_flag = 0
-
-            print("id", id)
             self.send_to_ROS(x, y, z, id)
 
         # 顔認識結果がない場合は0を送る
@@ -174,8 +174,6 @@ class SendFaceToROS:
             z = 0
             id = 0
             self.rerecog_flag = 1
-
-            print("id", id)
             self.send_to_ROS(x, y, z, id)
 
 
