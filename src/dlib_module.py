@@ -10,6 +10,7 @@ import datetime
 import os
 import imutils
 from imutils import face_utils
+from scipy.spatial import distance as dist
 
 class FaceDLib:
 
@@ -17,14 +18,22 @@ class FaceDLib:
         self.predictor = dlib.shape_predictor(predictor_path)
         self.detector = dlib.get_frontal_face_detector()
 
-    def face_shape_detector_display(self, img, img_gray):
+    def face_shape_detector_display(self, img, img_gray, mar, MAR_THRESH):
 
         rects = self.detector(img_gray, 0)
 
         for rect in rects:
-
+            # 画像の中から顔の特徴点を取得する
             shape = self.predictor(img_gray, rect)
             shape = face_utils.shape_to_np(shape)
+
+            # MARの値を画面に表示する
+            cv2.putText(img, "MAR: {:.2f}".format(mar), (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+
+            # 口が開いている場合、画面に表示する
+            if mar > MAR_THRESH:
+                cv2.putText(img, "Mouth is Open!", (30,60),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255),2)
 
             cv2.rectangle(img, (rect.left(), rect.top()), (rect.right(), rect.bottom()), (255, 0, 0), 1)
 
@@ -34,7 +43,7 @@ class FaceDLib:
 
         return img, img_gray
 
-    # 画像に映る口の座標を取得(口が動いているかを判別するために作成)
+    # 画像に映る口の座標を取得(口が動いているかを判別するために作成)→現在は使っていない
     def get_mouth_xy(self, img_gray):
         x_upper = x_lower = y_upper = y_lower = None # 初期化
         rects = self.detector(img_gray, 0)
@@ -48,6 +57,24 @@ class FaceDLib:
             y_lower = mouth_point_lower.y
         return x_upper, y_upper, x_lower, y_lower  # x, yはそれぞれlong型で、それらをタプルとして返す。
 
+    # mouth aspect ratio(口の開き具合の指標)を算出
+    def mouth_aspect_ratio(self, img_gray):
+
+        mar = 0 # mouth aspect ratio初期化
+        rects = self.detector(img_gray, 0)
+        for rect in rects:
+            shape = self.predictor(img_gray, rect)
+            shape = face_utils.shape_to_np(shape)
+
+            # 顔の各特徴点の座標の距離を計算
+            A = dist.euclidean(shape[51] , shape[59]) # 51, 59
+            B = dist.euclidean(shape[53] , shape[57]) # 53, 57
+            C = dist.euclidean(shape[49] , shape[55]) # 49, 55
+
+        	# mouth aspect ratioの計算(口が開いているほど値が大きくなる)
+            mar = (A + B) / (2.0 * C)
+
+        return mar
 
     # 画像に映る鼻の座標を取得(IDを割り振る際の人物判定用に作成)
     def get_nose_xy(self, img_gray):
@@ -65,8 +92,6 @@ if __name__ == '__main__':
     predictor_path = "./shape_predictor_68_face_landmarks.dat"
     gets = FaceDLib(predictor_path)
     cap = cv2.VideoCapture(0)
-    # cap.set(cv2.CAP_PROP_FPS, 5)
-    # print(cap.set(cv2.CAP_PROP_FPS, 5))
     print("frame per second:", cap.get(cv2.CAP_PROP_FPS))
     count = 0
 
