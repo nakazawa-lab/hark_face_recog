@@ -2,6 +2,7 @@ from harkpython import harkbasenode
 import math
 import os
 import datetime
+from pathlib import Path
 
 class HarkNode(harkbasenode.HarkBaseNode):
     def __init__(self):
@@ -14,8 +15,11 @@ class HarkNode(harkbasenode.HarkBaseNode):
 
         # EmitSourceLog関連
         self.maxid = -1
-        path = os.getcwd()
-        self.f = open(path + "/sournd_source_log/log_" + str(datetime.datetime.now()) + ".txt", "a")
+        # path = os.getcwd()
+        os.path.abspath(os.curdir)
+        os.chdir("..")
+        path = os.path.abspath(os.curdir)
+        self.f = open(str(path) + "/records/sournd_source_log/log_" + str(datetime.datetime.now()) + ".txt", "a")
 
     def calculate(self):
 
@@ -24,7 +28,7 @@ class HarkNode(harkbasenode.HarkBaseNode):
         # else:
         #     print("sound_source:", self.SOURCES)
 
-
+        print(self.SOURCES2)
         if len(self.SOURCES2)<1:
             # print("顔方向データがありません")
             if self.flag == 1:
@@ -49,7 +53,7 @@ class HarkNode(harkbasenode.HarkBaseNode):
                 self.outputValues["OUTPUT"] = self.SOURCES
 
         else:
-            #print(self.SOURCES[0])
+            # print(self.SOURCES[0])
             # print("image_source:", self.SOURCES2)
             self.sources_container = [self.SOURCES2[0]]
             self.flag = 1

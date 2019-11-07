@@ -46,7 +46,7 @@ class SendFaceToROS:
         # self.past_mouth_distance = None # 前のフレームの口の開き具合を保持するために用意
         # self.mouth_count = 0 # 口の形状がどれくらいの時間維持されているかをカウントするために用意
         self.mouth_close_count = 0 # 口がどれくらいの時間閉まっているかをカウントするために用意
-        self.MAR_THRESH = 0.75 # mouth aspect ratioの閾値(marの値がこの値以上になった場合口が開いていると判断する)
+        self.MAR_THRESH = 0.70 # mouth aspect ratioの閾値(marの値がこの値以上になった場合口が開いていると判断する)
         self.start_flag = 0 # 口の動きを判定し始める際の合図
         self.speaking_flag = 0 # 話している間１にし、話していないときは0にする
 
