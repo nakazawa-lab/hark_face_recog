@@ -21,15 +21,15 @@ STAT: making pseudo bi/mono-phone for IW-triphone
 Stat: hmm_lookup: 18 pseudo phones are added to logical HMM list
 STAT: *** AM00 _default loaded
 STAT: *** loading LM00 _default
-STAT: reading [LM/order.dfa] and [LM/order.dict]...
-Stat: init_voca: read 22 words
+STAT: reading [LM/nakbot_words_for_experiment.dfa] and [LM/nakbot_words_for_experiment.dict]...
+Stat: init_voca: read 9 words
 STAT: done
-STAT: Gram #0 order registered
-STAT: Gram #0 order: new grammar loaded, now mash it up for recognition
-STAT: Gram #0 order: extracting category-pair constraint for the 1st pass
-STAT: Gram #0 order: installed
+STAT: Gram #0 nakbot_words_for_experiment registered
+STAT: Gram #0 nakbot_words_for_experiment: new grammar loaded, now mash it up for recognition
+STAT: Gram #0 nakbot_words_for_experiment: extracting category-pair constraint for the 1st pass
+STAT: Gram #0 nakbot_words_for_experiment: installed
 STAT: multigram_exec_activate() hook = 2
-STAT: Gram #0 order: turn on active
+STAT: Gram #0 nakbot_words_for_experiment: turn on active
 STAT: grammar update completed
 STAT: *** LM00 _default loaded
 STAT: ------
@@ -38,7 +38,7 @@ STAT: [1] create MFCC extraction instance(s)
 STAT: [2] create recognition processing instance(s) with AM and LM
 STAT: composing recognizer instance SR00 _default (AM00 _default, LM00 _default)
 STAT: Building HMM lexicon tree
-STAT: lexicon size: 675+0=675
+STAT: lexicon size: 123+0=123
 STAT: coordination check passed
 STAT: wchmm (re)build completed
 STAT: SR00 _default composed
@@ -50,6 +50,12 @@ STAT: [4] prepare MFCC storage(s)
 STAT: All init successfully done
 
 semaphor open succeded. value is 1.
+Stat: server-client: socket ready as server
+///////////////////////////////
+///  Module mode ready
+///  waiting client at 10500
+///////////////////////////////
+///  Stat: server-client: connect from 127.0.0.1
 Stat: server-client: socket ready as server
 ----------------------- System Information begin ---------------------
 JuliusLib rev.4.2.3 (fast)
@@ -73,8 +79,8 @@ Configuration of Modules
  Language Model:
  - LM00 "_default"
 	grammar #1:
-	    dfa  = LM/order.dfa
-	    dict = LM/order.dict
+	    dfa  = LM/nakbot_words_for_experiment.dfa
+	    dict = LM/nakbot_words_for_experiment.dict
 
  Recognizer:
  - SR00 "_default" (AM00, LM00)
@@ -114,9 +120,9 @@ Language Model(s)
       category-pair matrix: 16 bytes (448 bytes allocated)
 
  Vocabulary Info:
-        vocabulary size  = 22 words, 234 models
-        average word len = 10.6 models, 31.9 states
-       maximum state num = 48 nodes per word
+        vocabulary size  = 9 words, 41 models
+        average word len = 4.6 models, 13.7 states
+       maximum state num = 30 nodes per word
        transparent words = not exist
        words under class = not exist
 
@@ -129,9 +135,9 @@ Recognizer(s)
 [SR00 "_default"]  AM00 "_default"  +  LM00 "_default"
 
  Lexicon tree:
-	 total node num =    675
-	  root node num =     18
-	  leaf node num =     22
+	 total node num =    123
+	  root node num =      9
+	  leaf node num =      9
 
 	(-penalty1) IW penalty1 = +0.0
 	(-penalty2) IW penalty2 = +0.0
@@ -139,7 +145,7 @@ Recognizer(s)
 
  Search parameters: 
 	    multi-path handling = no
-	(-b) trellis beam width = 675
+	(-b) trellis beam width = 123
 	(-bs)score pruning thres= disabled
 	(-n)search candidate num= 1
 	(-s)  search stack size = 500
@@ -182,87 +188,659 @@ FrontEnd:
 ### read waveform input
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
-forked process [13818] handles this request
+forked process [19592] handles this request
 input name function was called
 STAT: multigram_exec_activate() hook = 2
-source_id = 0, azimuth = 40.002411, elevation = 16.702362, sec = 1570428372, usec = 696502
-### Recognition: 1st pass (LR beam)
+source_id = 12, azimuth = 75.000381, elevation = 16.702362, sec = 1573116835, usec = 402403
 read_count < 0, read_count=-1, veclen=54
-pass1_best: <s> カレーライス </s>
-pass1_best_wordseq: 0 2 1
-pass1_best_phonemeseq: silB | k a r e: r a i s u | silE
-pass1_best_score: 1076.536377
-### Recognition: 2nd pass (RL heuristic best-first)
-STAT: 00 _default: 22 generated, 22 pushed, 4 nodes popped in 172
-sentence1: <s> カレーライス </s>
-wseq1: 0 2 1
-phseq1: silB | k a r e: r a i s u | silE
-cmscore1: 1.000 0.476 1.000
-score1: 1076.536377
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 372
 
 connection end
 ERROR: an error occured while recognition, terminate stream
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
-forked process [13819] handles this request
+forked process [19593] handles this request
 input name function was called
 STAT: multigram_exec_activate() hook = 2
-source_id = 10000, azimuth = 9.845822, elevation = nan, sec = 1570428373, usec = 589141
-### Recognition: 1st pass (LR beam)
+source_id = 13, azimuth = 19.999460, elevation = 16.702362, sec = 1573116838, usec = 588981
 read_count < 0, read_count=-1, veclen=54
-pass1_best: <s>
-pass1_best_wordseq: 0
-pass1_best_phonemeseq: silB
-pass1_best_score: 1889.121460
-### Recognition: 2nd pass (RL heuristic best-first)
-STAT: 00 _default: 22 generated, 22 pushed, 4 nodes popped in 237
-sentence1: <s> ナタデココ </s>
-wseq1: 0 2 1
-phseq1: silB | n a t a d e k o k o | silE
-cmscore1: 1.000 0.529 1.000
-score1: 1882.006958
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
 
 connection end
 ERROR: an error occured while recognition, terminate stream
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
-forked process [13821] handles this request
-waiting connection...
-Stat: server-client: connect from 127.0.0.1
-forked process [13822] handles this request
+forked process [19594] handles this request
 input name function was called
 STAT: multigram_exec_activate() hook = 2
-source_id = 1, azimuth = 0.000000, elevation = 16.702362, sec = 1570428380, usec = 615009
-### Recognition: 1st pass (LR beam)
+source_id = 14, azimuth = 9.998278, elevation = 16.702362, sec = 1573116851, usec = 548256
 read_count < 0, read_count=-1, veclen=54
-pass1_best: <s> 上にぎり </s>
-pass1_best_wordseq: 0 2 1
-pass1_best_phonemeseq: silB | j o: n i g i r i | silE
-pass1_best_score: 1590.586914
-### Recognition: 2nd pass (RL heuristic best-first)
-STAT: 00 _default: 22 generated, 22 pushed, 4 nodes popped in 222
-sentence1: <s> 上にぎり </s>
-wseq1: 0 2 1
-phseq1: silB | j o: n i g i r i | silE
-cmscore1: 1.000 0.941 1.000
-score1: 1590.583008
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19595] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 15, azimuth = 14.999619, elevation = 16.702362, sec = 1573116856, usec = 48898
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19596] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 16, azimuth = 14.999619, elevation = 16.702362, sec = 1573116859, usec = 536540
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19597] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 17, azimuth = 19.999460, elevation = 16.702362, sec = 1573116863, usec = 42472
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19598] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 18, azimuth = 75.000381, elevation = 16.702362, sec = 1573116867, usec = 38531
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19599] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 19, azimuth = 19.999460, elevation = 16.702362, sec = 1573116867, usec = 558072
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19600] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 20, azimuth = 45.000000, elevation = 16.702362, sec = 1573116869, usec = 752596
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 372
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19601] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 21, azimuth = 24.999910, elevation = 16.702362, sec = 1573116872, usec = 365686
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19602] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 22, azimuth = 14.999619, elevation = 16.702362, sec = 1573116875, usec = 43618
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19604] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 23, azimuth = 49.997585, elevation = 16.702362, sec = 1573116876, usec = 89789
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19606] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 24, azimuth = 19.999460, elevation = 16.702362, sec = 1573116877, usec = 736677
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19607] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 25, azimuth = 19.999460, elevation = 16.702362, sec = 1573116880, usec = 284570
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 572
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19608] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 26, azimuth = 45.000000, elevation = 16.702362, sec = 1573116884, usec = 930379
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19609] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 27, azimuth = 54.999161, elevation = 16.702362, sec = 1573116887, usec = 170749
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19610] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 28, azimuth = 35.000839, elevation = 16.702362, sec = 1573116890, usec = 583287
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 522
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19611] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 29, azimuth = 65.000092, elevation = 16.702362, sec = 1573116894, usec = 716997
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19612] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 30, azimuth = 19.999460, elevation = 16.702362, sec = 1573116895, usec = 843510
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 272
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19613] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 31, azimuth = 65.000092, elevation = 16.702362, sec = 1573116897, usec = 605602
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 372
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19614] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 32, azimuth = 14.999619, elevation = 16.702362, sec = 1573116900, usec = 880236
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19616] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 33, azimuth = 14.999619, elevation = 16.702362, sec = 1573116905, usec = 371142
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19618] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 34, azimuth = 70.000542, elevation = 16.702362, sec = 1573116920, usec = 75424
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19619] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 35, azimuth = 19.999460, elevation = 16.702362, sec = 1573116921, usec = 122337
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19620] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 36, azimuth = 14.999619, elevation = 16.702362, sec = 1573116925, usec = 947467
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19622] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 37, azimuth = 19.999460, elevation = 16.702362, sec = 1573116937, usec = 539338
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19623] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 38, azimuth = 19.999460, elevation = 16.702362, sec = 1573116942, usec = 538220
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 272
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19624] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 39, azimuth = 60.000622, elevation = 16.702362, sec = 1573116944, usec = 596177
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 272
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19625] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 40, azimuth = 49.997585, elevation = 16.702362, sec = 1573116946, usec = 229716
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19626] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 41, azimuth = 5.001091, elevation = 16.702362, sec = 1573116947, usec = 359716
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19628] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 42, azimuth = 49.997585, elevation = 16.702362, sec = 1573116950, usec = 90806
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19629] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 43, azimuth = 54.999161, elevation = 16.702362, sec = 1573116957, usec = 160063
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19630] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 44, azimuth = 49.997585, elevation = 16.702362, sec = 1573116964, usec = 534934
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19631] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 45, azimuth = -5.001091, elevation = 16.702362, sec = 1573116965, usec = 56856
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19632] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 46, azimuth = 65.000092, elevation = 16.702362, sec = 1573116973, usec = 533338
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 422
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19633] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 48, azimuth = 14.999619, elevation = 16.702362, sec = 1573116982, usec = 838979
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19634] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 47, azimuth = 70.000542, elevation = 16.702362, sec = 1573116977, usec = 675066
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 822
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19635] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 49, azimuth = 65.000092, elevation = 16.702362, sec = 1573116986, usec = 645204
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19637] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 50, azimuth = 9.998278, elevation = 16.702362, sec = 1573116987, usec = 671047
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 322
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19639] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 51, azimuth = 65.000092, elevation = 16.702362, sec = 1573116992, usec = 709759
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 422
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19641] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 52, azimuth = 65.000092, elevation = 16.702362, sec = 1573117002, usec = 616102
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 322
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19642] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 53, azimuth = 45.000000, elevation = 16.702362, sec = 1573117005, usec = 673532
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19643] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 54, azimuth = 0.000000, elevation = 16.702362, sec = 1573117007, usec = 288309
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19644] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 55, azimuth = -40.002411, elevation = 16.702362, sec = 1573117008, usec = 348075
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19645] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 56, azimuth = -80.001717, elevation = 16.702362, sec = 1573117009, usec = 472171
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19646] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 57, azimuth = -84.998909, elevation = 16.702362, sec = 1573117013, usec = 507086
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19647] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 58, azimuth = -84.998909, elevation = 16.702362, sec = 1573117017, usec = 812411
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19649] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 60, azimuth = 0.000000, elevation = 16.702362, sec = 1573117019, usec = 910246
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19650] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 59, azimuth = -80.001717, elevation = 16.702362, sec = 1573117019, usec = 351798
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 372
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19651] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 61, azimuth = -9.998278, elevation = 16.702362, sec = 1573117023, usec = 239816
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19652] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 62, azimuth = -84.998909, elevation = 16.702362, sec = 1573117034, usec = 540247
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19654] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 63, azimuth = -60.000622, elevation = 16.702362, sec = 1573117036, usec = 95347
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 622
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19655] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 64, azimuth = 14.999619, elevation = 16.702362, sec = 1573117042, usec = 363839
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19656] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 65, azimuth = 29.999376, elevation = 16.702362, sec = 1573117043, usec = 999497
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 422
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19657] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 66, azimuth = 70.000542, elevation = 16.702362, sec = 1573117047, usec = 666794
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 372
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19658] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 67, azimuth = 45.000000, elevation = 16.702362, sec = 1573117052, usec = 852497
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19659] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 68, azimuth = 14.999619, elevation = 16.702362, sec = 1573117053, usec = 376029
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19660] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 69, azimuth = 70.000542, elevation = 16.702362, sec = 1573117056, usec = 510282
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19661] handles this request
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19662] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 70, azimuth = 60.000622, elevation = 16.702362, sec = 1573117064, usec = 763346
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
 
 input name function was called
 STAT: multigram_exec_activate() hook = 2
-source_id = 2, azimuth = 29.999376, elevation = 16.702362, sec = 1570428380, usec = 615014
-### Recognition: 1st pass (LR beam)
+source_id = 71, azimuth = 90.000000, elevation = 16.702362, sec = 1573117065, usec = 282337
 read_count < 0, read_count=-1, veclen=54
-pass1_best: <s> 上にぎり </s>
-pass1_best_wordseq: 0 2 1
-pass1_best_phonemeseq: silB | j o: n i g i r i | silE
-pass1_best_score: 1539.224243
-### Recognition: 2nd pass (RL heuristic best-first)
-STAT: 00 _default: 22 generated, 22 pushed, 4 nodes popped in 222
-sentence1: <s> 上にぎり </s>
-wseq1: 0 2 1
-phseq1: silB | j o: n i g i r i | silE
-cmscore1: 1.000 0.862 1.000
-score1: 1539.220459
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
 
 connection end
 ERROR: an error occured while recognition, terminate stream
@@ -270,133 +848,1013 @@ connection end
 ERROR: an error occured while recognition, terminate stream
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
-forked process [13823] handles this request
+forked process [19663] handles this request
 input name function was called
 STAT: multigram_exec_activate() hook = 2
-source_id = 3, azimuth = 14.999619, elevation = 16.702362, sec = 1570428391, usec = 96385
-### Recognition: 1st pass (LR beam)
+source_id = 72, azimuth = 75.000381, elevation = 16.702362, sec = 1573117075, usec = 534744
 read_count < 0, read_count=-1, veclen=54
-pass1_best: <s> 上にぎり </s>
-pass1_best_wordseq: 0 2 1
-pass1_best_phonemeseq: silB | j o: n i g i r i | silE
-pass1_best_score: 1243.121582
-### Recognition: 2nd pass (RL heuristic best-first)
-STAT: 00 _default: 22 generated, 22 pushed, 4 nodes popped in 172
-sentence1: <s> 上にぎり </s>
-wseq1: 0 2 1
-phseq1: silB | j o: n i g i r i | silE
-cmscore1: 1.000 0.914 1.000
-score1: 1243.120239
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
 
 connection end
 ERROR: an error occured while recognition, terminate stream
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
-forked process [13824] handles this request
+forked process [19717] handles this request
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19718] handles this request
 input name function was called
 STAT: multigram_exec_activate() hook = 2
-source_id = 4, azimuth = 0.000000, elevation = 16.702362, sec = 1570428400, usec = 99085
-### Recognition: 1st pass (LR beam)
+source_id = 74, azimuth = 19.999460, elevation = 16.702362, sec = 1573117127, usec = 619385
 read_count < 0, read_count=-1, veclen=54
-pass1_best: <s> りんごジュース </s>
-pass1_best_wordseq: 0 2 1
-pass1_best_phonemeseq: silB | r i N g o j u: s u | silE
-pass1_best_score: 1217.462402
-### Recognition: 2nd pass (RL heuristic best-first)
-STAT: 00 _default: 22 generated, 22 pushed, 4 nodes popped in 172
-sentence1: <s> りんごジュース </s>
-wseq1: 0 2 1
-phseq1: silB | r i N g o j u: s u | silE
-cmscore1: 1.000 0.847 1.000
-score1: 1217.460693
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 73, azimuth = 75.000381, elevation = 16.702362, sec = 1573117124, usec = 541731
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 472
 
 connection end
 ERROR: an error occured while recognition, terminate stream
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
-forked process [13825] handles this request
+forked process [19728] handles this request
 input name function was called
 STAT: multigram_exec_activate() hook = 2
-source_id = 10001, azimuth = 9.539092, elevation = nan, sec = 1570428401, usec = 932317
-### Recognition: 1st pass (LR beam)
+source_id = 75, azimuth = 75.000381, elevation = 16.702362, sec = 1573117128, usec = 185988
 read_count < 0, read_count=-1, veclen=54
-pass1_best: <s>
-pass1_best_wordseq: 0
-pass1_best_phonemeseq: silB
-pass1_best_score: 1637.245117
-### Recognition: 2nd pass (RL heuristic best-first)
-STAT: 00 _default: 22 generated, 22 pushed, 4 nodes popped in 197
-sentence1: <s> ナタデココ </s>
-wseq1: 0 2 1
-phseq1: silB | n a t a d e k o k o | silE
-cmscore1: 1.000 0.360 1.000
-score1: 1605.127563
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 772
 
 connection end
 ERROR: an error occured while recognition, terminate stream
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
-forked process [13826] handles this request
+forked process [19729] handles this request
 input name function was called
 STAT: multigram_exec_activate() hook = 2
-source_id = 10002, azimuth = 9.539092, elevation = nan, sec = 1570428410, usec = 100371
-### Recognition: 1st pass (LR beam)
+source_id = 76, azimuth = 14.999619, elevation = 16.702362, sec = 1573117135, usec = 151126
 read_count < 0, read_count=-1, veclen=54
-pass1_best: <s> 上にぎり </s>
-pass1_best_wordseq: 0 2 1
-pass1_best_phonemeseq: silB | j o: n i g i r i | silE
-pass1_best_score: 2060.160889
-### Recognition: 2nd pass (RL heuristic best-first)
-STAT: 00 _default: 22 generated, 22 pushed, 4 nodes popped in 250
-sentence1: <s> 上にぎり </s>
-wseq1: 0 2 1
-phseq1: silB | j o: n i g i r i | silE
-cmscore1: 1.000 0.947 1.000
-score1: 2060.160156
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
 
 connection end
 ERROR: an error occured while recognition, terminate stream
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
-forked process [13828] handles this request
+forked process [19730] handles this request
 input name function was called
 STAT: multigram_exec_activate() hook = 2
-source_id = 5, azimuth = -5.001091, elevation = 16.702362, sec = 1570428429, usec = 600725
-### Recognition: 1st pass (LR beam)
+source_id = 78, azimuth = 19.999460, elevation = 16.702362, sec = 1573117138, usec = 10566
 read_count < 0, read_count=-1, veclen=54
-pass1_best: <s> フルーツ盛り合わせ </s>
-pass1_best_wordseq: 0 2 1
-pass1_best_phonemeseq: silB | f u r u: ts u m o r i a w a s e | silE
-pass1_best_score: 1601.991211
-### Recognition: 2nd pass (RL heuristic best-first)
-STAT: 00 _default: 22 generated, 22 pushed, 4 nodes popped in 222
-sentence1: <s> フルーツ盛り合わせ </s>
-wseq1: 0 2 1
-phseq1: silB | f u r u: ts u m o r i a w a s e | silE
-cmscore1: 1.000 0.784 1.000
-score1: 1601.987183
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
 
 connection end
 ERROR: an error occured while recognition, terminate stream
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
-forked process [13829] handles this request
+forked process [19732] handles this request
 input name function was called
 STAT: multigram_exec_activate() hook = 2
-source_id = 10003, azimuth = 10.762537, elevation = nan, sec = 1570428443, usec = 71116
-### Recognition: 1st pass (LR beam)
+source_id = 79, azimuth = 9.998278, elevation = 16.702362, sec = 1573117140, usec = 790590
 read_count < 0, read_count=-1, veclen=54
-pass1_best: <s> ナタデココ </s>
-pass1_best_wordseq: 0 2 1
-pass1_best_phonemeseq: silB | n a t a d e k o k o | silE
-pass1_best_score: 1655.251465
-### Recognition: 2nd pass (RL heuristic best-first)
-STAT: 00 _default: 22 generated, 22 pushed, 4 nodes popped in 203
-sentence1: <s> ナタデココ </s>
-wseq1: 0 2 1
-phseq1: silB | n a t a d e k o k o | silE
-cmscore1: 1.000 0.453 1.000
-score1: 1655.247437
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19733] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 80, azimuth = -5.001091, elevation = 16.702362, sec = 1573117144, usec = 595298
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19734] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 77, azimuth = 84.998909, elevation = 16.702362, sec = 1573117136, usec = 272122
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 972
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19735] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 81, azimuth = 84.998909, elevation = 16.702362, sec = 1573117146, usec = 825017
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 522
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19736] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 82, azimuth = -5.001091, elevation = 16.702362, sec = 1573117152, usec = 73732
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19737] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 83, azimuth = 80.001717, elevation = 16.702362, sec = 1573117152, usec = 658077
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19738] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 84, azimuth = 0.000000, elevation = 16.702362, sec = 1573117153, usec = 791832
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19739] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 85, azimuth = 75.000381, elevation = 16.702362, sec = 1573117154, usec = 956764
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 272
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19741] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 86, azimuth = 60.000622, elevation = 16.702362, sec = 1573117158, usec = 150361
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19742] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 87, azimuth = -5.001091, elevation = 16.702362, sec = 1573117159, usec = 691942
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19743] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 88, azimuth = -14.999619, elevation = 16.702362, sec = 1573117161, usec = 336554
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19744] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 89, azimuth = 14.999619, elevation = 16.702362, sec = 1573117166, usec = 151159
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19746] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 90, azimuth = -5.001091, elevation = 16.702362, sec = 1573117171, usec = 760578
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19747] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 91, azimuth = 24.999910, elevation = 16.702362, sec = 1573117177, usec = 377402
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 272
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19748] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 92, azimuth = -19.999460, elevation = 16.702362, sec = 1573117185, usec = 872906
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19749] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 93, azimuth = -5.001091, elevation = 16.702362, sec = 1573117189, usec = 264984
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19750] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 94, azimuth = -29.999376, elevation = 16.702362, sec = 1573117192, usec = 644601
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 322
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19751] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 95, azimuth = -9.998278, elevation = 16.702362, sec = 1573117196, usec = 704220
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 372
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19752] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 96, azimuth = 0.000000, elevation = 16.702362, sec = 1573117200, usec = 841293
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19753] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 97, azimuth = 9.998278, elevation = 16.702362, sec = 1573117211, usec = 111739
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19755] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 98, azimuth = -35.000839, elevation = 16.702362, sec = 1573117212, usec = 690285
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19757] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 99, azimuth = -54.999161, elevation = 16.702362, sec = 1573117215, usec = 283279
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19759] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 100, azimuth = 9.998278, elevation = 16.702362, sec = 1573117232, usec = 533034
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19761] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 101, azimuth = -5.001091, elevation = 16.702362, sec = 1573117234, usec = 567480
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 372
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19762] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 102, azimuth = -75.000381, elevation = 16.702362, sec = 1573117241, usec = 538273
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19763] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 103, azimuth = -35.000839, elevation = 16.702362, sec = 1573117245, usec = 36139
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19764] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 104, azimuth = -75.000381, elevation = 16.702362, sec = 1573117255, usec = 536953
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19765] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 105, azimuth = -40.002411, elevation = 16.702362, sec = 1573117261, usec = 36589
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 472
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19766] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 106, azimuth = 45.000000, elevation = 16.702362, sec = 1573117267, usec = 538243
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19767] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 107, azimuth = 49.997585, elevation = 16.702362, sec = 1573117270, usec = 531737
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19769] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 108, azimuth = 5.001091, elevation = 16.702362, sec = 1573117272, usec = 571948
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19771] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 109, azimuth = 5.001091, elevation = 16.702362, sec = 1573117291, usec = 543545
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19773] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 110, azimuth = 24.999910, elevation = 16.702362, sec = 1573117295, usec = 35801
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19774] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 111, azimuth = 5.001091, elevation = 16.702362, sec = 1573117304, usec = 531950
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19775] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 112, azimuth = -5.001091, elevation = 16.702362, sec = 1573117312, usec = 40293
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 272
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19777] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 113, azimuth = -5.001091, elevation = 16.702362, sec = 1573117328, usec = 50837
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19778] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 114, azimuth = -40.002411, elevation = 16.702362, sec = 1573117338, usec = 533519
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 372
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19779] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 115, azimuth = -19.999460, elevation = 16.702362, sec = 1573117344, usec = 35896
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19780] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 116, azimuth = -45.000000, elevation = 16.702362, sec = 1573117344, usec = 562547
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 272
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19781] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 117, azimuth = 5.001091, elevation = 16.702362, sec = 1573117348, usec = 232122
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19782] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 118, azimuth = -75.000381, elevation = 16.702362, sec = 1573117349, usec = 797228
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19783] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 120, azimuth = -45.000000, elevation = 16.702362, sec = 1573117350, usec = 350394
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19784] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 119, azimuth = 9.998278, elevation = 16.702362, sec = 1573117350, usec = 350362
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19786] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 121, azimuth = 14.999619, elevation = 16.702362, sec = 1573117355, usec = 42977
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19787] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 122, azimuth = 14.999619, elevation = 16.702362, sec = 1573117356, usec = 613049
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19816] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 123, azimuth = 14.999619, elevation = 16.702362, sec = 1573117362, usec = 349447
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 272
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19868] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 124, azimuth = 9.998278, elevation = 16.702362, sec = 1573117370, usec = 603990
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19885] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 125, azimuth = 19.999460, elevation = 16.702362, sec = 1573117395, usec = 31046
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19886] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 126, azimuth = 24.999910, elevation = 16.702362, sec = 1573117397, usec = 597315
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19895] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 127, azimuth = 14.999619, elevation = 16.702362, sec = 1573117402, usec = 544857
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19899] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 128, azimuth = 5.001091, elevation = 16.702362, sec = 1573117406, usec = 537230
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19901] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 129, azimuth = 5.001091, elevation = 16.702362, sec = 1573117418, usec = 538294
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19903] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 130, azimuth = 9.998278, elevation = 16.702362, sec = 1573117423, usec = 541076
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19906] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 131, azimuth = 9.998278, elevation = 16.702362, sec = 1573117434, usec = 536565
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19909] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 132, azimuth = -5.001091, elevation = 16.702362, sec = 1573117442, usec = 542347
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19912] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 133, azimuth = 9.998278, elevation = 16.702362, sec = 1573117451, usec = 536899
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19914] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 134, azimuth = 5.001091, elevation = 16.702362, sec = 1573117457, usec = 533572
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19954] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 135, azimuth = 9.998278, elevation = 16.702362, sec = 1573117460, usec = 544446
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19956] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 136, azimuth = 14.999619, elevation = 16.702362, sec = 1573117466, usec = 38361
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19959] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 137, azimuth = 9.998278, elevation = 16.702362, sec = 1573117472, usec = 38600
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19961] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 138, azimuth = -5.001091, elevation = 16.702362, sec = 1573117476, usec = 538156
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [19964] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 139, azimuth = -19.999460, elevation = 16.702362, sec = 1573117480, usec = 41450
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20147] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 0, azimuth = -84.998909, elevation = 16.702362, sec = 1573117711, usec = 434587
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20148] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 1, azimuth = 5.001091, elevation = 16.702362, sec = 1573117720, usec = 823424
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20149] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 2, azimuth = 0.000000, elevation = 16.702362, sec = 1573117728, usec = 328819
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20153] handles this request
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20154] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 4, azimuth = -70.000542, elevation = 16.702362, sec = 1573117760, usec = 669934
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 3, azimuth = 9.998278, elevation = 16.702362, sec = 1573117752, usec = 824676
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 872
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20156] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 5, azimuth = 9.998278, elevation = 16.702362, sec = 1573117762, usec = 514061
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 272
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20157] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 6, azimuth = 9.998278, elevation = 16.702362, sec = 1573117766, usec = 12766
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20158] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 7, azimuth = -84.998909, elevation = 16.702362, sec = 1573117767, usec = 699934
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20161] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 8, azimuth = -80.001717, elevation = 16.702362, sec = 1573117770, usec = 590942
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 272
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20162] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 9, azimuth = 5.001091, elevation = 16.702362, sec = 1573117773, usec = 959539
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20164] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 10, azimuth = -84.998909, elevation = 16.702362, sec = 1573117777, usec = 161602
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20165] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 11, azimuth = 5.001091, elevation = 16.702362, sec = 1573117779, usec = 362945
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20166] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 12, azimuth = -65.000092, elevation = 16.702362, sec = 1573117780, usec = 484544
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 372
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20169] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 13, azimuth = 14.999619, elevation = 16.702362, sec = 1573117786, usec = 504711
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 272
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20171] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 14, azimuth = 19.999460, elevation = 16.702362, sec = 1573117792, usec = 731087
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20173] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 15, azimuth = 9.998278, elevation = 16.702362, sec = 1573117797, usec = 831797
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 322
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20175] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 16, azimuth = -70.000542, elevation = 16.702362, sec = 1573117802, usec = 221267
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20179] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 17, azimuth = 29.999376, elevation = 16.702362, sec = 1573117802, usec = 790099
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20180] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 18, azimuth = 5.001091, elevation = 16.702362, sec = 1573117803, usec = 401121
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20185] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 19, azimuth = 5.001091, elevation = 16.702362, sec = 1573117805, usec = 299482
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20189] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 20, azimuth = -75.000381, elevation = 16.702362, sec = 1573117809, usec = 596024
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 172
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20191] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 21, azimuth = 0.000000, elevation = 16.702362, sec = 1573117811, usec = 832560
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 322
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20193] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 22, azimuth = -60.000622, elevation = 16.702362, sec = 1573117819, usec = 618849
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 222
+
+connection end
+ERROR: an error occured while recognition, terminate stream
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [20194] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 23, azimuth = 5.001091, elevation = 16.702362, sec = 1573117820, usec = 742483
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 9 generated, 9 pushed, 4 nodes popped in 300
 
 connection end
 ERROR: an error occured while recognition, terminate stream
