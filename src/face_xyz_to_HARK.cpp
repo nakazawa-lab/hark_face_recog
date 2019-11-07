@@ -21,7 +21,7 @@ void publish_to_HARK(float x, float y, float z, int id)
   ros::NodeHandle n;
   // ros::Publisher HarkSource_pub = n.advertise<std_msgs::String>("HarkSource", 1000);
   ros::Publisher HarkSource_pub = n.advertise<hark_msgs::HarkSource>("HarkSource", 1000);
-  ros::Rate loop_rate(10);
+  ros::Rate loop_rate(20);
   int count = 0;
   // static int id = 0;
   while (ros::ok())
