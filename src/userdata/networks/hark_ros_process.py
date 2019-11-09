@@ -20,6 +20,7 @@ class HarkNode(harkbasenode.HarkBaseNode):
         os.chdir("..")
         path = os.path.abspath(os.curdir)
         self.f = open(str(path) + "/records/sournd_source_log/log_" + str(datetime.datetime.now()) + ".txt", "a")
+        os.chdir("networks")
 
     def calculate(self):
 
