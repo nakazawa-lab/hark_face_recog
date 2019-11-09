@@ -2,7 +2,6 @@
 ## coding: UTF-8
 
 # ros系のライブラリ
-import roslib
 import rospy
 from sensor_msgs.msg import Image
 from std_msgs.msg import Float32MultiArray
@@ -15,7 +14,7 @@ import math
 import dlib
 from cv_bridge import CvBridge, CvBridgeError
 import imutils
-from imutils import face_utils
+import os
 
 # 自作モジュール
 import dlib_module as dm
@@ -23,19 +22,20 @@ import dlib_module as dm
 class SendFaceToROS:
     def __init__(self):
         # 顔認識に関する記述
-        self.predictor_path = "./shape_predictor_68_face_landmarks.dat"
+        here_path = os.path.dirname(__file__)
+        self.predictor_path = here_path + "/shape_predictor_68_face_landmarks.dat"
         self.face = dm.FaceDLib(self.predictor_path)
         # ROSのメソッド
         self._face_recog_pub = rospy.Publisher('face_recog_result', Float32MultiArray, queue_size=10)
-        self._image_sub = rospy.Subscriber('/kinect2/hd/image_color', Image, self.callback)
+        self._image_sub = rospy.Subscriber('dsampled_image', Image, self.callback)
         # OpenCVのメソッド
         self._bridge = CvBridge()
         # dlibのメソッド
         self.detector = dlib.get_frontal_face_detector()
         # kinectカメラの情報を取得
-        camera_info = rospy.wait_for_message("/kinect2/sd/camera_info", CameraInfo)
-        self.width = camera_info.width
-        self.height = camera_info.height
+        camera_info = rospy.wait_for_message("/kinect2/qhd/camera_info", CameraInfo)
+        self.width = int(camera_info.width * 1.2)
+        self.height = int(camera_info.height * 1.2)
         K = np.array(camera_info.K).reshape(3,3) # 参照：http://docs.ros.org/melodic/api/sensor_msgs/html/msg/CameraInfo.html
         self.f = K[0][0] # 焦点距離f
         # 人物のID判定用
@@ -46,7 +46,7 @@ class SendFaceToROS:
         # self.past_mouth_distance = None # 前のフレームの口の開き具合を保持するために用意
         # self.mouth_count = 0 # 口の形状がどれくらいの時間維持されているかをカウントするために用意
         self.mouth_close_count = 0 # 口がどれくらいの時間閉まっているかをカウントするために用意
-        self.MAR_THRESH = 0.70 # mouth aspect ratioの閾値(marの値がこの値以上になった場合口が開いていると判断する)
+        self.MAR_THRESH = 0.80 # mouth aspect ratioの閾値(marの値がこの値以上になった場合口が開いていると判断する)
         self.start_flag = 0 # 口の動きを判定し始める際の合図
         self.speaking_flag = 0 # 話している間１にし、話していないときは0にする
 
@@ -64,29 +64,7 @@ class SendFaceToROS:
         radian = np.radians(theta)
         u = math.tan(radian) * self.f + self.width/2
         return u
-    """
-    # １つ前のフレームの鼻の位置と現在のフレームの鼻の位置から同一人物を判定→現在は使っていない
-    def human_identify(self, x, y, flag):
-        if flag == 0:
-            if self.past_point == None:
-                self.past_point = (x, y)
-                self.id = 10001
-            else:
-                past_x = self.past_point[0]
-                past_y = self.past_point[1]
 
-                if past_x - 30 < x and x < past_x + 30 and past_y - 30 < y and y < past_y + 30:
-                    print("同一人物")
-                else:
-                    print("別人")
-                    self.id += 1
-                self.past_point = (x, y)
-        else:
-            self.id += 1
-            self.rerecog_flag = 0
-        print(self.id)
-        return self.id
-    """
     # mouth_aspect_ratioを使用して口が動いているかを判定する
     def mouth_motion_with_mar(self, mar, flag):
 
@@ -100,30 +78,32 @@ class SendFaceToROS:
         print("mouth_close_count:", self.mouth_close_count)
 
         # カウントが10以上の場合人が話していないと判断する
-        if self.mouth_close_count >= 10:
+        if self.mouth_close_count >= 5:
             self.start_flag = 1 # 1度カウントが10を超えたらフラグを立てて(1にして)、以後はカウントが10より小さい場合に口が動いていると判定する
-            print("話していません")
+            # print("話していません")
             return False
         else:
             if self.start_flag == 1:
                 if self.speaking_flag == 0:
                     self.speaking_flag = 1
-                print("話しています")
+                # print("話しています")
                 return True
             else:
-                print("話していません")
+                # print("話していません")
                 return False
 
     # ROSによって繰り返し呼び出される
     def callback(self, data):
         cv_img = self._bridge.imgmsg_to_cv2(data, 'bgr8')
         cv_img = imutils.resize(cv_img, self.width)
+        cv_img = cv_img[0:self.height/2]
 
         # グレースケールの画像を取得
         img_gray = cv2.cvtColor(cv_img, cv2.COLOR_BGR2GRAY)
 
         # 画像の中から顔を検出
-        rects = self.detector(img_gray, 0)
+        rects, scores, idx  = self.detector.run(img_gray, 0, 0)
+        # print (dlib.DLIB_USE_CUDA)
 
         # 鼻の座標データを取得
         face_recog_result = self.face.get_nose_xy(img_gray, rects)

@@ -39,13 +39,7 @@ $ roslaunch kinect2_bridge kinect2_bridge.launch
 ```
 
 ```
-$ roscd hark_face_recog
-$ cd src
-$ python face_recog_to_ROS.py
-```
-
-```
-$ rosrun hark_face_recog hark_face_recog_face_xyz_to_HARK_cpp
+$ roslaunch hark_face_recog hark_face_recog.launch
 ```
 
 ```
