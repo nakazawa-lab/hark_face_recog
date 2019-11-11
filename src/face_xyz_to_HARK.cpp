@@ -13,16 +13,17 @@
 //Subscriber (face_recog_to_ROS.pyから角度情報を取得)
 
 int face_xyz_array[90];
+int count = 0;
 
 void publish_to_HARK(float x, float y, float z, int id)
 {
-    ros::Rate loop_rate(10);
+    ros::Rate loop_rate(50);
     //Publisher (HARKへ角度データを送信)
     // ros::init(argc, argv, "talker");
     ros::NodeHandle n;
     // ros::Publisher HarkSource_pub = n.advertise<std_msgs::String>("HarkSource", 1000);
     ros::Publisher HarkSource_pub = n.advertise<hark_msgs::HarkSource>("HarkSourceFace", 1000);
-    static int count = 0;
+    // static int count = 0;
 
     hark_msgs::HarkSource HarkSourceMsg;
 
@@ -78,7 +79,7 @@ void publish_to_HARK(float x, float y, float z, int id)
 
     HarkSourceMsg.src.push_back(HarkSourceValMsg);
     HarkSource_pub.publish(HarkSourceMsg);
-    ros::spinOnce();
+//    ros::spinOnce();
     loop_rate.sleep();
     ++count;
    

@@ -24,6 +24,7 @@ class SendFaceToROS:
         # 顔認識に関する記述
         here_path = os.path.dirname(__file__)
         self.predictor_path = here_path + "/shape_predictor_68_face_landmarks.dat"
+        #self.predictor_path = "./shape_predictor_68_face_landmarks.dat"
         self.face = dm.FaceDLib(self.predictor_path)
         # ROSのメソッド
         self._face_recog_pub = rospy.Publisher('face_recog_result', Float32MultiArray, queue_size=10)
@@ -36,6 +37,9 @@ class SendFaceToROS:
         camera_info = rospy.wait_for_message("/kinect2/qhd/camera_info", CameraInfo)
         self.width = int(camera_info.width * 1.2)
         self.height = int(camera_info.height * 1.2)
+        # camera_info = rospy.wait_for_message("/kinect2/hd/camera_info", CameraInfo)
+        # self.width = camera_info.width
+        # self.height = camera_info.height
         K = np.array(camera_info.K).reshape(3,3) # 参照：http://docs.ros.org/melodic/api/sensor_msgs/html/msg/CameraInfo.html
         self.f = K[0][0] # 焦点距離f
         # 人物のID判定用
@@ -46,7 +50,7 @@ class SendFaceToROS:
         # self.past_mouth_distance = None # 前のフレームの口の開き具合を保持するために用意
         # self.mouth_count = 0 # 口の形状がどれくらいの時間維持されているかをカウントするために用意
         self.mouth_close_count = 0 # 口がどれくらいの時間閉まっているかをカウントするために用意
-        self.MAR_THRESH = 0.80 # mouth aspect ratioの閾値(marの値がこの値以上になった場合口が開いていると判断する)
+        self.MAR_THRESH = 0.70 # mouth aspect ratioの閾値(marの値がこの値以上になった場合口が開いていると判断する)
         self.start_flag = 0 # 口の動きを判定し始める際の合図
         self.speaking_flag = 0 # 話している間１にし、話していないときは0にする
 
@@ -103,7 +107,7 @@ class SendFaceToROS:
 
         # 画像の中から顔を検出
         rects, scores, idx  = self.detector.run(img_gray, 0, 0)
-        # print (dlib.DLIB_USE_CUDA)
+        # print ("score" + str(scores))
 
         # 鼻の座標データを取得
         face_recog_result = self.face.get_nose_xy(img_gray, rects)

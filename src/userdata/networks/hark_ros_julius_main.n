@@ -61,8 +61,8 @@
       <Parameter name="TOPIC_NAME_HARKSRCFEATURE" type="string" value="HarkSrcFeature" description="Subscribed topic name for ROS (HarkSrcFeature type message)"/>
       <Parameter name="TOPIC_NAME_HARKSRCFEATUREMFM" type="string" value="HarkSrcFeatureMFM" description="Subscribed topic name for ROS (HarkSrcFeatureMFM type message)"/>
       <Parameter name="TOPIC_NAME_HARKJULIUS" type="string" value="HarkJulius" description="Subscribed topic name for ROS (HarkJulius type message)"/>
-      <Parameter name="ROS_LOOP_RATE" type="float" value="1000000" description="This allows you to specify a frequency that you would like to loop at [Hz]. Keep this value large. (If ROS interval is shorter than HARK interval, ROS interval is overwritten.)"/>
-      <Parameter name="MSG_BUFFER_NUM" type="int" value="1000" description="Buffer size for a ROS subscribed message."/>
+      <Parameter name="ROS_LOOP_RATE" type="float" value="100000" description="This allows you to specify a frequency that you would like to loop at [Hz]. Keep this value large. (If ROS interval is shorter than HARK interval, ROS interval is overwritten.)"/>
+      <Parameter name="MSG_BUFFER_NUM" type="int" value="100" description="Buffer size for a ROS subscribed message."/>
       <Parameter name="DATA_BUFFER_NUM" type="int" value="100" description="Buffer save size for a HARK output. Too small value makes packet loss. Too large value takes large memory. Minimum size is 5."/>
       <Parameter name="REMAIN_LATEST" type="bool" value="false" description="Enable to keep the latest data as output even when this module doesn&#x27;t receive any messages [default: false]"/>
       <Parameter name="ENABLE_DEBUG" type="bool" value="true" description="print debug message of this module in case of true."/>
