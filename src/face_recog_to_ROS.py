@@ -23,6 +23,8 @@ class SendFaceToROS:
     def __init__(self):
         # 顔認識に関する記述
         here_path = os.path.dirname(__file__)
+        if here_path == "":
+            here_path = "."
         self.predictor_path = here_path + "/shape_predictor_68_face_landmarks.dat"
         #self.predictor_path = "./shape_predictor_68_face_landmarks.dat"
         self.face = dm.FaceDLib(self.predictor_path)
@@ -106,7 +108,8 @@ class SendFaceToROS:
         img_gray = cv2.cvtColor(cv_img, cv2.COLOR_BGR2GRAY)
 
         # 画像の中から顔を検出
-        rects, scores, idx  = self.detector.run(img_gray, 0, 0)
+        # rects, scores, idx  = self.detector.run(img_gray, 0, 0)
+        rects = self.detector(img_gray, 0)
         # print ("score" + str(scores))
 
         # 鼻の座標データを取得
