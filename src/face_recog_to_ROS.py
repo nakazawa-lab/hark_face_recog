@@ -84,7 +84,7 @@ class SendFaceToROS:
         print("mouth_close_count:", self.mouth_close_count)
 
         # カウントが10以上の場合人が話していないと判断する
-        if self.mouth_close_count >= 5:
+        if self.mouth_close_count >= 10:
             self.start_flag = 1 # 1度カウントが10を超えたらフラグを立てて(1にして)、以後はカウントが10より小さい場合に口が動いていると判定する
             # print("話していません")
             return False
