@@ -19,6 +19,8 @@ import atexit
 import time
 from time import sleep
 import datetime
+from statistics import mean, median,variance,stdev
+import sys
 
 # 自作モジュール
 import dlib_module as dm
@@ -32,8 +34,8 @@ class DlibEx:
         self.face = dm.FaceDLib(self.predictor_path)
         self._bridge = CvBridge()
         self.detector = dlib.get_frontal_face_detector()
-        camera_info = rospy.wait_for_message("/kinect2/qhd/camera_info", CameraInfo)
-        r = 0.8
+        camera_info = rospy.wait_for_message("/kinect2/hd/camera_info", CameraInfo)
+        r = 1
         self.width = int(camera_info.width * r)
         self.height = int(camera_info.height * r)
         self.MAR_THRESH = 0.70 # mouth aspect ratioの閾値(marの値がこの値以上になった場合口が開いていると判断する)
@@ -41,6 +43,10 @@ class DlibEx:
         self.f.write("isOpen|MAR|score" + "\n")
         self._image_sub = rospy.Subscriber('/kinect2/hd/image_color', Image, self.callback)
         self.is_open_flag = 0
+        self.fps_array = [0, 5, 10, 15, 20, 25, 56, 52, 1, 100] # 初期値適当
+        self.start = time.time()
+        self.frame_no = 1
+        self.rect_array = []
 
     # mouth_aspect_ratioを使用して口が動いているかを判定する
     def mouth_motion_with_mar(self, mar, flag):
@@ -69,12 +75,20 @@ class DlibEx:
     def all_done(self):
         self.f.close()
         print("")
+        # print("==================================================")
+        # print("xy: " + str(min(self.rect_array)) + ", fps: " + str(self.fps) + ", image: " + str(self.image.shape))
+        # print("==================================================")
         print("ex done!")
+
+    def debug(self, d):
+        print(d)
 
     # ROSによって繰り返し呼び出される
     def callback(self, data):
         cv_img = self._bridge.imgmsg_to_cv2(data, 'bgr8')
-        cv_img = cv2.resize(cv_img, (self.width, self.height))
+        # cv_img = cv2.resize(cv_img, (self.width, self.height))
+        cv_img = imutils.resize(cv_img, int(sys.argv[1]))
+        self.image = cv_img
         img_gray = cv2.cvtColor(cv_img, cv2.COLOR_BGR2GRAY)
 
         # 画像の中から顔を検出
@@ -83,7 +97,7 @@ class DlibEx:
             s = ""
         else:
             s = str(scores[0])
-        # print ("rects" + str(rects))
+        # print ("rects: " + str(rects))
 
         # mouth aspect ratio(口の開き具合の指標)を取得
         mar = self.face.mouth_aspect_ratio(img_gray, rects)
@@ -93,6 +107,10 @@ class DlibEx:
         #
         # # デバッグ用表示
         display_image = self.face.face_shape_detector_display(cv_img, img_gray, rects,  mar, self.MAR_THRESH)
+        if len(rects) != 0:
+            rect = rects[0]
+            cv2.rectangle(display_image, (rect.left(), rect.top()), (rect.right(), rect.bottom()), (255, 0, 0), 2)
+            self.rect_array.append(rect.left()-rect.right())
 
 
         cv2.imshow('img', display_image)
@@ -112,10 +130,20 @@ class DlibEx:
                 self.is_open = "e"
             if self.is_open_flag == 9:
                 self.is_open = "o"
-        print(d)
+        # self.debug(d)
+
         if k == 13: # エンター押したら
             self.is_open_flag = self.is_open_flag + 1
         self.f.write(str(self.is_open) + "|" + str(mar) + "|" + s + "\n")
+
+        self.fps = self.frame_no / (time.time() - self.start)
+        self.fps_array.append(self.fps)
+        self.fps_array.pop(0)
+        self.frame_no = self.frame_no + 1
+        v = variance(self.fps_array)
+        # print("v: " + str(v) + ", fps: " + str(self.fps))
+        # if v < 10 ** (-4):
+        #     print("==================================================")
 
 if __name__ == "__main__":
     rospy.init_node('dlib_ex',anonymous=True)
