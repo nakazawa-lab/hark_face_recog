@@ -30,7 +30,7 @@ class SendFaceToROS:
         self.face = dm.FaceDLib(self.predictor_path)
         # ROSのメソッド
         self._face_recog_pub = rospy.Publisher('face_recog_result', Float32MultiArray, queue_size=10)
-        self._image_sub = rospy.Subscriber('dsampled_image', Image, self.callback)
+        self._image_sub = rospy.Subscriber('/kinect2/hd/image_color', Image, self.callback)
         # OpenCVのメソッド
         self._bridge = CvBridge()
         # dlibのメソッド

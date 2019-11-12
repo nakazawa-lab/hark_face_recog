@@ -33,15 +33,19 @@ class VWriter():
             self.here_path = "."
 
         save_path = self.here_path + "/userdata/records/video/v.mp4"
-        self.fix_video_fps = float(sys.argv[1])
+        try:
+            self.fix_video_fps = float(sys.argv[1])
+        except IndexError:
+            print("ERROR: 引数に保存したい動画のfpsを記入してください！")
+            exit()
         self.writer = cv2.VideoWriter(save_path, fourcc, self.fix_video_fps, (self.width, self.height))
         self.start = time.time()
         self.frame_no = 1
-        self.T = 0.061 # 周期を100msくらいにしたい
         self.fps = 0.0
         self.rec_flag = False
+        self.rec_flag_prev = False
         # rospy
-        self._image_sub = rospy.Subscriber('dsampled_image', Image, self.callback)
+        self._image_sub = rospy.Subscriber('/kinect2/hd/image_color', Image, self.callback)
 
     def all_done(self):
         print ""
@@ -58,14 +62,18 @@ class VWriter():
         if abs(self.fps - self.fix_video_fps) < 0.1:
             self.rec_flag = True
         if self.rec_flag == True:
-            self.rec_start = str(datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
+            if self.rec_flag_prev == False and self.rec_flag == True:
+                self.rec_start = str(datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
             self.writer.write(cv_img)
         interval = time.time() - t_0
-        if  interval < self.T:
+        if  interval < (1 / self.fix_video_fps):
             print("fps: " + str(self.fps) + " " + str(self.rec_flag))
-            sleep(self.T - interval)
+            if self.fix_video_fps + 0.5 - self.fps < 0.5:
+                sleep((1 / self.fix_video_fps) - interval)
         self.fps = self.frame_no / (time.time() - self.start)
         self.frame_no = self.frame_no + 1
+        self.rec_flag_prev = self.rec_flag
+
 
 
 if __name__ == "__main__":
