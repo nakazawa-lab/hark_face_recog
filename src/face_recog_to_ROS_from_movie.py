@@ -15,6 +15,7 @@ import dlib
 from cv_bridge import CvBridge, CvBridgeError
 import imutils
 import os
+import argparse
 
 # 自作モジュール
 import dlib_module as dm
@@ -103,6 +104,11 @@ class SendFaceToROS:
 
 if __name__ == "__main__":
 
+    #　コマンドライン引数を設定
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-m', '--movie_path', default='/home/nvidia/catkin_ws/src/hark_face_recog/src/userdata/records/movie_dataset/dataset2/movie_data.mp4', help='読み込みたい動画データのパス')
+    args = parser.parse_args()
+
     # ROSの初期化
     rospy.init_node('face_recog_to_ROS', anonymous=True)
 
@@ -111,8 +117,7 @@ if __name__ == "__main__":
     face_data = dm.FaceDLib(send_ros.predictor_path)
 
     # 動画データの読み込み
-    movie_path = "/home/nvidia/catkin_ws/src/hark_face_recog/src/userdata/records/movie_dataset/dataset2/movie_data.mp4"
-    cap = cv2.VideoCapture(movie_path)
+    cap = cv2.VideoCapture(args.movie_path)
     print("frame per second:", cap.get(cv2.CAP_PROP_FPS))
     count = 0
 
@@ -176,13 +181,13 @@ if __name__ == "__main__":
         cv2.imshow('img', display_image)
         cv2.waitKey(1)
 
-        # c = cv2.waitKey(1)
-        # if c == 27:  # ESCを押してウィンドウを閉じる
-        #     break
-        # if c == 32:  # spaceで保存
-        #     count += 1
-        #     cv2.imwrite('./filename%03.f' % (count) + '.jpg', cv_img)  # 001~連番で保存
-        #     print('save done')
+        c = cv2.waitKey(1)
+        if c == 27:  # ESCを押してウィンドウを閉じる
+            break
+        if c == 32:  # spaceで保存
+            count += 1
+            cv2.imwrite('./filename%03.f' % (count) + '.jpg', cv_img)  # 001~連番で保存
+            print('save done')
         # send_ros.face.get_mouth_xy(img_gray)
         # send_ros.face.get_nose_xy(img_gray)
         # print("get_nose_xy: " + str(send_ros.face.get_nose_xy(img_gray)))
