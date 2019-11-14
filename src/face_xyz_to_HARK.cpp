@@ -21,7 +21,7 @@ void publish_to_HARK(float x, float y, float z, int id)
   ros::NodeHandle n;
   // ros::Publisher HarkSource_pub = n.advertise<std_msgs::String>("HarkSource", 1000);
   ros::Publisher HarkSource_pub = n.advertise<hark_msgs::HarkSource>("HarkSource", 1000);
-  ros::Rate loop_rate(10);
+  ros::Rate loop_rate(30);
   int count = 0;
   // static int id = 0;
   while (ros::ok())
@@ -68,7 +68,6 @@ void publish_to_HARK(float x, float y, float z, int id)
 
     HarkSourceMsg.src.push_back(HarkSourceValMsg);
     HarkSource_pub.publish(HarkSourceMsg);
-
     ros::spinOnce();
     loop_rate.sleep();
     ++count;
@@ -82,10 +81,10 @@ void callback(const std_msgs::Float32MultiArray::ConstPtr& msg)
 {
   ROS_INFO("Received message!");
   // std::cout << *msg;
-
   int i = 0;
   int x, y, z, id;
   // print all the remaining numbers
+
   for(std::vector<float>::const_iterator it = msg->data.begin(); it != msg->data.end(); ++it)
   {
       face_xyz_array[i] = *it;
