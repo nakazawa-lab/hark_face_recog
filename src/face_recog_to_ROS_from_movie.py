@@ -4,6 +4,7 @@
 # ros系のライブラリ
 import rospy
 from sensor_msgs.msg import Image
+from std_msgs.msg import String
 from std_msgs.msg import Float32MultiArray
 from sensor_msgs.msg import CameraInfo
 
@@ -60,6 +61,8 @@ class SendFaceToROS:
         self.start_flag = 0 # 口の動きを判定し始める際の合図
         self.speaking_flag = 0 # 話している間１にし、話していないときは0にする
 
+        # 動画の読み込み開始サインをHARK側から受け取る
+        self.movie_sign = rospy.wait_for_message("start_sign", String)
 
     def send_to_ROS(self, x, y, z, id):
         array = Float32MultiArray(data=[x, y, z, id])
@@ -181,13 +184,13 @@ if __name__ == "__main__":
         cv2.imshow('img', display_image)
         cv2.waitKey(1)
 
-        c = cv2.waitKey(1)
-        if c == 27:  # ESCを押してウィンドウを閉じる
-            break
-        if c == 32:  # spaceで保存
-            count += 1
-            cv2.imwrite('./filename%03.f' % (count) + '.jpg', cv_img)  # 001~連番で保存
-            print('save done')
+        # c = cv2.waitKey(1)
+        # if c == 27:  # ESCを押してウィンドウを閉じる
+        #     break
+        # if c == 32:  # spaceで保存
+        #     count += 1
+        #     cv2.imwrite('./filename%03.f' % (count) + '.jpg', cv_img)  # 001~連番で保存
+        #     print('save done')
         # send_ros.face.get_mouth_xy(img_gray)
         # send_ros.face.get_nose_xy(img_gray)
         # print("get_nose_xy: " + str(send_ros.face.get_nose_xy(img_gray)))
