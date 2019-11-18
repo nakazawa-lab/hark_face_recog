@@ -24,8 +24,8 @@ import dlib_module as dm
 
 class YOLO2Dlib:
     def __init__(self):
-        camera_info = rospy.wait_for_message("/usb_cam/camera_info", CameraInfo)
-        # camera_info = rospy.wait_for_message("/kinect2/hd/camera_info", CameraInfo, timeout)
+        # camera_info = rospy.wait_for_message("/usb_cam/camera_info", CameraInfo)
+        camera_info = rospy.wait_for_message("/kinect2/hd/camera_info", CameraInfo)
         self.set_camera_info(camera_info)
 
         self.person_bboxes = []
