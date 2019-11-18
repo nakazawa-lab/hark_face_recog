@@ -159,11 +159,11 @@ class YOLO2Dlib:
     def yolo_display(self, image, pbox):
         cv2.rectangle(image, (pbox.xmin, pbox.ymin), (pbox.xmax, pbox.ymax),(0,0,255), 2)
         text = "score: " + str(round(pbox.probability, 3))
-        text_top = (pbox.xmin, pbox.ymin - 15)
-        text_bot = (pbox.xmin + 130, pbox.ymin + 5)
+        text_top = (pbox.xmin, pbox.ymin - 40)
+        text_bot = (pbox.xmin + 360, pbox.ymin + 5)
         text_pos = (pbox.xmin + 5, pbox.ymin)
         cv2.rectangle(image, text_top, text_bot, (0,0,0),-1)
-        cv2.putText(image, text, text_pos, cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 255), 2)
+        cv2.putText(image, text, text_pos, cv2.FONT_HERSHEY_SIMPLEX, 1.5, (255, 0, 255), 2)
         return image
 
     def bbox2image(self, image, pbox):

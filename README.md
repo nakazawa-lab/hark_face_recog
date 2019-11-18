@@ -39,6 +39,10 @@ $ roslaunch kinect2_bridge kinect2_bridge.launch
 ```
 
 ```
+$ roslaunch darknet_ros darknet_ros.launch
+```
+
+```
 $ roslaunch hark_face_recog hark_face_recog.launch
 ```
 
