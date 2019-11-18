@@ -1,5 +1,4 @@
 <launch>
-    <node pkg="hark_face_recog" name="kinect_interface" type="kinect_interface.py"/>
-    <node pkg="hark_face_recog" name="face_recog_to_ROS" type="face_recog_to_ROS.py"/>
+    <node pkg="hark_face_recog" name="yolo2dlib" type="yolo2dlib.py"/>
     <node pkg="hark_face_recog" name="face_xyz_to_HARK_cpp" type="hark_face_recog_face_xyz_to_HARK_cpp"/>
 </launch>

@@ -85,6 +85,10 @@ class YOLO2Dlib:
 
     def image_callback(self, img, mode):
         debug_img = img
+        x = 0
+        y = 0
+        z = 0
+        id = 0
         # personを認識した場合
         if len(self.person_bboxes) != 0:
             for i, pbox in enumerate(self.person_bboxes):
@@ -112,19 +116,18 @@ class YOLO2Dlib:
                             if self.speaking_flag == 1:
                                 self.id += 1
                             self.speaking_flag = 0
-                        self.send_to_ROS(x, y, z, id)
                         # 顔認識結果がない場合は0を送る
                     else:
-                        x = 0
-                        y = 0
-                        z = 0
-                        id = 0
+                        # x = 0
+                        # y = 0
+                        # z = 0
+                        # id = 0
                         self.mouth_close_count += 1
-                        self.rerecog_flag = 1
-                        self.send_to_ROS(x, y, z, id)
-
+                        # self.send_to_ROS(x, y, z, id)
+        self.send_to_ROS(x, y, z, id)
         if mode == "usb":
             debug_img = cv2.cvtColor(debug_img, cv2.COLOR_RGBA2BGR)
+        debug_img = cv2.resize(debug_img, dsize=None, fx=0.5, fy=0.5)
         cv2.namedWindow("image")
         cv2.imshow("image", debug_img)
         cv2.waitKey(1)
