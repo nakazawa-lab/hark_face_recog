@@ -26,6 +26,7 @@ class YOLO2Dlib:
     def __init__(self):
         self._bridge = CvBridge()
         self._usb_image_sub = rospy.Subscriber('/usb_cam/image_raw', Image, self.usb_callback)
+        self._kinect_image_sub = rospy.Subscriber('/kinect2/hd/image_color', Image, self.kinect_callback)
         self._bboxes_sub = rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, self.bboxes_callback)
         self.m_pub_threshold = rospy.get_param('~pub_threshold', 0.40)  # ROS PARAM
 
@@ -41,7 +42,6 @@ class YOLO2Dlib:
         self.predictor = dlib.shape_predictor(predictor_path)
         self.detector = dlib.get_frontal_face_detector()
         self.MAR_THRESH = 0.70
-
         return
 
     def usb_callback(self, data):
@@ -52,58 +52,37 @@ class YOLO2Dlib:
         debug_img = image
         if len(self.person_bboxes) != 0:
             for i, pbox in enumerate(self.person_bboxes):
-                crop = self.bbox2image(image, pbox)
+                debug_img = self.yolo_display(debug_img, pbox)
+                crop = self.bbox2image(debug_img, pbox)
                 if len(crop) != 0:
                     img_gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
                     dlib_rects = self.detector(img_gray, 0)
                     mar = self.face.mouth_aspect_ratio(img_gray, dlib_rects)
-                    debug_img = self.dlib_display(image, img_gray, pbox, dlib_rects, mar, self.MAR_THRESH)
-                # display_image = self.face.face_shape_detector_display(cv_img, img_gray, rects, mar, self.MAR_THRESH)
-                debug_img = image
-                debug_img = self.yolo_display(debug_img, pbox)
-
+                    debug_img = self.dlib_display(debug_img, img_gray, pbox, dlib_rects, mar, self.MAR_THRESH)
         debug_img = cv2.cvtColor(debug_img, cv2.COLOR_RGBA2BGR)
         cv2.namedWindow("image")
         cv2.imshow("image", debug_img)
         cv2.waitKey(1)
 
-    # def face_shape_detector_display(self, img, img_gray, rects, mar, MAR_THRESH):
-    #     for rect in rects:
-    #         # 画像の中から顔の特徴点を取得する
-    #         shape = self.predictor(img_gray, rect)
-    #         shape = face_utils.shape_to_np(shape)
-    #
-    #         # MARの値を画面に表示する
-    #         cv2.putText(img, "MAR: {:.2f}".format(mar), (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-    #
-    #         # 口が開いている場合、画面に表示する
-    #         if mar > MAR_THRESH:
-    #             cv2.putText(img, "Mouth is Open!", (30,60),
-    #             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255),2)
-    #
-    #         # landmarkを画像に書き込む 48:68が口
-    #         mouth_hull = cv2.convexHull(shape[48:68])
-    #         cv2.drawContours(img, [mouth_hull], -1, (0, 0, 255), 2)
-    #     return img
-
-    def dlib_display(self, img, img_gray, pbox, rects, mar, MAR_THRESH):
-        for rect in rects:
-            # 画像の中から顔の特徴点を取得する
-            shape = self.predictor(img_gray, rect)
-            shape = face_utils.shape_to_np(shape)
-            for p in shape[48:68]:
-                p[0] = p[0] + pbox.xmin
-                p[1] = p[1] + pbox.ymin
-            # MARの値を画面に表示する
-            cv2.putText(img, "MAR: {:.2f}".format(mar), (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-            # 口が開いている場合、画面に表示する
-            if mar > MAR_THRESH:
-                cv2.putText(img, "Mouth is Open!", (30,60),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255),2)
-            # landmarkを画像に書き込む 48:68が口
-            mouth_hull = cv2.convexHull(shape[48:68])
-            cv2.drawContours(img, [mouth_hull], -1, (0, 0, 255), 2)
-            return img
+    def kinect_callback(self, data):
+        try:
+            image = self._bridge.imgmsg_to_cv2(data, 'passthrough')
+        except CvBridgeError, e:
+            rospy.logerr(e)
+        debug_img = image
+        if len(self.person_bboxes) != 0:
+            for i, pbox in enumerate(self.person_bboxes):
+                debug_img = self.yolo_display(debug_img, pbox)
+                crop = self.bbox2image(debug_img, pbox)
+                if len(crop) != 0:
+                    img_gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
+                    dlib_rects = self.detector(img_gray, 0)
+                    mar = self.face.mouth_aspect_ratio(img_gray, dlib_rects)
+                    debug_img = self.dlib_display(debug_img, img_gray, pbox, dlib_rects, mar, self.MAR_THRESH)
+        # debug_img = cv2.cvtColor(debug_img, cv2.COLOR_RGBA2BGR)
+        cv2.namedWindow("image")
+        cv2.imshow("image", debug_img)
+        cv2.waitKey(1)
 
     def bboxes_callback(self, msgs):
         bboxes = msgs.bounding_boxes
@@ -114,21 +93,24 @@ class YOLO2Dlib:
                     person_bboxes.append(bboxes[i])
         self.person_bboxes = person_bboxes
 
-    def bbox2image(self, image, pbox):
-        if pbox.ymin < self.padding:
-            upper = 0
-        else:
-            upper = pbox.ymin - self.padding
-        lower = pbox.ymax
-        left = pbox.xmin
-        right = pbox.xmax
-        # dlibで認識できる最大横幅が72px
-        if right - left > 72:
-            crop = image[upper:lower, left:right]
-        else:
-            crop = []
-            crop = np.asarray(crop)
-        return crop
+    def dlib_display(self, img, img_gray, pbox, rects, mar, MAR_THRESH):
+        for rect in rects:
+            # 画像の中から顔の特徴点を取得する
+            shape = self.predictor(img_gray, rect)
+            shape = face_utils.shape_to_np(shape)
+            for p in shape[48:68]:
+                p[0] = p[0] + self.left
+                p[1] = p[1] + self.upper
+            # MARの値を画面に表示する
+            cv2.putText(img, "MAR: {:.2f}".format(mar), (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+            # 口が開いている場合、画面に表示する
+            if mar > MAR_THRESH:
+                cv2.putText(img, "Mouth is Open!", (30,60),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255),2)
+            # landmarkを画像に書き込む 48:68が口
+            mouth_hull = cv2.convexHull(shape[48:68])
+            cv2.drawContours(img, [mouth_hull], -1, (0, 0, 255), 2)
+        return img
 
     def yolo_display(self, image, pbox):
         cv2.rectangle(image, (pbox.xmin, pbox.ymin), (pbox.xmax, pbox.ymax),(0,0,255), 2)
@@ -139,6 +121,22 @@ class YOLO2Dlib:
         cv2.rectangle(image, text_top, text_bot, (0,0,0),-1)
         cv2.putText(image, text, text_pos, cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 255), 2)
         return image
+
+    def bbox2image(self, image, pbox):
+        if pbox.ymin < self.padding:
+            self.upper = 0
+        else:
+            self.upper = pbox.ymin - self.padding
+        self.lower = pbox.ymax
+        self.left = pbox.xmin
+        self.right = pbox.xmax
+        # dlibで認識できる最大横幅が72px
+        if self.right - self.left > 72:
+            crop = image[self.upper:self.lower, self.left:self.right]
+        else:
+            crop = []
+            crop = np.asarray(crop)
+        return crop
 
     def save_image(self, image):
         if self.c % 100 == 0:
