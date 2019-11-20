@@ -138,6 +138,7 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/hark_face_recog_node.cpp)
 add_executable(${PROJECT_NAME}_face_xyz_to_HARK_cpp src/face_xyz_to_HARK.cpp)
 add_executable(${PROJECT_NAME}_ros_msgs_listener src/ros_msgs_listener.cpp)
+add_executable(${PROJECT_NAME}_send_wav_to_ROS src/send_wav_to_ROS.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -159,7 +160,9 @@ target_link_libraries(${PROJECT_NAME}_face_xyz_to_HARK_cpp
 target_link_libraries(${PROJECT_NAME}_ros_msgs_listener
   ${catkin_LIBRARIES}
 )
-
+target_link_libraries(${PROJECT_NAME}_send_wav_to_ROS
+  ${catkin_LIBRARIES}
+)
 #############
 ## Install ##
 #############

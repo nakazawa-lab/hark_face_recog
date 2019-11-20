@@ -28,8 +28,8 @@ class HarkNode(harkbasenode.HarkBaseNode):
         #     print("音源データがありません")
         # else:
         #     print("sound_source:", self.SOURCES)
-
-        print(self.SOURCES2)
+        print("sound_result", self.SOURCES)
+        print("face_result", self.SOURCES2)
         if len(self.SOURCES2)<1:
             # print("顔方向データがありません")
             if self.flag == 1:
