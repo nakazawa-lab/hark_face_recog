@@ -167,18 +167,21 @@ class YOLO2Dlib:
         return image
 
     def bbox2image(self, image, pbox):
-        if pbox.ymin < self.padding:
-            self.upper = 0
+        crop = []
+        if pbox.probability > 0.7:
+            if pbox.ymin < self.padding:
+                self.upper = 0
+            else:
+                self.upper = pbox.ymin - self.padding
+            self.lower = self.upper + (pbox.ymax - self.upper) / 2
+            self.left = pbox.xmin
+            self.right = pbox.xmax
+            # dlibで認識できる最大横幅が72px
+            if self.right - self.left > 72:
+                crop = image[self.upper:self.lower, self.left:self.right]
+            else:
+                crop = np.asarray(crop)
         else:
-            self.upper = pbox.ymin - self.padding
-        self.lower = self.upper + (pbox.ymax - self.upper) / 2
-        self.left = pbox.xmin
-        self.right = pbox.xmax
-        # dlibで認識できる最大横幅が72px
-        if self.right - self.left > 72:
-            crop = image[self.upper:self.lower, self.left:self.right]
-        else:
-            crop = []
             crop = np.asarray(crop)
         return crop
 
