@@ -28,13 +28,13 @@
       <Parameter name="TF_CONJ_FILENAME" type="subnet_param" value="TF_CONJ_FILENAME_" description="subnet_param"/>
       <Parameter name="BASENAME" type="subnet_param" value="BASENAME" description="subnet_param"/>
     </Node>
-    <Node name="node_sub_recognition_1" type="sub_recognition" x="1440" y="370">
+    <Node name="node_sub_recognition_1" type="sub_recognition" x="1430" y="260">
       <Parameter name="FBANK_COUNT" type="int" value="13" description="The size of the input feature vector."/>
       <Parameter name="LENGTH" type="int" value="512" description="Size of window length in sample. [default: 512]"/>
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate in Hz.  [default: 16000]"/>
       <Parameter name="ADVANCE" type="int" value="160" description="The length in sample between a frame and a previous frame. [default: 160]"/>
     </Node>
-    <Node name="node_sub_localization_1" type="sub_localization" x="740" y="310">
+    <Node name="node_sub_localization_1" type="sub_localization" x="760" y="340">
       <Parameter name="LENGTH" type="int" value="512" description="The length of a frame (per channel)."/>
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling Rate (Hz)."/>
       <Parameter name="A_MATRIX" type="subnet_param" value="A_MATRIX_" description="subnet_param"/>
@@ -46,9 +46,9 @@
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate (Hz) [default: 16000]."/>
       <Parameter name="DEVICETYPE" type="string" value="ALSA" description="Device type [default: WS]."/>
       <Parameter name="GAIN" type="string" value="0dB" description="capture gain (dB)  [default: 0dB]."/>
-      <Parameter name="DEVICE" type="string" value="plughw:2,0" description="Device name or IP address [default: 127.0.0.1]"/>
+      <Parameter name="DEVICE" type="string" value="plughw:3,0" description="Device name or IP address [default: 127.0.0.1]"/>
     </Node>
-    <Node name="node_RosHarkMsgsSubscriber_1" type="RosHarkMsgsSubscriber" x="400" y="440">
+    <Node name="node_RosHarkMsgsSubscriber_1" type="RosHarkMsgsSubscriber" x="210" y="650">
       <Parameter name="STREAM_SELECTION" type="string" value="HarkSource" description="Selector of stream you want to realize. All other subscription will be disabled."/>
       <Parameter name="NB_CHANNELS" type="int" value="8" description="The number of input channels. Only used for no data period (Not important). [default: 8]"/>
       <Parameter name="FFT_LENGTH" type="int" value="512" description="FFT length in sample. Only used for no data period (Not important). [default: 512]"/>
@@ -67,13 +67,13 @@
       <Parameter name="REMAIN_LATEST" type="bool" value="false" description="Enable to keep the latest data as output even when this module doesn&#x27;t receive any messages [default: false]"/>
       <Parameter name="ENABLE_DEBUG" type="bool" value="true" description="print debug message of this module in case of true."/>
     </Node>
-    <Node name="node_DisplayLocalization_1" type="DisplayLocalization" x="1400" y="500">
+    <Node name="node_DisplayLocalization_1" type="DisplayLocalization" x="1430" y="400">
       <Parameter name="WINDOW_NAME" type="string" value="Source Location" description="Window name of the time-azimuth map [default: Window name]"/>
       <Parameter name="WINDOW_LENGTH" type="int" value="1000" description="Window length to show at the same time [sample]"/>
       <Parameter name="VERTICAL_RANGE" type="object" value="&lt;Vector&lt;int&gt; -180 180&gt;" description="Plot range of the vertical axis"/>
       <Parameter name="PLOT_TYPE" type="string" value="AZIMUTH" description="Coordinate setting for the plotting"/>
     </Node>
-    <Node name="node_PyCodeExecutor3_1" type="PyCodeExecutor3" x="960" y="410">
+    <Node name="node_PyCodeExecutor3_1" type="PyCodeExecutor3" x="740" y="670">
       <Parameter name="DIRECTORY_NAME" type="string" value="." description="[optional] The directory name of your python code. It will inserted to sys.path."/>
       <Parameter name="MODULENAME" type="string" value="hark_ros_process" description="Your python module name to import, i.e., your python code file name WITHOUT extension."/>
       <Parameter name="CLASSNAME" type="string" value="HarkNode" description="Your class name to call in this node."/>
@@ -85,13 +85,12 @@
     <Link from="node_MultiFFT_1" output="OUTPUT" to="node_sub_localization_1" input="WAV"/>
     <Link from="node_sub_separation_1" output="POSTFLT_SPEC" to="node_sub_recognition_1" input="SPEC"/>
     <Link from="node_MultiFFT_1" output="OUTPUT" to="node_sub_separation_1" input="SPEC"/>
-    <Link from="node_sub_localization_1" output="OUTPUT" to="node_PyCodeExecutor3_1" input="SOURCES"/>
     <Link from="node_RosHarkMsgsSubscriber_1" output="SRCOUT" to="node_PyCodeExecutor3_1" input="SOURCES2"/>
-    <Link from="node_PyCodeExecutor3_1" output="OUTPUT" to="node_sub_separation_1" input="SRC_INFO"/>
-    <Link from="node_PyCodeExecutor3_1" output="OUTPUT" to="node_sub_recognition_1" input="SRC_INFO"/>
-    <Link from="node_PyCodeExecutor3_1" output="OUTPUT" to="node_DisplayLocalization_1" input="SOURCES"/>
     <Link from="node_AudioStreamFromMic_1" output="AUDIO" to="node_MultiGain_1" input="INPUT"/>
     <Link from="node_MultiGain_1" output="OUTPUT" to="node_MultiFFT_1" input="INPUT"/>
+    <Link from="node_sub_localization_1" output="OUTPUT" to="node_sub_separation_1" input="SRC_INFO"/>
+    <Link from="node_sub_localization_1" output="OUTPUT" to="node_sub_recognition_1" input="SRC_INFO"/>
+    <Link from="node_sub_localization_1" output="OUTPUT" to="node_DisplayLocalization_1" input="SOURCES"/>
     <NetOutput name="RECOG" node="node_sub_recognition_1" terminal="RECOG" object_type="any" description="No description available"/>
     <NetOutput name="OUTPUT_1" node="node_DisplayLocalization_1" terminal="OUTPUT" object_type="Vector&amp;lt;ObjectRef&amp;gt;" description="The same as input."/>
     <NetOutput name="OUTPUT" node="node_sub_separation_1" terminal="OUTPUT" object_type="Map&amp;lt;int,ObjectRef&amp;gt;" description="The same as input."/>
@@ -285,5 +284,64 @@
     <Link from="node_SourceTracker_1" output="OUTPUT" to="node_SourceIntervalExtender_1" input="SOURCES"/>
     <NetInput name="WAV" node="node_LocalizeMUSIC_1" terminal="INPUT" object_type="Matrix&lt;complex&lt;float&gt; &gt;" description="Multi-channel audio signals. In this matrix, a row is a channel, and a column is a sample."/>
     <NetOutput name="OUTPUT" node="node_SourceIntervalExtender_1" terminal="OUTPUT" object_type="Vector&amp;lt;ObjectRef&amp;gt;" description="Source locations PREROLL_LENGTH frames earlier than SOURCES."/>
+  </Network>
+  <Network type="subnet" name="sub_recognition_from_image">
+    <Node name="node_Synthesize_3" type="Synthesize" x="100" y="100">
+      <Parameter name="LENGTH" type="int" value="512" description="Size of window length in sample. [default: 512]"/>
+      <Parameter name="ADVANCE" type="int" value="160" description="The length in sample between a frame and a previous frame. [default: 160]"/>
+      <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate (Hz) [default: 16000]."/>
+      <Parameter name="MIN_FREQUENCY" type="int" value="125" description="Minimum frequency (Hz) [default: 125]"/>
+      <Parameter name="MAX_FREQUENCY" type="int" value="7900" description="Maximum frequency (Hz) [default: 7900]"/>
+      <Parameter name="WINDOW" type="string" value="HAMMING" description="A window function for overlap-add. WINDOW should be CONJ, HAMMING, RECTANGLE, or HANNING. [default: HAMMING]"/>
+      <Parameter name="OUTPUT_GAIN" type="float" value="1" description="Output gain factor. [default: 1.0]"/>
+    </Node>
+    <Node name="node_PreEmphasis_2" type="PreEmphasis" x="380" y="100">
+      <Parameter name="LENGTH" type="int" value="512" description="window length in sample [default: 512]"/>
+      <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate in Hz [default: 16000]"/>
+      <Parameter name="PREEMCOEF" type="float" value="0.97" description="pre-emphasis coefficient [default: 0.97]"/>
+      <Parameter name="INPUT_TYPE" type="string" value="WAV" description="The domain to perform pre-emphasis [default: WAV]"/>
+    </Node>
+    <Node name="node_MultiFFT_3" type="MultiFFT" x="660" y="100">
+      <Parameter name="LENGTH" type="int" value="512" description="FFT length in sample. [default: 512]"/>
+      <Parameter name="WINDOW" type="string" value="CONJ" description="A window function for FFT. WINDOW should be CONJ, HAMMING, RECTANGLE, or HANNING. [default: CONJ]"/>
+      <Parameter name="WINDOW_LENGTH" type="int" value="512" description="Window length of the window function. [default: 512]"/>
+    </Node>
+    <Node name="node_MelFilterBank_2" type="MelFilterBank" x="900" y="40">
+      <Parameter name="LENGTH" type="int" value="512" description="Size of window length in sample. [default: 512]"/>
+      <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate in Hz.  [default: 16000]"/>
+      <Parameter name="CUTOFF" type="int" value="8000" description="Cutoff frequency in Hz. Mel-filterbanks are placed between 0 Hz and CUTOFF Hz. [default: 8000]"/>
+      <Parameter name="MIN_FREQUENCY" type="int" value="63" description="Minimum frequency (Hz) [default: 63]"/>
+      <Parameter name="MAX_FREQUENCY" type="int" value="8000" description="Maximum frequency (Hz) [default: 8000]"/>
+      <Parameter name="FBANK_COUNT" type="int" value="13" description="The number of Mel filter banks. [default: 13]"/>
+    </Node>
+    <Node name="node_MSLSExtraction_2" type="MSLSExtraction" x="1210" y="100">
+      <Parameter name="FBANK_COUNT" type="int" value="13" description="Size of the static part of MSLS feature vector. [default: 13]"/>
+      <Parameter name="NORMALIZATION_MODE" type="string" value="CEPSTRAL" description="The domain to perform normalization. CEPSTRAL or SPECTRAL. [default: CEPSTRAL]"/>
+      <Parameter name="USE_LEGACY_MODE" type="bool" value="true" description="For more than 14 dimensions must use false. This parameter is preparing only for compatibility with HARK 2.x or earlier. [default: true]"/>
+      <Parameter name="USE_HTK_LIFTER" type="bool" value="false" description="Use HTK liftering vector if true. [default: false]"/>
+      <Parameter name="LIFTERING_COEF" type="int" value="22" description="The HTK liftering coefficient used in Cepstral mode. [default: 22]"/>
+      <Parameter name="USE_POWER" type="bool" value="false" description="Use power feature if true. [default: false]"/>
+    </Node>
+    <Node name="node_Delta_2" type="Delta" x="330" y="380">
+      <Parameter name="FBANK_COUNT" type="int" value="13" description="The size of the input feature vector."/>
+    </Node>
+    <Node name="node_FeatureRemover_2" type="FeatureRemover" x="620" y="380">
+      <Parameter name="SELECTOR" type="object" value="&amp;lt;Vector&amp;lt;int&amp;gt; &amp;gt;" description="Component indices in a feature vector to remove. E.g. &amp;lt;Vector&amp;lt;int&amp;gt; 13&amp;gt; to remove 14th comopnent (The index start with 0)."/>
+    </Node>
+    <Node name="node_SpeechRecognitionClient_1" type="SpeechRecognitionClient" x="1040" y="380">
+      <Parameter name="MFM_ENABLED" type="bool" value="true" description="MFM is enbaled if true. [default: true]"/>
+      <Parameter name="HOST" type="string" value="127.0.0.1" description="Hostname or IP of Julius/Julian server. [default: 127.0.0.1]"/>
+      <Parameter name="PORT" type="int" value="5530" description="Port number of Julius/Julian server. [default: 5530]"/>
+      <Parameter name="SOCKET_ENABLED" type="bool" value="true" description="send data via socket if true. [default: true]"/>
+    </Node>
+    <Link from="node_Synthesize_3" output="OUTPUT" to="node_PreEmphasis_2" input="INPUT"/>
+    <Link from="node_PreEmphasis_2" output="OUTPUT" to="node_MultiFFT_3" input="INPUT"/>
+    <Link from="node_MultiFFT_3" output="OUTPUT" to="node_MelFilterBank_2" input="INPUT"/>
+    <Link from="node_MelFilterBank_2" output="OUTPUT" to="node_MSLSExtraction_2" input="FBANK"/>
+    <Link from="node_MultiFFT_3" output="OUTPUT" to="node_MSLSExtraction_2" input="SPECTRUM"/>
+    <Link from="node_MSLSExtraction_2" output="OUTPUT" to="node_Delta_2" input="INPUT"/>
+    <Link from="node_Delta_2" output="OUTPUT" to="node_FeatureRemover_2" input="INPUT"/>
+    <Link from="node_FeatureRemover_2" output="OUTPUT" to="node_SpeechRecognitionClient_1" input="FEATURES"/>
+    <Link from="node_FeatureRemover_2" output="OUTPUT" to="node_SpeechRecognitionClient_1" input="MASKS"/>
   </Network>
 </Document>
