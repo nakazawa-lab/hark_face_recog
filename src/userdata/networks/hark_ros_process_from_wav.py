@@ -1,7 +1,12 @@
+#!/usr/bin/env python2
+## coding: UTF-8
+
 from harkpython import harkbasenode
 import math
 import os
 import datetime
+import rospy
+from std_msgs.msg import String
 from pathlib import Path
 
 class HarkNode(harkbasenode.HarkBaseNode):
@@ -22,14 +27,28 @@ class HarkNode(harkbasenode.HarkBaseNode):
         self.f = open(str(path) + "/records/sournd_source_log/log_" + str(datetime.datetime.now()) + ".txt", "a")
         os.chdir("networks")
 
+        # ros関連
+        # ノードの作成
+        rospy.init_node('hark_ros_process_from_wav')
+        self.start_sign_pub = rospy.Publisher('source_info', String, queue_size=10)
+
+
     def calculate(self):
 
         # if len(self.SOURCES)<1:
         #     print("音源データがありません")
         # else:
         #     print("sound_source:", self.SOURCES)
-        print("sound_result", self.SOURCES)
-        print("face_result", self.SOURCES2)
+
+        # 音源定位結果がある場合、動画情報を読み込み始める合図をトピックとして送信
+        if len(self.SOURCES) < 1:
+            send_msg = "start"
+            rospy.loginfo(send_msg)
+            self.start_sign_pub.publisher(send_msg)
+
+
+
+        print("face_localization_result:", self.SOURCES2)
         if len(self.SOURCES2)<1:
             # print("顔方向データがありません")
             if self.flag == 1:
@@ -66,6 +85,7 @@ class HarkNode(harkbasenode.HarkBaseNode):
 
         self.EmitSourceLog(self.outputValues["OUTPUT"])
         # print(self.outputValues["OUTPUT"])
+
     
     def EmitSourceLog(self, srcs):
         if len(srcs)==0:
