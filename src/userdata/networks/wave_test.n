@@ -1,0 +1,35 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node_RosNodeGenerator_1" type="RosNodeGenerator" x="420" y="210">
+      <Parameter name="NODE_NAME" type="string" value="MY_HARK_MASTER_NODE" description="Node name for ROS"/>
+    </Node>
+    <Node name="node_MAIN_LOOP_1" type="MAIN_LOOP" x="450" y="100">
+      <Parameter name="ADVANCE" type="int" value="160" description="subnet_param"/>
+    </Node>
+    <NetOutput name="VALUE" node="node_RosNodeGenerator_1" terminal="VALUE" object_type="int" description="int parameter"/>
+    <NetOutput name="OUTPUT_1" node="node_MAIN_LOOP_1" terminal="OUTPUT_1" object_type="any" description="Dynamic"/>
+  </Network>
+  <Network type="iterator" name="MAIN_LOOP">
+    <Node name="node_AudioStreamFromRos_1" type="AudioStreamFromRos" x="100" y="120">
+      <Parameter name="TOPIC_NAME" type="string" value="HarkWav" description="Subscribed topic name for ROS"/>
+      <Parameter name="ROS_LOOP_RATE" type="float" value="1000000" description="This allows you to specify a frequency that you would like to loop at [Hz]. Keep this value large. (If ROS interval is shorter than HARK interval, ROS interval is overwritten.)"/>
+      <Parameter name="MSG_BUFFER_NUM" type="int" value="100" description="Buffer size for a ROS subscribed message."/>
+      <Parameter name="DATA_BUFFER_NUM" type="int" value="100" description="Buffer save size for a HARK output. Too small value makes packet loss. Too large value takes large memory."/>
+      <Parameter name="KILL_TIME_LEN" type="int" value="900000" description="Kill time length for this network [usec] (must be less than 10[sec]). Set KILL_NETWORK enable."/>
+      <Parameter name="KILL_NETWORK" type="bool" value="false" description="Kill whole hark network when this node does not take any message from ROS."/>
+      <Parameter name="DEBUG_PRINT" type="bool" value="false" description="print debug message of this module in case of true."/>
+    </Node>
+    <Node name="node_SaveWavePCM_1" type="SaveWavePCM" x="420" y="120">
+      <Parameter name="BASENAME" type="string" value="output" description="Basename of files. [default: sep_]"/>
+      <Parameter name="ADVANCE" type="subnet_param" value="ADVANCE" description="The shift length beween adjacent frames (in samples)[default: 160]."/>
+      <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate (in samples)[default: 16000]."/>
+      <Parameter name="BITS" type="string" value="int16" description="Bit format of samples. int16 and int24  bits are supported."/>
+      <Parameter name="INPUT_BITS" type="string" value="as_BITS" description="Bit format of input wav file."/>
+    </Node>
+    <Link from="node_AudioStreamFromRos_1" output="OUTPUT" to="node_SaveWavePCM_1" input="INPUT"/>
+    <NetOutput name="OUTPUT_1" node="node_SaveWavePCM_1" terminal="OUTPUT" object_type="Map&amp;lt;int,ObjectRef&amp;gt;" description="The same as input."/>
+    <NetCondition name="CONDITION" node="node_AudioStreamFromRos_1" terminal="NOT_EOF"/>
+  </Network>
+</Document>

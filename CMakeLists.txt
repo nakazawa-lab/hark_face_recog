@@ -137,12 +137,8 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/hark_face_recog_node.cpp)
 add_executable(${PROJECT_NAME}_face_xyz_to_HARK_cpp src/face_xyz_to_HARK.cpp)
-<<<<<<< HEAD
 add_executable(interface_with_hark_cpp src/interface_with_hark.cpp)
-=======
-add_executable(${PROJECT_NAME}_ros_msgs_listener src/ros_msgs_listener.cpp)
-add_executable(${PROJECT_NAME}_send_wav_to_ROS src/send_wav_to_ROS.cpp)
->>>>>>> remotes/origin/d_record
+add_executable(multichannel_wav_reader_cpp src/multichannel_wav_reader.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -161,19 +157,12 @@ add_executable(${PROJECT_NAME}_send_wav_to_ROS src/send_wav_to_ROS.cpp)
 target_link_libraries(${PROJECT_NAME}_face_xyz_to_HARK_cpp
   ${catkin_LIBRARIES}
 )
-<<<<<<< HEAD
 target_link_libraries(interface_with_hark_cpp
   ${catkin_LIBRARIES}
 )
-
-=======
-target_link_libraries(${PROJECT_NAME}_ros_msgs_listener
+target_link_libraries(multichannel_wav_reader_cpp
   ${catkin_LIBRARIES}
 )
-target_link_libraries(${PROJECT_NAME}_send_wav_to_ROS
-  ${catkin_LIBRARIES}
-)
->>>>>>> remotes/origin/d_record
 #############
 ## Install ##
 #############
