@@ -138,7 +138,6 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/hark_face_recog_node.cpp)
 add_executable(${PROJECT_NAME}_face_xyz_to_HARK_cpp src/face_xyz_to_HARK.cpp)
 add_executable(interface_with_hark_cpp src/interface_with_hark.cpp)
-add_executable(multichannel_wav_reader_cpp src/multichannel_wav_reader.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -158,9 +157,6 @@ target_link_libraries(${PROJECT_NAME}_face_xyz_to_HARK_cpp
   ${catkin_LIBRARIES}
 )
 target_link_libraries(interface_with_hark_cpp
-  ${catkin_LIBRARIES}
-)
-target_link_libraries(multichannel_wav_reader_cpp
   ${catkin_LIBRARIES}
 )
 #############
