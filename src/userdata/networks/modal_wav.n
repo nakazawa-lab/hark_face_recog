@@ -2,11 +2,13 @@
 <?xml version="1.0"?>
 <Document>
   <Network type="subnet" name="MAIN">
-    <Node name="node_MAIN_LOOP_1" type="MAIN_LOOP" x="710" y="100">
+    <Node name="node_MAIN_LOOP_1" type="MAIN_LOOP" x="720" y="90">
       <Parameter name="LENGTH" type="int" value="512" description="The frame length of each channel (in samples) [default: 512]."/>
       <Parameter name="A_MATRIX_" type="subnet_param" value="ARG1" description="subnet_param"/>
       <Parameter name="TF_CONJ_FILENAME_" type="subnet_param" value="ARG2" description="subnet_param"/>
       <Parameter name="BASENAME" type="subnet_param" value="ARG3" description="subnet_param"/>
+      <Parameter name="ADVANCE" type="int" value="160" description="subnet_param"/>
+      <Parameter name="PERIOD" type="int" value="20" description="subnet_param"/>
     </Node>
     <Node name="node_RosNodeGenerator_1" type="RosNodeGenerator" x="100" y="320">
       <Parameter name="NODE_NAME" type="string" value="HARK_MASTER_NODE" description="Node name for ROS"/>
@@ -28,28 +30,29 @@
     <NetOutput name="OUTPUT_3" node="node_MAIN_LOOP_1" terminal="OUTPUT_3" object_type="any" description="Dynamic"/>
   </Network>
   <Network type="iterator" name="MAIN_LOOP">
-    <Node name="node_MultiFFT_1" type="MultiFFT" x="570" y="120">
+    <Node name="node_MultiFFT_1" type="MultiFFT" x="660" y="120">
       <Parameter name="LENGTH" type="subnet_param" value="LENGTH" description="FFT length in sample. [default: 512]"/>
       <Parameter name="WINDOW" type="string" value="CONJ" description="A window function for FFT. WINDOW should be CONJ, HAMMING, RECTANGLE, or HANNING. [default: CONJ]"/>
       <Parameter name="WINDOW_LENGTH" type="subnet_param" value="LENGTH" description="Window length of the window function. [default: 512]"/>
     </Node>
-    <Node name="node_sub_separation_1" type="sub_separation" x="1090" y="110">
+    <Node name="node_sub_separation_1" type="sub_separation" x="1180" y="110">
       <Parameter name="LENGTH" type="int" value="512" description="Size of window length in sample. [default: 512]"/>
       <Parameter name="TF_CONJ_FILENAME" type="subnet_param" value="TF_CONJ_FILENAME_" description="subnet_param"/>
       <Parameter name="BASENAME" type="subnet_param" value="BASENAME" description="subnet_param"/>
     </Node>
-    <Node name="node_sub_recognition_1" type="sub_recognition" x="1490" y="370">
+    <Node name="node_sub_recognition_1" type="sub_recognition" x="1580" y="370">
       <Parameter name="FBANK_COUNT" type="int" value="13" description="The size of the input feature vector."/>
       <Parameter name="LENGTH" type="int" value="512" description="Size of window length in sample. [default: 512]"/>
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate in Hz.  [default: 16000]"/>
       <Parameter name="ADVANCE" type="int" value="160" description="The length in sample between a frame and a previous frame. [default: 160]"/>
     </Node>
-    <Node name="node_sub_localization_1" type="sub_localization" x="790" y="310">
+    <Node name="node_sub_localization_1" type="sub_localization" x="880" y="310">
       <Parameter name="LENGTH" type="int" value="512" description="The length of a frame (per channel)."/>
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling Rate (Hz)."/>
       <Parameter name="A_MATRIX" type="subnet_param" value="A_MATRIX_" description="subnet_param"/>
+      <Parameter name="PERIOD" type="subnet_param" value="PERIOD" description="subnet_param"/>
     </Node>
-    <Node name="node_RosHarkMsgsSubscriber_1" type="RosHarkMsgsSubscriber" x="860" y="640">
+    <Node name="node_RosHarkMsgsSubscriber_1" type="RosHarkMsgsSubscriber" x="950" y="640">
       <Parameter name="STREAM_SELECTION" type="string" value="HarkSource" description="Selector of stream you want to realize. All other subscription will be disabled."/>
       <Parameter name="NB_CHANNELS" type="int" value="8" description="The number of input channels. Only used for no data period (Not important). [default: 8]"/>
       <Parameter name="FFT_LENGTH" type="int" value="512" description="FFT length in sample. Only used for no data period (Not important). [default: 512]"/>
@@ -68,30 +71,30 @@
       <Parameter name="REMAIN_LATEST" type="bool" value="false" description="Enable to keep the latest data as output even when this module doesn&#x27;t receive any messages [default: false]"/>
       <Parameter name="ENABLE_DEBUG" type="bool" value="true" description="print debug message of this module in case of true."/>
     </Node>
-    <Node name="node_DisplayLocalization_1" type="DisplayLocalization" x="1450" y="500">
+    <Node name="node_DisplayLocalization_1" type="DisplayLocalization" x="1540" y="500">
       <Parameter name="WINDOW_NAME" type="string" value="Source Location" description="Window name of the time-azimuth map [default: Window name]"/>
       <Parameter name="WINDOW_LENGTH" type="int" value="1000" description="Window length to show at the same time [sample]"/>
       <Parameter name="VERTICAL_RANGE" type="object" value="&lt;Vector&lt;int&gt; -180 180&gt;" description="Plot range of the vertical axis"/>
       <Parameter name="PLOT_TYPE" type="string" value="AZIMUTH" description="Coordinate setting for the plotting"/>
     </Node>
-    <Node name="node_PyCodeExecutor3_1" type="PyCodeExecutor3" x="1090" y="410">
+    <Node name="node_PyCodeExecutor3_1" type="PyCodeExecutor3" x="1180" y="410">
       <Parameter name="DIRECTORY_NAME" type="string" value="." description="[optional] The directory name of your python code. It will inserted to sys.path."/>
       <Parameter name="MODULENAME" type="string" value="hark_ros_process" description="Your python module name to import, i.e., your python code file name WITHOUT extension."/>
       <Parameter name="CLASSNAME" type="string" value="HarkNode" description="Your class name to call in this node."/>
       <Parameter name="DEBUG" type="bool" value="false" description="Debug option. If true, it prints input list and output list."/>
     </Node>
-    <Node name="node_AudioStreamFromWave_1" type="AudioStreamFromWave" x="100" y="220">
-      <Parameter name="LENGTH" type="int" value="512" description="The frame length of each channel (in samples) [default: 512]."/>
-      <Parameter name="ADVANCE" type="int" value="160" description="The shift length beween adjacent frames (in samples)[default: 160]."/>
-      <Parameter name="USE_WAIT" type="bool" value="false" description="If true, real recording is simulated [default: false]."/>
+    <Node name="node_AudioStreamFromWave_1" type="AudioStreamFromWave" x="100" y="110">
+      <Parameter name="LENGTH" type="subnet_param" value="LENGTH" description="The frame length of each channel (in samples) [default: 512]."/>
+      <Parameter name="ADVANCE" type="subnet_param" value="ADVANCE" description="The shift length beween adjacent frames (in samples)[default: 160]."/>
+      <Parameter name="USE_WAIT" type="bool" value="true" description="If true, real recording is simulated [default: false]."/>
     </Node>
-    <Node name="node_MultiGain_1" type="MultiGain" x="340" y="100">
+    <Node name="node_MultiGain_1" type="MultiGain" x="430" y="100">
       <Parameter name="GAIN" type="float" value="15" description="Gain factor."/>
     </Node>
-    <Node name="node_SaveSourceLocation_1" type="SaveSourceLocation" x="1440" y="620">
+    <Node name="node_SaveSourceLocation_1" type="SaveSourceLocation" x="1530" y="620">
       <Parameter name="FILENAME" type="string" value="/home/nvidia/catkin_ws/src/hark_face_recog/src/userdata/records/source_log/log" description="The file name for saving source locations."/>
     </Node>
-    <Node name="node_RosHarkMsgsPublisher_1" type="RosHarkMsgsPublisher" x="590" y="450">
+    <Node name="node_RosHarkMsgsPublisher_1" type="RosHarkMsgsPublisher" x="680" y="450">
       <Parameter name="ADVANCE" type="int" value="160" description="Shift sample number for sliding spectrum analysis."/>
       <Parameter name="ENABLE_DEBUG" type="bool" value="false" description="print debug message of this module in case of true."/>
       <Parameter name="TOPIC_NAME_HARKWAVE" type="string" value="HarkWave" description="Published topic name for ROS (HarkWave type message)"/>
@@ -108,6 +111,18 @@
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="The time increment is caluculated as ADVANCE / SAMPLING_RATE"/>
       <Parameter name="ROS_FRAME_ID" type="string" value="HarkRosFrameID" description="ROS frame_id of the message header"/>
     </Node>
+    <Node name="node_PyCodeExecutor3_2" type="PyCodeExecutor3" x="210" y="310">
+      <Parameter name="DIRECTORY_NAME" type="string" value="../.." description="[optional] The directory name of your python code. It will inserted to sys.path."/>
+      <Parameter name="MODULENAME" type="string" value="hp_count_pub" description="Your python module name to import, i.e., your python code file name WITHOUT extension."/>
+      <Parameter name="CLASSNAME" type="string" value="HarkModalPub" description="Your class name to call in this node."/>
+      <Parameter name="DEBUG" type="bool" value="false" description="Debug option. If true, it prints input list and output list."/>
+    </Node>
+    <Node name="node_PyCodeExecutor3_3" type="PyCodeExecutor3" x="530" y="290">
+      <Parameter name="DIRECTORY_NAME" type="string" value="../.." description="[optional] The directory name of your python code. It will inserted to sys.path."/>
+      <Parameter name="MODULENAME" type="string" value="hp_count_pub" description="Your python module name to import, i.e., your python code file name WITHOUT extension."/>
+      <Parameter name="CLASSNAME" type="string" value="HarkModalPub" description="Your class name to call in this node."/>
+      <Parameter name="DEBUG" type="bool" value="false" description="Debug option. If true, it prints input list and output list."/>
+    </Node>
     <Link from="node_MultiFFT_1" output="OUTPUT" to="node_sub_localization_1" input="WAV"/>
     <Link from="node_sub_separation_1" output="POSTFLT_SPEC" to="node_sub_recognition_1" input="SPEC"/>
     <Link from="node_MultiFFT_1" output="OUTPUT" to="node_sub_separation_1" input="SPEC"/>
@@ -120,6 +135,8 @@
     <Link from="node_AudioStreamFromWave_1" output="AUDIO" to="node_MultiGain_1" input="INPUT"/>
     <Link from="node_PyCodeExecutor3_1" output="OUTPUT" to="node_SaveSourceLocation_1" input="SOURCES"/>
     <Link from="node_sub_localization_1" output="OUTPUT" to="node_RosHarkMsgsPublisher_1" input="SRC_INFO"/>
+    <Link from="node_PyCodeExecutor3_2" output="OUTPUT" to="node_PyCodeExecutor3_3" input="INPUT"/>
+    <Link from="node_MultiGain_1" output="OUTPUT" to="node_PyCodeExecutor3_2" input="INPUT"/>
     <NetInput name="INPUT" node="node_AudioStreamFromWave_1" terminal="INPUT" object_type="Stream" description="An audio input stream (IStream)."/>
     <NetOutput name="RECOG" node="node_sub_recognition_1" terminal="RECOG" object_type="any" description="No description available"/>
     <NetOutput name="OUTPUT_1" node="node_DisplayLocalization_1" terminal="OUTPUT" object_type="Vector&amp;lt;ObjectRef&amp;gt;" description="The same as input."/>
@@ -288,7 +305,7 @@
       <Parameter name="A_MATRIX" type="subnet_param" value="A_MATRIX" description="Filename of a transfer function matrix."/>
       <Parameter name="WINDOW" type="int" value="50" description="The number of frames used for calculating a correlation function."/>
       <Parameter name="WINDOW_TYPE" type="string" value="FUTURE" description="Window selection to accumulate a correlation function. If PAST, the past WINDOW frames from the current frame are used for the accumulation. If MIDDLE, the current frame will be the middle of the accumulated frames. If FUTURE, the future WINDOW frames from the current frame are used for the accumulation. FUTURE is the default from version 1.0, but this makes a delay since we have to wait for the future information. PAST generates a internal buffers for the accumulation, which realizes no delay for localization."/>
-      <Parameter name="PERIOD" type="int" value="50" description="The period in which the source localization is processed."/>
+      <Parameter name="PERIOD" type="subnet_param" value="PERIOD" description="The period in which the source localization is processed."/>
       <Parameter name="NUM_SOURCE" type="int" value="2" description="Number of sources, which should be less than number of channels."/>
       <Parameter name="MIN_DEG" type="int" value="-90" description="source direction (lower)."/>
       <Parameter name="MAX_DEG" type="int" value="90" description="source direction (higher)."/>
@@ -300,7 +317,7 @@
       <Parameter name="MANUAL_WEIGHT_SQUARE" type="object" value="&lt;Vector&lt;float&gt; 0.0 2000.0 4000.0 6000.0 8000.0&gt;" description="MUSIC spectrum weight for each frequency bin. This is a M order vector. The element represents the frequency points for the square wave. &quot;M&quot; represents the number of key points for the square wave weight. The format is &quot;&amp;lt;Vector&amp;lt;float&amp;gt; 1 2 3 4&amp;gt;&quot;."/>
       <Parameter name="ENABLE_EIGENVALUE_WEIGHT" type="bool" value="false" description="If true, the spatial spectrum is weighted depending on the eigenvalues of a correlation matrix. We do not suggest to use this function with GEVD and GSVD, because the NOISECM changes the eigenvalue drastically. Only useful for SEVD."/>
       <Parameter name="MAXNUM_OUT_PEAKS" type="int" value="-1" description="Maximum number of output peaks. If MAXNUM_OUT_PEAKS = NUM_SOURCE, this is compatible with HARK version 1.0. If MAXNUM_OUT_PEAKS = 0, all local maxima are output. If MAXNUM_OUT_PEAKS &amp;lt; 0, MAXNUM_OUT_PEAKS is set to NUM_SOURCE. If MAXNUM_OUT_PEAKS &amp;gt; 0, number of output peaks is limited to MAXNUM_OUT_PEAKS."/>
-      <Parameter name="DEBUG" type="bool" value="true" description="Debug option. If the parameter is true, this node outputs sound localization results to a standard output."/>
+      <Parameter name="DEBUG" type="bool" value="false" description="Debug option. If the parameter is true, this node outputs sound localization results to a standard output."/>
     </Node>
     <Node name="node_SourceTracker_1" type="SourceTracker" x="490" y="130">
       <Parameter name="THRESH" type="float" value="35" description="Power threshold for localization results. A localization result with higher power than THRESH is tracked, otherwise ignored."/>

@@ -5,11 +5,12 @@ import rospy
 import numpy as np
 import os
 import cv2
+import sys
 
 from hark_msgs.msg import HarkWave
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
-import multichannel_wav_reader as mcwr
+from std_msgs.msg import Int32
 
 class MultiModal:
     def __init__(self):
@@ -17,12 +18,15 @@ class MultiModal:
         np.set_printoptions(threshold=0)
         self._bridge = CvBridge()
         self._movie_data_pub = rospy.Publisher('moviedata_py', Image, queue_size=10)
-        self._HarkWave_count_sub = rospy.Subscriber('wavdata_py', HarkWave, self.count_callback)
-        # self._image_debug_sub = rospy.Subscriber('moviedata_py', Image, self.img_debug_callback)
+        self._HarkWave_count_sub = rospy.Subscriber('hp_count', Int32, self.count_callback)
+        self._image_debug_sub = rospy.Subscriber('moviedata_py', Image, self.img_debug_callback)
 
         self.here_path = os.path.dirname(__file__)
         if self.here_path == "":
             self.here_path = "."
+
+        self.length = 512
+        self.advance = 160
 
     def set_audio_sampling_rate(self, rate):
         self.audio_sr = rate
@@ -40,31 +44,39 @@ class MultiModal:
             self.frames.append(cv_img)
             ret, cv_img = self.cap.read()
 
-    def count_callback(self, hw):
+    def count_callback(self, data):
+        audio_frame_no = data.data
+        print(audio_frame_no)
         imgs = self.frames
-        audio_samples = (hw.count + 1) * hw.length
+        audio_samples = (audio_frame_no + 1) * self.advance
         if audio_samples > (self.frame_no + 1) * self.sample_threshold:
-            msg = self._bridge.cv2_to_imgmsg(imgs[self.frame_no], 'bgr8')
+            try:
+                img = imgs[self.frame_no]
+            except IndexError:
+                rospy.signal_shutdown("終わりです")
+            msg = self._bridge.cv2_to_imgmsg(img, 'bgr8')
             self._movie_data_pub.publish(msg)
             self.frame_no = self.frame_no + 1
 
     def img_debug_callback(self, data):
         cv_img = self._bridge.imgmsg_to_cv2(data, 'bgr8')
+        fxy = 0.3
+        cv_img= cv2.resize(cv_img, dsize=None, fx=fxy, fy=fxy)
+        if len(cv_img) == 0:
+            cv2.destroyWindow("image")
+            exit()
         cv2.namedWindow("image")
         cv2.imshow("image", cv_img)
         cv2.waitKey(1)
 
 if __name__ == '__main__':
-    rospy.init_node('multimodal_reader_py',anonymous=True)
-
-    # 音声データに関する処理
-    audio = mcwr.MultiWav()
-    wavfiles = audio.read_input_dir(audio.here_path + "/input/wavfile")
-    audio.initialize_HarkWave()
-    audio_arr = audio.wav2array(wavfiles)
+    rospy.init_node('movie_sender',anonymous=True)
 
     # 動画データに関する処理
     movie = MultiModal()
-    movie.read_frames(audio.here_path + "/input/mp4file")
-    movie.set_audio_sampling_rate(audio.sampling_rate)
-    audio.generate_senddata_with_playing(audio_arr)
+    movie.read_frames(movie.here_path + "/input/mp4file")
+    movie.set_audio_sampling_rate(16000)
+
+    rospy.loginfo('running..')
+    rospy.spin()
+    # audio.generate_senddata_with_playing(audio_arr)

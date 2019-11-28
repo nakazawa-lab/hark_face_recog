@@ -6,9 +6,6 @@ import rospy
 from sensor_msgs.msg import Image, CameraInfo
 from std_msgs.msg import Float32MultiArray
 from darknet_ros_msgs.msg import BoundingBoxes,BoundingBox
-import datetime
-from PIL import Image as pil
-import copy
 
 # ros以外
 import cv2
@@ -24,9 +21,7 @@ import dlib_module as dm
 
 class YOLO2Dlib:
     def __init__(self):
-        # camera_info = rospy.wait_for_message("/usb_cam/camera_info", CameraInfo)
-        camera_info = rospy.wait_for_message("/kinect2/hd/camera_info", CameraInfo)
-        self.set_camera_info(camera_info)
+        self.set_camera_info()
 
         self.person_bboxes = []
         self.padding = 50
@@ -46,28 +41,19 @@ class YOLO2Dlib:
         self.start_flag = 0  # 口の動きを判定し始める際の合図
 
         self._bridge = CvBridge()
-        self._usb_image_sub = rospy.Subscriber('/usb_cam/image_raw', Image, self.usb_callback)
-        self._kinect_image_sub = rospy.Subscriber('/kinect2/hd/image_color', Image, self.kinect_callback)
+        self._dataset_image_sub = rospy.Subscriber('/moviedata_py', Image, self.dataset_callback)
         self._bboxes_sub = rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, self.bboxes_callback)
         self._face_recog_pub = rospy.Publisher('face_recog_result', Float32MultiArray, queue_size=10)
         self.m_pub_threshold = rospy.get_param('~pub_threshold', 0.40)  # ROS PARAM
 
         return
 
-    def set_camera_info(self, camera_info):
-        self.width = camera_info.width
-        self.height = camera_info.height
-        K = np.array(camera_info.K).reshape(3,3) # 参照：http://docs.ros.org/melodic/api/sensor_msgs/html/msg/CameraInfo.html
-        self.f = K[0][0] # 焦点距離f
+    def set_camera_info(self):
+        self.width = 1920
+        self.height = 1080
+        self.f = 1081.3720703125
 
-    def usb_callback(self, data):
-        try:
-            image = self._bridge.imgmsg_to_cv2(data, 'passthrough')
-        except CvBridgeError, e:
-            rospy.logerr(e)
-        self.image_callback(image, "usb")
-
-    def kinect_callback(self, data):
+    def dataset_callback(self, data):
         try:
             image = self._bridge.imgmsg_to_cv2(data, 'passthrough')
         except CvBridgeError, e:

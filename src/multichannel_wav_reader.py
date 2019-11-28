@@ -7,6 +7,7 @@ import rospy
 import numpy as np
 import os
 from hark_msgs.msg import HarkWave, HarkWaveVal
+from time import sleep
 
 class MultiWav:
     def __init__(self):
@@ -40,6 +41,7 @@ class MultiWav:
         self.channel0_path = path + "/" + inputs[0]
         self.ch = len(inputs)
         self.sampling_rate = wf_list[0].getframerate()
+        self.duration = float(wf_list[0].getnframes()) / wf_list[0].getframerate()
         return wf_list
 
     def wav2array(self, wfs):

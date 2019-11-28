@@ -43,14 +43,37 @@ $ roslaunch darknet_ros darknet_ros.launch
 ```
 
 ```
-$ roslaunch hark_face_recog hark_face_recog.launch
+$ roslaunch hark_face_recog camera.launch
 ```
 
 ```
-$ roscd hark_face_recog
-$ cd src
+$ cd ~/catkin_ws/src/hark_face_recog/src/userdata/networks
 $ batchflow hark_ros_main.n
 ```
+
+### データセットで行う場合
+
+```
+$ roscore
+```
+
+```
+$ roslaunch kinect2_bridge kinect2_bridge.launch
+```
+
+```
+$ roslaunch darknet_ros darknet_ros.launch
+```
+
+```
+$ roslaunch hark_face_recog dataset.launch
+```
+
+```
+$ cd ~/catkin_ws/src/hark_face_recog/src/userdata/networks
+$ ./modal_wav.n ../config/tamago_geotf.zip ../config/tamago_geotf.zip ../records/sep_files/record ../../input/wavfile/multichannel_audio.wav
+```
+
 
 ### rosrunで実行したい場合
 Pythonで書かれているのでROS上でPythonの実行ファイルとして認識させるには以下のコマンドを一度行う必要があります。

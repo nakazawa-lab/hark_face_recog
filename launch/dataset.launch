@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="hark_face_recog" name="yolo2dlib" type="yolo2dlib_dataset.py"/>
+    <node pkg="hark_face_recog" name="movie_sender" type="movie_pub.py"/>
+    <node pkg="hark_face_recog" name="interface_with_hark" type="interface_with_hark_cpp"/>
+</launch>
