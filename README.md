@@ -58,11 +58,7 @@ $ roscore
 ```
 
 ```
-$ roslaunch kinect2_bridge kinect2_bridge.launch
-```
-
-```
-$ roslaunch darknet_ros darknet_ros.launch
+$ roslaunch darknet_ros darknet_ros.launch ros_param_file:=$HOME/catkin_ws/src/darknet_ros/darknet_ros/config/ros_with_dataset.yaml
 ```
 
 ```
@@ -71,7 +67,7 @@ $ roslaunch hark_face_recog dataset.launch
 
 ```
 $ cd ~/catkin_ws/src/hark_face_recog/src/userdata/networks
-$ ./modal_wav.n ../config/tamago_geotf.zip ../config/tamago_geotf.zip ../records/sep_files/record ../../input/wavfile/multichannel_audio.wav
+$ ./hark_ros_julius_main_modal.n ../config/tamago_geotf.zip ../config/tamago_geotf.zip ../records/sep_files/record ../../input/wavfile/multichannel_audio.wav
 ```
 
 
