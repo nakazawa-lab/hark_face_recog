@@ -61,8 +61,11 @@ class SendFaceToROS:
         self.start_flag = 0 # 口の動きを判定し始める際の合図
         self.speaking_flag = 0 # 話している間１にし、話していないときは0にする
 
+        # 動画のフレームをカウントする変数
+        self.frame_count = 0
+
         # 動画の読み込み開始サインをHARK側から受け取る
-        self.movie_sign = rospy.wait_for_message("start_sign", String)
+        # self.movie_sign = rospy.wait_for_message("start_sign", String)
 
     def send_to_ROS(self, x, y, z, id):
         array = Float32MultiArray(data=[x, y, z, id])
@@ -88,7 +91,7 @@ class SendFaceToROS:
         else:
             self.mouth_close_count = 0
 
-        print("mouth_close_count:", self.mouth_close_count)
+        # print("mouth_close_count:", self.mouth_close_count)
 
         # カウントが10以上の場合人が話していないと判断する
         if self.mouth_close_count >= 10:
@@ -147,7 +150,7 @@ if __name__ == "__main__":
             u = face_recog_result[0]
             v = face_recog_result[1]
             theta = send_ros.acquire_face_angle(u)
-            print("face angle: " + str(-theta) + " [degree]")
+            # print("face angle: " + str(-theta) + " [degree]")
 
             x = -(u - send_ros.width / 2)
             y = (v - send_ros.height / 2)
@@ -177,6 +180,10 @@ if __name__ == "__main__":
             send_ros.mouth_close_count += 1
             send_ros.rerecog_flag = 1
             send_ros.send_to_ROS(x, y, z, id)
+
+        send_ros.frame_count += 1
+        print("frame_count:", send_ros.frame_count)
+        print("Mouth Aspect Ratio:" , mar)
 
         # デバッグ用表示
         display_image = face_data.face_shape_detector_display(cv_img, img_gray, rects, mar, send_ros.MAR_THRESH)

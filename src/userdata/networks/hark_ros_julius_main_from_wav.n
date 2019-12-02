@@ -85,9 +85,6 @@
       <Parameter name="ADVANCE" type="int" value="160" description="The shift length beween adjacent frames (in samples)[default: 160]."/>
       <Parameter name="USE_WAIT" type="bool" value="false" description="If true, real recording is simulated [default: false]."/>
     </Node>
-    <Node name="node_MultiGain_1" type="MultiGain" x="340" y="100">
-      <Parameter name="GAIN" type="float" value="15" description="Gain factor."/>
-    </Node>
     <Node name="node_SaveSourceLocation_1" type="SaveSourceLocation" x="1440" y="620">
       <Parameter name="FILENAME" type="string" value="/home/nvidia/catkin_ws/src/hark_face_recog/src/userdata/records/source_log/log" description="The file name for saving source locations."/>
     </Node>
@@ -116,17 +113,16 @@
     <Link from="node_PyCodeExecutor3_1" output="OUTPUT" to="node_sub_separation_1" input="SRC_INFO"/>
     <Link from="node_PyCodeExecutor3_1" output="OUTPUT" to="node_sub_recognition_1" input="SRC_INFO"/>
     <Link from="node_PyCodeExecutor3_1" output="OUTPUT" to="node_DisplayLocalization_1" input="SOURCES"/>
-    <Link from="node_MultiGain_1" output="OUTPUT" to="node_MultiFFT_1" input="INPUT"/>
-    <Link from="node_AudioStreamFromWave_1" output="AUDIO" to="node_MultiGain_1" input="INPUT"/>
     <Link from="node_PyCodeExecutor3_1" output="OUTPUT" to="node_SaveSourceLocation_1" input="SOURCES"/>
     <Link from="node_sub_localization_1" output="OUTPUT" to="node_RosHarkMsgsPublisher_1" input="SRC_INFO"/>
+    <Link from="node_AudioStreamFromWave_1" output="AUDIO" to="node_MultiFFT_1" input="INPUT"/>
     <NetInput name="INPUT" node="node_AudioStreamFromWave_1" terminal="INPUT" object_type="Stream" description="An audio input stream (IStream)."/>
     <NetOutput name="RECOG" node="node_sub_recognition_1" terminal="RECOG" object_type="any" description="No description available"/>
     <NetOutput name="OUTPUT_1" node="node_DisplayLocalization_1" terminal="OUTPUT" object_type="Vector&amp;lt;ObjectRef&amp;gt;" description="The same as input."/>
     <NetOutput name="OUTPUT" node="node_sub_separation_1" terminal="OUTPUT" object_type="Map&amp;lt;int,ObjectRef&amp;gt;" description="The same as input."/>
     <NetOutput name="OUTPUT_2" node="node_SaveSourceLocation_1" terminal="OUTPUT" object_type="Vector&amp;lt;ObjectRef&amp;gt;" description="The same as input."/>
-    <NetCondition name="CONDITION" node="node_AudioStreamFromWave_1" terminal="NOT_EOF"/>
     <NetOutput name="OUTPUT_3" node="node_RosHarkMsgsPublisher_1" terminal="OUTPUT" object_type="ObjectRef" description="This is a dummy output, and it has no mean. Only for an activation of this module."/>
+    <NetCondition name="CONDITION" node="node_AudioStreamFromWave_1" terminal="NOT_EOF"/>
   </Network>
   <Network type="subnet" name="sub_separation">
     <Node name="node_PowerCalcForMap_1" type="PowerCalcForMap" x="440" y="120">

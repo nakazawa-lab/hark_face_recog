@@ -8,6 +8,7 @@
       <Parameter name="A_MATRIX_" type="subnet_param" value="ARG1" description="subnet_param"/>
       <Parameter name="TF_CONJ_FILENAME_" type="subnet_param" value="ARG2" description="subnet_param"/>
       <Parameter name="BASENAME" type="subnet_param" value="ARG3" description="subnet_param"/>
+      <Parameter name="audio_save_file" type="subnet_param" value="ARG4" description="subnet_param"/>
     </Node>
     <Node name="node_RosNodeGenerator_1" type="RosNodeGenerator" x="100" y="360">
       <Parameter name="NODE_NAME" type="string" value="HARK_MASTER_NODE" description="Node name for ROS"/>
@@ -84,7 +85,7 @@
       <Parameter name="DEBUG" type="bool" value="false" description="Show debug points. [default: false]"/>
     </Node>
     <Node name="node_SaveWavePCM_1" type="SaveWavePCM" x="310" y="100">
-      <Parameter name="BASENAME" type="string" value="/home/nvidia/catkin_ws/src/hark_face_recog/src/userdata/records/audio_data_for_movie/channel" description="Basename of files. [default: sep_]"/>
+      <Parameter name="BASENAME" type="subnet_param" value="audio_save_file" description="Basename of files. [default: sep_]"/>
       <Parameter name="ADVANCE" type="int" value="160" description="The shift length beween adjacent frames (in samples)[default: 160]."/>
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate (in samples)[default: 16000]."/>
       <Parameter name="BITS" type="string" value="int16" description="Bit format of samples. int16 and int24  bits are supported."/>
