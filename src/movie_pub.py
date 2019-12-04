@@ -19,7 +19,7 @@ class MultiModal:
         self._bridge = CvBridge()
         self._movie_data_pub = rospy.Publisher('moviedata_py', Image, queue_size=10)
         self._HarkWave_count_sub = rospy.Subscriber('hp_count', Int32, self.count_callback)
-        self._image_debug_sub = rospy.Subscriber('moviedata_py', Image, self.img_debug_callback)
+        # self._image_debug_sub = rospy.Subscriber('moviedata_py', Image, self.img_debug_callback)
 
         self.here_path = os.path.dirname(__file__)
         if self.here_path == "":

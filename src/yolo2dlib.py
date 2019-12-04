@@ -51,7 +51,7 @@ class YOLO2Dlib:
         self._dataset_image_sub = rospy.Subscriber('/moviedata_py', Image, self.dataset_callback)
         self._bboxes_sub = rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, self.bboxes_callback)
         self._face_recog_pub = rospy.Publisher('face_recog_result', Float32MultiArray, queue_size=10)
-        self.m_pub_threshold = rospy.get_param('~pub_threshold', 0.40)  # ROS PARAM
+        self.m_pub_threshold = rospy.get_param('~pub_threshold', 0.870)  # ROS PARAM
 
         return
 
@@ -140,9 +140,9 @@ class YOLO2Dlib:
         if mode == "usb":
             debug_img = cv2.cvtColor(debug_img, cv2.COLOR_RGBA2BGR)
         debug_img = cv2.resize(debug_img, dsize=None, fx=0.5, fy=0.5)
-        cv2.namedWindow("image")
-        cv2.imshow("image", debug_img)
-        cv2.waitKey(1)
+        # cv2.namedWindow("image")
+        # cv2.imshow("image", debug_img)
+        # cv2.waitKey(1)
 
     def dlib_display(self, img, img_gray, rects, mar, MAR_THRESH):
         for rect in rects:
@@ -171,9 +171,9 @@ class YOLO2Dlib:
     def yolo_display(self, image, pbox):
         cv2.rectangle(image, (pbox.xmin, pbox.ymin), (pbox.xmax, pbox.ymax),(0,0,255), 2)
         text = "score: " + str(round(pbox.probability, 3))
-        text_top = (pbox.xmin, pbox.ymin - 40)
+        text_top = (pbox.xmin, pbox.ymin + 40)
         text_bot = (pbox.xmin + 360, pbox.ymin + 5)
-        text_pos = (pbox.xmin + 5, pbox.ymin)
+        text_pos = (pbox.xmin + 5, pbox.ymin+40)
         cv2.rectangle(image, text_top, text_bot, (0,0,0),-1)
         cv2.putText(image, text, text_pos, cv2.FONT_HERSHEY_SIMPLEX, 1.5, (255, 0, 255), 2)
         return image
