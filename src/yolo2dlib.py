@@ -140,9 +140,9 @@ class YOLO2Dlib:
         if mode == "usb":
             debug_img = cv2.cvtColor(debug_img, cv2.COLOR_RGBA2BGR)
         debug_img = cv2.resize(debug_img, dsize=None, fx=0.5, fy=0.5)
-        # cv2.namedWindow("image")
-        # cv2.imshow("image", debug_img)
-        # cv2.waitKey(1)
+        cv2.namedWindow("image")
+        cv2.imshow("image", debug_img)
+        cv2.waitKey(1)
 
     def dlib_display(self, img, img_gray, rects, mar, MAR_THRESH):
         for rect in rects:
