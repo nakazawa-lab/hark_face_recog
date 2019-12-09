@@ -26,7 +26,8 @@ for subject in subjects:
 
         e3 = 'roslaunch hark_face_recog dataset.launch &' + \
             'sleep 2 && ' + \
-             './hark_ros_julius_main_modal.n ../config/tamago_geotf.zip ../config/tamago_geotf.zip ../records/sep_files/record ' \
+             './hark_ros_julius_main_modal.n ../config/tamago_geotf.zip ../config/tamago_geotf.zip ' \
+             '../records/sep_files/record_' + subject + '_' + cmd + ' ' \
              + dataset_path + subject + '/' + cmd + "*.wav "
         print(e3)
 

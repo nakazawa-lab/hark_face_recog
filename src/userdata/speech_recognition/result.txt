@@ -17,6 +17,10 @@ Stat: init_phmm: loading ascii hmmlist
 Stat: init_phmm: logical names: 20468 in HMMList
 Stat: init_phmm: base phones:    42 used in logical
 Stat: init_phmm: finished reading HMM definitions
+<<<<<<< HEAD
+ERROR: m_fusion: for direct speech input, only HMM trained by MFCC is supported
+ERROR: m_fusion: failed to initialize AM
+=======
 STAT: making pseudo bi/mono-phone for IW-triphone
 Stat: hmm_lookup: 18 pseudo phones are added to logical HMM list
 STAT: *** AM00 _default loaded
@@ -539,3 +543,4 @@ STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 142
 
 connection end
 ERROR: an error occured while recognition, terminate stream
+>>>>>>> edec5f7075b47d4a06ecfd0029f8a6f020d1b57a
