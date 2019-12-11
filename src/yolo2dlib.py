@@ -108,7 +108,7 @@ class YOLO2Dlib:
         x = 0
         y = 0
         z = 0
-        id = 0
+        # id = 0
         # personを認識した場合
         if len(self.person_bboxes) != 0:
             for i, pbox in enumerate(self.person_bboxes):
@@ -122,13 +122,13 @@ class YOLO2Dlib:
                         mar = self.face.mouth_aspect_ratio(img_gray, dlib_rects)
                         debug_img = self.dlib_display(debug_img, img_gray, dlib_rects, mar, self.MAR_THRESH)
                         self.last_mar = mar
-                        if self.is_open_flag:
-                            x = -(self.nose_x - self.width/2)
-                            y = (self.nose_y - self.height/2)
-                            z = self.f
-                            id = self.id
-        if self.last_is_open_flag and not self.is_open_flag:
-            self.id += 1
+                        # if self.is_open_flag:
+        x = -(self.nose_x - self.width/2)
+        y = (self.nose_y - self.height/2)
+        z = self.f
+        id = self.id
+        # if self.last_is_open_flag and not self.is_open_flag:
+        #     self.id += 1
         self.send_to_ROS(x, y, z, id)
         if mode == "usb":
             debug_img = cv2.cvtColor(debug_img, cv2.COLOR_RGBA2BGR)

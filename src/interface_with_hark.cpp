@@ -66,7 +66,7 @@ void HarkInterface::publish_to_hark(float x, float y, float z, int id)
     }
     // 口が動いている場合
     else{
-      HarkSourceValMsg.power = 40.5952;
+      HarkSourceValMsg.power = 1.0;
     }
     ROS_INFO("id:%d, theta: %ddeg, power: %d, y:%d, z:%d",id, (int)theta, (int)HarkSourceValMsg.power, (int)y,(int)z);
 
