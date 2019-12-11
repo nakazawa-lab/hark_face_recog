@@ -144,7 +144,7 @@
 #-input stdin		# 標準入力からの入力
 
 #-filelist file		# 認識対象ファイルのリスト
-#-filelist /home/lab5/tall/main/Julian/m101list3.txt
+-filelist /home/nvidia/projects/dataset2/wavlist.txt
 
 ######################################################################
 #### 音声録音
