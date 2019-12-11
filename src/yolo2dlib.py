@@ -6,6 +6,7 @@ import rospy
 from sensor_msgs.msg import Image, CameraInfo
 from std_msgs.msg import Float32MultiArray
 from darknet_ros_msgs.msg import BoundingBoxes,BoundingBox
+import time
 import datetime
 from PIL import Image as pil
 import copy
@@ -18,6 +19,7 @@ import dlib
 from cv_bridge import CvBridge, CvBridgeError
 from imutils import face_utils
 import os
+import csv
 
 # 自作モジュール
 import dlib_module as dm
@@ -37,6 +39,8 @@ class YOLO2Dlib:
             self.here_path = "."
         predictor_path = self.here_path + "/shape_predictor_68_face_landmarks.dat"
         self.face = dm.FaceDLib(predictor_path)
+        self.nose_x = None
+        self.nose_y = None
         self.predictor = dlib.shape_predictor(predictor_path)
         self.detector = dlib.get_frontal_face_detector()
         self.MAR_THRESH = 0.06
@@ -59,6 +63,8 @@ class YOLO2Dlib:
         self._bboxes_sub = rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, self.bboxes_callback)
         self._face_recog_pub = rospy.Publisher('face_recog_result', Float32MultiArray, queue_size=10)
         self.m_pub_threshold = rospy.get_param('~pub_threshold', 0.750)  # ROS PARAM
+
+        self.fps_array = []
 
         return
 
@@ -102,7 +108,26 @@ class YOLO2Dlib:
                     person_bboxes.append(bboxes[i])
         self.person_bboxes = person_bboxes
 
+    def ave_fps_calculate(self, fps):
+
+        if len(self.fps_array) >= 10:
+            self.fps_array.pop(0)
+
+        self.fps_array.append(fps)
+
+        fps_sum = sum(self.fps_array)
+        average_fps = fps_sum / len(self.fps_array)
+
+        # with open('/home/nvidia/catkin_ws/src/hark_face_recog/src/userdata/fps_data.csv', 'w') as f:
+        #     writer = csv.writer(f)
+        #     writer.writerow(self.fps_array)
+
+        return average_fps
+
+
     def image_callback(self, img, mode):
+
+        start = time.time()
         self.is_open_flag = False
         debug_img = img
         x = 0
@@ -122,10 +147,10 @@ class YOLO2Dlib:
                         mar = self.face.mouth_aspect_ratio(img_gray, dlib_rects)
                         debug_img = self.dlib_display(debug_img, img_gray, dlib_rects, mar, self.MAR_THRESH)
                         self.last_mar = mar
-                        # if self.is_open_flag:
-        x = -(self.nose_x - self.width/2)
-        y = (self.nose_y - self.height/2)
-        z = self.f
+                        if self.is_open_flag:
+                            x = -(self.nose_x - self.width/2)
+                            y = (self.nose_y - self.height/2)
+                            z = self.f
         id = self.id
         # if self.last_is_open_flag and not self.is_open_flag:
         #     self.id += 1
@@ -136,11 +161,16 @@ class YOLO2Dlib:
         cv2.namedWindow("image")
         cv2.imshow("image", debug_img)
         cv2.waitKey(1)
-        print('LAST: ' + str(self.last_is_open_flag) + ', NOW: ' + str(self.is_open_flag))
-        print(self.id)
+        # print('LAST: ' + str(self.last_is_open_flag) + ', NOW: ' + str(self.is_open_flag))
+        # print(self.id)
         self.last_is_open_flag = self.is_open_flag
         self.frame = self.frame + 1
-
+        elapsed_time = time.time() - start
+        # print("processing time of dlib : {0}".format(elapsed_time) + "[sec]")
+        fps = 1 / elapsed_time
+        average_fps = self.ave_fps_calculate(fps)
+        # print("frame per second : {0}".format(fps))
+        print("frame per second : {0}".format(average_fps))
 
     def dlib_display(self, img, img_gray, rects, mar, MAR_THRESH):
         for rect in rects:
@@ -172,6 +202,7 @@ class YOLO2Dlib:
             # landmarkを画像に書き込む 48:68が口
             mouth_hull = cv2.convexHull(shape[48:68])
             cv2.drawContours(img, [mouth_hull], -1, (0, 0, 255), 2)
+
         return img
 
     def yolo_display(self, image, pbox):
