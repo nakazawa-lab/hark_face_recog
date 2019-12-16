@@ -39,14 +39,13 @@ class YOLO2Dlib:
         self.face = dm.FaceDLib(predictor_path)
         self.predictor = dlib.shape_predictor(predictor_path)
         self.detector = dlib.get_frontal_face_detector()
-        self.MAR_THRESH = 0.06
+        self.MAR_THRESH = 0.08
         self.id = 10000 # 人物判定用のid
-        self.speaking_flag = 0 # 話している間１にし、話していないときは0にする
+        self.speaking_flag = 0 # 話しているときは1にし、話していないときは0にする
         # self.mouth_close_count = 0  # 口がどれくらいの時間閉まっているかをカウントするために用意
-        # self.start_flag = 0  # 口の動きを判定し始める際の合図
         self.last_mar = 1
         self.frame = 0
-        self.MOUTH_OPEN_DURATION_THRESH = 25
+        self.MOUTH_OPEN_DURATION_THRESH = 20
         self.mouth_count = self.MOUTH_OPEN_DURATION_THRESH * (-1)
         self.is_open_flag = False
         self.last_is_open_flag = False
@@ -123,13 +122,13 @@ class YOLO2Dlib:
                         debug_img = self.dlib_display(debug_img, img_gray, dlib_rects, mar, self.MAR_THRESH)
                         self.last_mar = mar
                         # if self.is_open_flag:
-        x = -(self.nose_x - self.width/2)
-        y = (self.nose_y - self.height/2)
-        z = self.f
-        id = self.id
-        # if self.last_is_open_flag and not self.is_open_flag:
-        #     self.id += 1
-        self.send_to_ROS(x, y, z, id)
+                        x = -(self.nose_x - self.width/2)
+                        y = (self.nose_y - self.height/2)
+                        z = self.f
+                        id = self.id
+                        # if self.last_is_open_flag and not self.is_open_flag:
+                        #     self.id += 1
+                        self.send_to_ROS(x, y, z, id)
         if mode == "usb":
             debug_img = cv2.cvtColor(debug_img, cv2.COLOR_RGBA2BGR)
         debug_img = cv2.resize(debug_img, dsize=None, fx=0.5, fy=0.5)
@@ -163,12 +162,19 @@ class YOLO2Dlib:
             # 口が開いている場合、画面に表示する
             if dmar > MAR_THRESH:
                 self.mouth_count = self.frame
+                self.speaking_flag = 1
             if self.frame - self.mouth_count < self.MOUTH_OPEN_DURATION_THRESH:
                 cv2.putText(img, "Mouth is Open!", (30,120),
                 cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255),2)
                 self.is_open_flag = True
             else:
                 self.is_open_flag = False
+            # 口が動いている状態から口が動かない状態になったら、idを1増やす
+            if self.speaking_flag == 1 and self.is_open_flag == False:
+                self.id += 1
+                self.speaking_flag = 0
+                print("talk finish!")
+
             # landmarkを画像に書き込む 48:68が口
             mouth_hull = cv2.convexHull(shape[48:68])
             cv2.drawContours(img, [mouth_hull], -1, (0, 0, 255), 2)
