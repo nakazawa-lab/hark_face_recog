@@ -15,6 +15,7 @@ import dlib
 from cv_bridge import CvBridge, CvBridgeError
 import imutils
 import os
+import time
 
 # 自作モジュール
 import dlib_module as dm
@@ -55,6 +56,8 @@ class SendFaceToROS:
         self.MAR_THRESH = 0.70 # mouth aspect ratioの閾値(marの値がこの値以上になった場合口が開いていると判断する)
         self.start_flag = 0 # 口の動きを判定し始める際の合図
         self.speaking_flag = 0 # 話している間１にし、話していないときは0にする
+        # 処理時間計測用
+        self.fps_array = []
 
 
     def send_to_ROS(self, x, y, z, id):
@@ -98,8 +101,22 @@ class SendFaceToROS:
                 # print("話していません")
                 return False
 
+    def ave_fps_calculate(self, fps):
+
+        if len(self.fps_array) >= 10:
+            self.fps_array.pop(0)
+
+        self.fps_array.append(fps)
+
+        fps_sum = sum(self.fps_array)
+        average_fps = fps_sum / len(self.fps_array)
+
+        return average_fps
+
     # ROSによって繰り返し呼び出される
     def callback(self, data):
+
+        start = time.time()
         cv_img = self._bridge.imgmsg_to_cv2(data, 'bgr8')
         cv_img = imutils.resize(cv_img, self.width)
         cv_img = cv_img[0:self.height/2]
@@ -161,6 +178,14 @@ class SendFaceToROS:
         cv2.imshow('img', display_image)
         cv2.waitKey(1)
 
+        # 処理時間計測用
+        elapsed_time = time.time() - start
+
+        fps = 1 / elapsed_time
+        average_fps = self.ave_fps_calculate(fps)
+        # print("frame per second : {0}".format(fps))
+        print("frame per second : {0}".format(average_fps))
+        print("=" * 50)
 
 if __name__ == "__main__":
     rospy.init_node('face_recog_to_ROS',anonymous=True)

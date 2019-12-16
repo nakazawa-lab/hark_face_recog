@@ -171,6 +171,7 @@ class YOLO2Dlib:
         average_fps = self.ave_fps_calculate(fps)
         # print("frame per second : {0}".format(fps))
         print("frame per second : {0}".format(average_fps))
+        print("=" * 50)
 
     def dlib_display(self, img, img_gray, rects, mar, MAR_THRESH):
         for rect in rects:
@@ -228,6 +229,10 @@ class YOLO2Dlib:
             # dlibで認識できる最大横幅が72px
             if self.right - self.left > 72:
                 crop = image[self.upper:self.lower, self.left:self.right]
+                print("height", self.lower-self.upper)
+                print("width", self.right - self.left)
+                rect_area = (self.right - self.left) * (self.lower-self.upper)
+                print("rect_area", rect_area)
                 cv2.rectangle(image, (self.right, self.upper), (self.left, self.lower), (0, 0, 0), 2)
             else:
                 crop = np.asarray(crop)
