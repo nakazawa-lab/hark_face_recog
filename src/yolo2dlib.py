@@ -21,6 +21,7 @@ import os
 
 # 自作モジュール
 import dlib_module as dm
+from human_status import Human_data
 
 class YOLO2Dlib:
     def __init__(self):
@@ -40,16 +41,17 @@ class YOLO2Dlib:
         self.predictor = dlib.shape_predictor(predictor_path)
         self.detector = dlib.get_frontal_face_detector()
         self.MAR_THRESH = 0.08
-        self.id = 10000 # 人物判定用のid
+        self.talk_id = 10000 # 会話のid
         self.speaking_flag = 0 # 話しているときは1にし、話していないときは0にする
         # self.mouth_close_count = 0  # 口がどれくらいの時間閉まっているかをカウントするために用意
-        self.last_mar = 1
+        # self.last_mar = 1
         self.frame = 0
         self.MOUTH_OPEN_DURATION_THRESH = 20
-        self.mouth_count = self.MOUTH_OPEN_DURATION_THRESH * (-1)
-        self.is_open_flag = False
-        self.last_is_open_flag = False
+        # self.mouth_count = self.MOUTH_OPEN_DURATION_THRESH * (-1)
+        # self.is_open_flag = False
+        # self.last_is_open_flag = False
 
+        self.human_dict = {} # それぞれの人に対して生成したインスタンスを格納するディクショナリ
 
         self._bridge = CvBridge()
         self._usb_image_sub = rospy.Subscriber('/usb_cam/image_raw', Image, self.usb_callback)
@@ -102,30 +104,61 @@ class YOLO2Dlib:
         self.person_bboxes = person_bboxes
 
     def image_callback(self, img, mode):
-        self.is_open_flag = False
+        # self.is_open_flag = False
         debug_img = img
         x = 0
         y = 0
         z = 0
         # id = 0
+        # if len(self.person_bboxes) != 0:
+        #     for i, pbox in enumerate(self.person_bboxes):
+        #         print("pbox", pbox)
+        #         debug_img = self.yolo_display(debug_img, pbox)
+        #         crop = self.bbox2image(debug_img, pbox)
+        #         if len(crop) != 0:
+        #             img_gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
+        #             dlib_rects = self.detector(img_gray, 0)
+        #             # もしdlibの顔認識に成功したら
+        #             if len(dlib_rects) != 0:
+        #                 mar = self.face.mouth_aspect_ratio(img_gray, dlib_rects)
+        #                 debug_img = self.dlib_display(debug_img, img_gray, dlib_rects, mar, self.MAR_THRESH)
+        #                 self.last_mar = mar
+        #                 # if self.is_open_flag:
+        #                 x = -(self.nose_x - self.width/2)
+        #                 y = (self.nose_y - self.height/2)
+        #                 z = self.f
+        #                 id = self.id
+        #                 # if self.last_is_open_flag and not self.is_open_flag:
+        #                 #     self.id += 1
+        #                 self.send_to_ROS(x, y, z, id)
+
         # personを認識した場合
         if len(self.person_bboxes) != 0:
-            for i, pbox in enumerate(self.person_bboxes):
+            for human_id, pbox in enumerate(self.person_bboxes):
+                # print("pbox", pbox)
+                # 複数人の開口判定・閉口判定を同時に行うために
+                # 画面に映る人それぞれに対してインスタンスを生成し、リストに格納
+                if len(self.human_dict) < len(self.person_bboxes):
+                    human_data = Human_data(human_id)
+                    self.human_dict[human_id] = human_data
+                print("human_dict:", self.human_dict)
+                # 画像から人の顔の部分を切り出し、顔認識
                 debug_img = self.yolo_display(debug_img, pbox)
-                crop = self.bbox2image(debug_img, pbox)
+                crop = self.bbox2image(debug_img, pbox, human_id)
                 if len(crop) != 0:
                     img_gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
                     dlib_rects = self.detector(img_gray, 0)
                     # もしdlibの顔認識に成功したら
                     if len(dlib_rects) != 0:
-                        mar = self.face.mouth_aspect_ratio(img_gray, dlib_rects)
-                        debug_img = self.dlib_display(debug_img, img_gray, dlib_rects, mar, self.MAR_THRESH)
-                        self.last_mar = mar
+                        self.human_dict[human_id].mar = self.face.mouth_aspect_ratio(img_gray, dlib_rects)
+                        # debug_img = self.dlib_display(debug_img, img_gray, dlib_rects, self.human_dict[human_id].mar, self.MAR_THRESH, human_id)
+                        debug_img = self.dlib_display(debug_img, img_gray, dlib_rects, human_id)
+                        self.human_dict[human_id].last_mar = self.human_dict[human_id].mar
                         # if self.is_open_flag:
-                        x = -(self.nose_x - self.width/2)
-                        y = (self.nose_y - self.height/2)
+                        x = -(self.human_dict[human_id].nose_x - self.width/2)
+                        y = (self.human_dict[human_id].nose_y - self.height/2)
                         z = self.f
-                        id = self.id
+                        id = self.talk_id
                         # if self.last_is_open_flag and not self.is_open_flag:
                         #     self.id += 1
                         self.send_to_ROS(x, y, z, id)
@@ -135,46 +168,48 @@ class YOLO2Dlib:
         cv2.namedWindow("image")
         cv2.imshow("image", debug_img)
         cv2.waitKey(1)
-        print('LAST: ' + str(self.last_is_open_flag) + ', NOW: ' + str(self.is_open_flag))
-        print(self.id)
-        self.last_is_open_flag = self.is_open_flag
+        # print('LAST: ' + str(self.last_is_open_flag) + ', NOW: ' + str(self.is_open_flag))
+        print("talk_id:", self.talk_id)
+        # self.last_is_open_flag = self.is_open_flag
         self.frame = self.frame + 1
 
 
-    def dlib_display(self, img, img_gray, rects, mar, MAR_THRESH):
+    # def dlib_display(self, img, img_gray, rects, mar, MAR_THRESH):
+    def dlib_display(self, img, img_gray, rects, human_id):
         for rect in rects:
             # 画像の中から顔の特徴点を取得する
             shape = self.predictor(img_gray, rect)
             shape = face_utils.shape_to_np(shape)
             for p in shape[48:68]:
-                p[0] = p[0] + self.left
-                p[1] = p[1] + self.upper
+                p[0] = p[0] + self.human_dict[human_id].left
+                p[1] = p[1] + self.human_dict[human_id].upper
             front_ratio = 100 - 100 * abs((shape[16][0]- shape[27][0]) - (shape[27][0]-shape[0][0])) / (shape[16][0]-shape[0][0])
             cv2.putText(img, "front: " + str(front_ratio) + "%", (1500, 1000), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 4)
             # 鼻に関して記述
             nose_p = shape[30]
-            self.nose_x= nose_p[0] + self.left
-            self.nose_y = nose_p[1] + self.upper
-            cv2.circle(img, (self.nose_x, self.nose_y), 3, (0,0,255), thickness=5, lineType=cv2.LINE_8, shift=0)
-            dmar = mar - self.last_mar
+            # self.nose_x= nose_p[0] + self.left
+            # self.nose_y = nose_p[1] + self.upper
+            self.human_dict[human_id].nose_x = nose_p[0] + self.human_dict[human_id].left
+            self.human_dict[human_id].nose_y = nose_p[1] + self.human_dict[human_id].upper
+            cv2.circle(img, (self.human_dict[human_id].nose_x, self.human_dict[human_id].nose_y), 3, (0,0,255), thickness=5, lineType=cv2.LINE_8, shift=0)
+            dmar = self.human_dict[human_id].mar - self.human_dict[human_id].last_mar
             # MARの値を画面に表示する
-            cv2.putText(img, "delta MAR: {:.2f}".format(dmar), (30, 60), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 2)
+            cv2.putText(img, "human ID: {}, delta MAR: {:.2f}".format(human_id, dmar), (30, (human_id+1)*100), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 2)
             # 口が開いている場合、画面に表示する
-            if dmar > MAR_THRESH:
-                self.mouth_count = self.frame
-                self.speaking_flag = 1
-            if self.frame - self.mouth_count < self.MOUTH_OPEN_DURATION_THRESH:
-                cv2.putText(img, "Mouth is Open!", (30,120),
-                cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255),2)
-                self.is_open_flag = True
+            if dmar > self.MAR_THRESH:
+                self.human_dict[human_id].mouth_count = self.frame
+                self.human_dict[human_id].speaking_flag = 1
+            if self.frame - self.human_dict[human_id].mouth_count < self.MOUTH_OPEN_DURATION_THRESH:
+                cv2.putText(img, "Mouth is Open!", (1100, (human_id+1)*100),
+                            cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 2)
+                self.human_dict[human_id].is_open_flag = True
             else:
-                self.is_open_flag = False
-            # 口が動いている状態から口が動かない状態になったら、idを1増やす
-            if self.speaking_flag == 1 and self.is_open_flag == False:
-                self.id += 1
-                self.speaking_flag = 0
+                self.human_dict[human_id].is_open_flag = False
+            # 口が動いている状態から口が動かない状態になったら、talk_idを1増やす
+            if self.human_dict[human_id].speaking_flag == 1 and self.human_dict[human_id].is_open_flag == False:
+                self.talk_id += 1
+                self.human_dict[human_id].speaking_flag = 0
                 print("talk finish!")
-
             # landmarkを画像に書き込む 48:68が口
             mouth_hull = cv2.convexHull(shape[48:68])
             cv2.drawContours(img, [mouth_hull], -1, (0, 0, 255), 2)
@@ -190,20 +225,21 @@ class YOLO2Dlib:
         cv2.putText(image, text, text_pos, cv2.FONT_HERSHEY_SIMPLEX, 1.5, (255, 0, 255), 2)
         return image
 
-    def bbox2image(self, image, pbox):
+    # def bbox2image(self, image, pbox):
+    def bbox2image(self, image, pbox, human_id):
         crop = []
         if pbox.probability > 0.7:
             if pbox.ymin < self.padding:
-                self.upper = 0
+                self.human_dict[human_id].upper = 0
             else:
-                self.upper = pbox.ymin - self.padding
-            self.lower = self.upper + int((pbox.ymax - self.upper) / 2.5)
-            self.left = pbox.xmin + (pbox.xmax - pbox.xmin) / 6
-            self.right = pbox.xmax - (pbox.xmax - pbox.xmin) / 6
+                self.human_dict[human_id].upper = pbox.ymin - self.padding
+            self.human_dict[human_id].lower = self.human_dict[human_id].upper + int((pbox.ymax - self.human_dict[human_id].upper) / 2.5)
+            self.human_dict[human_id].left = pbox.xmin + (pbox.xmax - pbox.xmin) / 6
+            self.human_dict[human_id].right = pbox.xmax - (pbox.xmax - pbox.xmin) / 6
             # dlibで認識できる最大横幅が72px
-            if self.right - self.left > 72:
-                crop = image[self.upper:self.lower, self.left:self.right]
-                cv2.rectangle(image, (self.right, self.upper), (self.left, self.lower), (0, 0, 0), 2)
+            if self.human_dict[human_id].right - self.human_dict[human_id].left > 72:
+                crop = image[self.human_dict[human_id].upper:self.human_dict[human_id].lower, self.human_dict[human_id].left:self.human_dict[human_id].right]
+                cv2.rectangle(image, (self.human_dict[human_id].right, self.human_dict[human_id].upper), (self.human_dict[human_id].left, self.human_dict[human_id].lower), (0, 0, 0), 2)
             else:
                 crop = np.asarray(crop)
         else:
