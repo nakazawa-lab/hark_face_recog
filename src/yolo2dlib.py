@@ -5,6 +5,7 @@
 import rospy
 from sensor_msgs.msg import Image, CameraInfo
 from std_msgs.msg import Float32MultiArray
+from std_msgs.msg import MultiArrayLayout
 from darknet_ros_msgs.msg import BoundingBoxes,BoundingBox
 import datetime
 from PIL import Image as pil
@@ -52,6 +53,7 @@ class YOLO2Dlib:
         # self.last_is_open_flag = False
 
         self.human_dict = {} # それぞれの人に対して生成したインスタンスを格納するディクショナリ
+        self.hark_send_list = [] # HARKに送信するためのデータを格納するリスト, self.human_data_listを格納する
 
         self._bridge = CvBridge()
         self._usb_image_sub = rospy.Subscriber('/usb_cam/image_raw', Image, self.usb_callback)
@@ -135,13 +137,13 @@ class YOLO2Dlib:
         # personを認識した場合
         if len(self.person_bboxes) != 0:
             for human_id, pbox in enumerate(self.person_bboxes):
+                human_data_list = []  # 人の位置データとtalk IDを格納するリスト
                 # print("pbox", pbox)
                 # 複数人の開口判定・閉口判定を同時に行うために
-                # 画面に映る人それぞれに対してインスタンスを生成し、リストに格納
+                # 画面に映る人それぞれに対してインスタンスを生成し、ディクショナリに格納
                 if len(self.human_dict) < len(self.person_bboxes):
                     human_data = Human_data(human_id)
                     self.human_dict[human_id] = human_data
-                print("human_dict:", self.human_dict)
                 # 画像から人の顔の部分を切り出し、顔認識
                 debug_img = self.yolo_display(debug_img, pbox)
                 crop = self.bbox2image(debug_img, pbox, human_id)
@@ -155,13 +157,26 @@ class YOLO2Dlib:
                         debug_img = self.dlib_display(debug_img, img_gray, dlib_rects, human_id)
                         self.human_dict[human_id].last_mar = self.human_dict[human_id].mar
                         # if self.is_open_flag:
-                        x = -(self.human_dict[human_id].nose_x - self.width/2)
-                        y = (self.human_dict[human_id].nose_y - self.height/2)
-                        z = self.f
-                        id = self.talk_id
+                        self.human_dict[human_id].send_x = -(self.human_dict[human_id].nose_x - self.width/2)
+                        self.human_dict[human_id].send_y = (self.human_dict[human_id].nose_y - self.height/2)
+                        self.human_dict[human_id].send_z = self.f
+                        self.human_dict[human_id].talk_id = self.talk_id
+                        # HARKに送信するために各話者のデータをリストに格納していく
+                        human_data_list.append(self.human_dict[human_id].send_x)
+                        human_data_list.append(self.human_dict[human_id].send_y)
+                        human_data_list.append(self.human_dict[human_id].send_z)
+                        human_data_list.append(self.human_dict[human_id].talk_id)
+                        # 各話者のデータを格納したリストをinterface_with_hark.cppに送信するリストに格納
+                        self.hark_send_list.append(human_data_list)
+
                         # if self.last_is_open_flag and not self.is_open_flag:
                         #     self.id += 1
-                        self.send_to_ROS(x, y, z, id)
+                        # self.send_to_ROS(x, y, z, id)
+
+        print(self.hark_send_list)
+        self.send_to_ROS(self.hark_send_list)
+        del self.hark_send_list[:] # リストの中身を空にする
+
         if mode == "usb":
             debug_img = cv2.cvtColor(debug_img, cv2.COLOR_RGBA2BGR)
         debug_img = cv2.resize(debug_img, dsize=None, fx=0.5, fy=0.5)
@@ -187,8 +202,6 @@ class YOLO2Dlib:
             cv2.putText(img, "front: " + str(front_ratio) + "%", (1500, 1000), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 4)
             # 鼻に関して記述
             nose_p = shape[30]
-            # self.nose_x= nose_p[0] + self.left
-            # self.nose_y = nose_p[1] + self.upper
             self.human_dict[human_id].nose_x = nose_p[0] + self.human_dict[human_id].left
             self.human_dict[human_id].nose_y = nose_p[1] + self.human_dict[human_id].upper
             cv2.circle(img, (self.human_dict[human_id].nose_x, self.human_dict[human_id].nose_y), 3, (0,0,255), thickness=5, lineType=cv2.LINE_8, shift=0)
@@ -273,8 +286,15 @@ class YOLO2Dlib:
     #             # print("話していません")
     #             return False
 
-    def send_to_ROS(self, x, y, z, id):
-        array = Float32MultiArray(data=[x, y, z, id])
+    # def send_to_ROS(self, x, y, z, id):
+    #     array = Float32MultiArray(data=[x, y, z, id])
+    #     self._face_recog_pub.publish(array)
+
+    def send_to_ROS(self, send_list):
+        # ROSで送信することができるように1次元データに変換する
+        send_list_numpy = np.array(send_list) # リストをnumpy配列へ変換
+        send_list_reshaped = send_list_numpy.flatten() # 2次元データを1次元データへ変換
+        array = Float32MultiArray(data=send_list_reshaped)
         self._face_recog_pub.publish(array)
 
     def face_angle_debug(self, img, u):

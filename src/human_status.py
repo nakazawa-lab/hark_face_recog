@@ -25,6 +25,12 @@ class Human_data:
         self.mouth_count = 0
         self.speaking_flag = 0
         self.is_open_flag = 0
+        # HARKに送信するデータ
+        self.send_x = 0
+        self.send_y = 0
+        self.send_z = 0
+        self.talk_id = 0
+
 
 
 
