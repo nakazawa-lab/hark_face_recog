@@ -43,7 +43,7 @@ class YOLO2Dlib:
         self.detector = dlib.get_frontal_face_detector()
         self.MAR_THRESH = 0.08
         self.talk_id = 10000 # 会話のid
-        self.speaking_flag = 0 # 話しているときは1にし、話していないときは0にする
+        # self.speaking_flag = 0 # 話しているときは1にし、話していないときは0にする
         # self.mouth_close_count = 0  # 口がどれくらいの時間閉まっているかをカウントするために用意
         # self.last_mar = 1
         self.frame = 0
@@ -106,42 +106,15 @@ class YOLO2Dlib:
         self.person_bboxes = person_bboxes
 
     def image_callback(self, img, mode):
-        # self.is_open_flag = False
         debug_img = img
-        x = 0
-        y = 0
-        z = 0
-        # id = 0
-        # if len(self.person_bboxes) != 0:
-        #     for i, pbox in enumerate(self.person_bboxes):
-        #         print("pbox", pbox)
-        #         debug_img = self.yolo_display(debug_img, pbox)
-        #         crop = self.bbox2image(debug_img, pbox)
-        #         if len(crop) != 0:
-        #             img_gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
-        #             dlib_rects = self.detector(img_gray, 0)
-        #             # もしdlibの顔認識に成功したら
-        #             if len(dlib_rects) != 0:
-        #                 mar = self.face.mouth_aspect_ratio(img_gray, dlib_rects)
-        #                 debug_img = self.dlib_display(debug_img, img_gray, dlib_rects, mar, self.MAR_THRESH)
-        #                 self.last_mar = mar
-        #                 # if self.is_open_flag:
-        #                 x = -(self.nose_x - self.width/2)
-        #                 y = (self.nose_y - self.height/2)
-        #                 z = self.f
-        #                 id = self.id
-        #                 # if self.last_is_open_flag and not self.is_open_flag:
-        #                 #     self.id += 1
-        #                 self.send_to_ROS(x, y, z, id)
-
         # personを認識した場合
         if len(self.person_bboxes) != 0:
             for human_id, pbox in enumerate(self.person_bboxes):
                 human_data_list = []  # 人の位置データとtalk IDを格納するリスト
-                # print("pbox", pbox)
-                # 複数人の開口判定・閉口判定を同時に行うために
-                # 画面に映る人それぞれに対してインスタンスを生成し、ディクショナリに格納
-                if len(self.human_dict) < len(self.person_bboxes):
+                # 複数人の開口判定・閉口判定を同時に行うために画面に映る人それぞれに対してインスタンスを生成し、ディクショナリに格納する。
+                # インスタンスがディクショナリにすでに含まれている場合は生成しない。
+                # if len(self.human_dict) < len(self.person_bboxes):
+                if len(self.human_dict) < len(self.person_bboxes) and human_id not in self.human_dict:
                     human_data = Human_data(human_id)
                     self.human_dict[human_id] = human_data
                 # 画像から人の顔の部分を切り出し、顔認識
@@ -156,11 +129,15 @@ class YOLO2Dlib:
                         # debug_img = self.dlib_display(debug_img, img_gray, dlib_rects, self.human_dict[human_id].mar, self.MAR_THRESH, human_id)
                         debug_img = self.dlib_display(debug_img, img_gray, dlib_rects, human_id)
                         self.human_dict[human_id].last_mar = self.human_dict[human_id].mar
-                        # if self.is_open_flag:
-                        self.human_dict[human_id].send_x = -(self.human_dict[human_id].nose_x - self.width/2)
-                        self.human_dict[human_id].send_y = (self.human_dict[human_id].nose_y - self.height/2)
-                        self.human_dict[human_id].send_z = self.f
-                        self.human_dict[human_id].talk_id = self.talk_id
+                        # 口が動いているときは顔の定位情報をHARKに送る, 口が動いていないときは0をHARKに送る
+                        if self.human_dict[human_id].is_open_flag == True:
+                            self.human_dict[human_id].send_x = -(self.human_dict[human_id].nose_x - self.width/2)
+                            self.human_dict[human_id].send_y = (self.human_dict[human_id].nose_y - self.height/2)
+                            self.human_dict[human_id].send_z = self.f
+                        else:
+                            self.human_dict[human_id].send_x = 0
+                            self.human_dict[human_id].send_y = 0
+                            self.human_dict[human_id].send_z = 0
                         # HARKに送信するために各話者のデータをリストに格納していく
                         human_data_list.append(self.human_dict[human_id].send_x)
                         human_data_list.append(self.human_dict[human_id].send_y)
@@ -168,28 +145,17 @@ class YOLO2Dlib:
                         human_data_list.append(self.human_dict[human_id].talk_id)
                         # 各話者のデータを格納したリストをinterface_with_hark.cppに送信するリストに格納
                         self.hark_send_list.append(human_data_list)
-
-                        # if self.last_is_open_flag and not self.is_open_flag:
-                        #     self.id += 1
-                        # self.send_to_ROS(x, y, z, id)
-
         print(self.hark_send_list)
         self.send_to_ROS(self.hark_send_list)
         del self.hark_send_list[:] # リストの中身を空にする
-
         if mode == "usb":
             debug_img = cv2.cvtColor(debug_img, cv2.COLOR_RGBA2BGR)
         debug_img = cv2.resize(debug_img, dsize=None, fx=0.5, fy=0.5)
         cv2.namedWindow("image")
         cv2.imshow("image", debug_img)
         cv2.waitKey(1)
-        # print('LAST: ' + str(self.last_is_open_flag) + ', NOW: ' + str(self.is_open_flag))
-        print("talk_id:", self.talk_id)
-        # self.last_is_open_flag = self.is_open_flag
         self.frame = self.frame + 1
 
-
-    # def dlib_display(self, img, img_gray, rects, mar, MAR_THRESH):
     def dlib_display(self, img, img_gray, rects, human_id):
         for rect in rects:
             # 画像の中から顔の特徴点を取得する
@@ -211,7 +177,7 @@ class YOLO2Dlib:
             # 口が開いている場合、画面に表示する
             if dmar > self.MAR_THRESH:
                 self.human_dict[human_id].mouth_count = self.frame
-                self.human_dict[human_id].speaking_flag = 1
+                self.human_dict[human_id].speaking_flag = True
             if self.frame - self.human_dict[human_id].mouth_count < self.MOUTH_OPEN_DURATION_THRESH:
                 cv2.putText(img, "Mouth is Open!", (1100, (human_id+1)*100),
                             cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 2)
@@ -219,9 +185,9 @@ class YOLO2Dlib:
             else:
                 self.human_dict[human_id].is_open_flag = False
             # 口が動いている状態から口が動かない状態になったら、talk_idを1増やす
-            if self.human_dict[human_id].speaking_flag == 1 and self.human_dict[human_id].is_open_flag == False:
-                self.talk_id += 1
-                self.human_dict[human_id].speaking_flag = 0
+            if self.human_dict[human_id].speaking_flag == True and self.human_dict[human_id].is_open_flag == False:
+                self.human_dict[human_id].talk_id += 1
+                self.human_dict[human_id].speaking_flag = False
                 print("talk finish!")
             # landmarkを画像に書き込む 48:68が口
             mouth_hull = cv2.convexHull(shape[48:68])
@@ -238,7 +204,6 @@ class YOLO2Dlib:
         cv2.putText(image, text, text_pos, cv2.FONT_HERSHEY_SIMPLEX, 1.5, (255, 0, 255), 2)
         return image
 
-    # def bbox2image(self, image, pbox):
     def bbox2image(self, image, pbox, human_id):
         crop = []
         if pbox.probability > 0.7:
@@ -258,37 +223,6 @@ class YOLO2Dlib:
         else:
             crop = np.asarray(crop)
         return crop
-
-    # mouth_aspect_ratioを使用して口が動いているかを判定する
-    # def mouth_motion_with_mar(self, mar, flag):
-    #
-    #     # 口が閉まっている場合カウントを1ずつ増やしていく
-    #     if mar < self.MAR_THRESH:
-    #         self.mouth_close_count += 1
-    #     # 口が開いている場合にカウントを0にする
-    #     else:
-    #         self.mouth_close_count = 0
-    #
-    #     print("mouth_close_count:", self.mouth_close_count)
-    #
-    #     # カウントが10以上の場合人が話していないと判断する
-    #     if self.mouth_close_count >= 10:
-    #         self.start_flag = 1 # 1度カウントが10を超えたらフラグを立てて(1にして)、以後はカウントが10より小さい場合に口が動いていると判定する
-    #         # print("話していません")
-    #         return False
-    #     else:
-    #         if self.start_flag == 1:
-    #             if self.speaking_flag == 0:
-    #                 self.speaking_flag = 1
-    #             # print("話しています")
-    #             return True
-    #         else:
-    #             # print("話していません")
-    #             return False
-
-    # def send_to_ROS(self, x, y, z, id):
-    #     array = Float32MultiArray(data=[x, y, z, id])
-    #     self._face_recog_pub.publish(array)
 
     def send_to_ROS(self, send_list):
         # ROSで送信することができるように1次元データに変換する

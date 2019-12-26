@@ -29,9 +29,5 @@ class Human_data:
         self.send_x = 0
         self.send_y = 0
         self.send_z = 0
-        self.talk_id = 0
-
-
-
-
+        self.talk_id = 10000 + 1000 * human_id
 
