@@ -123,12 +123,12 @@ class YOLO2Dlib:
                         debug_img = self.dlib_display(debug_img, img_gray, dlib_rects, mar, self.MAR_THRESH)
                         self.last_mar = mar
                         # if self.is_open_flag:
-        x = -(self.nose_x - self.width/2)
-        y = (self.nose_y - self.height/2)
-        z = self.f
-        id = self.id
-        # if self.last_is_open_flag and not self.is_open_flag:
-        #     self.id += 1
+                    x = -(self.nose_x - self.width/2)
+                    y = (self.nose_y - self.height/2)
+                    z = self.f
+                    id = self.id
+        if self.last_is_open_flag and not self.is_open_flag:
+            self.id += 1
         self.send_to_ROS(x, y, z, id)
         if mode == "usb":
             debug_img = cv2.cvtColor(debug_img, cv2.COLOR_RGBA2BGR)
@@ -136,8 +136,6 @@ class YOLO2Dlib:
         cv2.namedWindow("image")
         cv2.imshow("image", debug_img)
         cv2.waitKey(1)
-        print('LAST: ' + str(self.last_is_open_flag) + ', NOW: ' + str(self.is_open_flag))
-        print(self.id)
         self.last_is_open_flag = self.is_open_flag
         self.frame = self.frame + 1
 
