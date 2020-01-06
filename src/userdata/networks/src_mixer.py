@@ -15,7 +15,7 @@ class HarkNode(harkbasenode.HarkBaseNode):
 
     def calculate(self):
         self.output_srcs = []
-        # self.set_src(self.SRC_MUSIC)
+        self.set_src(self.SRC_MUSIC)
         if len(self.SRC_ROS)!=0:
             self.tmp_src = self.SRC_ROS
         self.set_src(self.tmp_src)

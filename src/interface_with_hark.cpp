@@ -27,7 +27,7 @@ void HarkInterface::callback(const std_msgs::Float32MultiArray::ConstPtr& msg)
     int i = 0;
     int num_speaker = 0;
     int human_data[10][10]; // 話者の位置とtalk_idを格納する２次元配列
-    // subscriberしたメッセージを取り出して、face_xyz_arrayに格納する
+    // subscribeしたメッセージを取り出して、face_xyz_arrayに格納する
     for(std::vector<float>::const_iterator it = msg->data.begin(); it != msg->data.end(); ++it)
     {
       face_xyz_array[i] = *it;
@@ -41,7 +41,7 @@ void HarkInterface::callback(const std_msgs::Float32MultiArray::ConstPtr& msg)
       // kinectの座標系とHARKの座標系を合わせる
       // 複数人のデータを{0:x, 1:y, 2:z, 3:talk_id}の順番で格納
       human_data[human_id][0] = face_xyz_array[4 * human_id + 2];
-      human_data[human_id][1] = face_xyz_array[4 * human_id ];
+      human_data[human_id][1] = face_xyz_array[4 * human_id];
       human_data[human_id][2] = face_xyz_array[4 * human_id + 1];
       human_data[human_id][3] = face_xyz_array[4 * human_id + 3];
     }

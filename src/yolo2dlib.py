@@ -41,7 +41,7 @@ class YOLO2Dlib:
         self.face = dm.FaceDLib(predictor_path)
         self.predictor = dlib.shape_predictor(predictor_path)
         self.detector = dlib.get_frontal_face_detector()
-        self.MAR_THRESH = 0.08
+        self.MAR_THRESH = 0.07
         # self.talk_id = 10000 # 会話のid
         # self.speaking_flag = 0 # 話しているときは1にし、話していないときは0にする
         # self.mouth_close_count = 0  # 口がどれくらいの時間閉まっているかをカウントするために用意

@@ -46,7 +46,7 @@
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate (Hz) [default: 16000]."/>
       <Parameter name="DEVICETYPE" type="string" value="ALSA" description="Device type [default: WS]."/>
       <Parameter name="GAIN" type="string" value="0dB" description="capture gain (dB)  [default: 0dB]."/>
-      <Parameter name="DEVICE" type="string" value="plughw:4,0" description="Device name or IP address [default: 127.0.0.1]"/>
+      <Parameter name="DEVICE" type="string" value="plughw:3,0" description="Device name or IP address [default: 127.0.0.1]"/>
     </Node>
     <Node name="node_RosHarkMsgsSubscriber_1" type="RosHarkMsgsSubscriber" x="150" y="610">
       <Parameter name="STREAM_SELECTION" type="string" value="HarkSource" description="Selector of stream you want to realize. All other subscription will be disabled."/>
@@ -89,7 +89,7 @@
       <Parameter name="MIN_ID" type="int" value="0" description="Minimum ID of source locations. ID is given from MIN_ID and incremented for the latter sources."/>
     </Node>
     <Node name="node_SourceIntervalExtender_1" type="SourceIntervalExtender" x="490" y="610">
-      <Parameter name="PREROLL_LENGTH" type="int" value="200" description="Preroll length in frame. [default: 50]"/>
+      <Parameter name="PREROLL_LENGTH" type="int" value="50" description="Preroll length in frame. [default: 50]"/>
     </Node>
     <Link from="node_MultiFFT_1" output="OUTPUT" to="node_sub_localization_1" input="WAV"/>
     <Link from="node_sub_separation_1" output="POSTFLT_SPEC" to="node_sub_recognition_1" input="SPEC"/>

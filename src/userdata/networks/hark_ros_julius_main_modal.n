@@ -2,7 +2,7 @@
 <?xml version="1.0"?>
 <Document>
   <Network type="subnet" name="MAIN">
-    <Node name="node_MAIN_LOOP_1" type="MAIN_LOOP" x="720" y="90">
+    <Node name="node_MAIN_LOOP_1" type="MAIN_LOOP" x="720" y="100">
       <Parameter name="LENGTH" type="int" value="512" description="The frame length of each channel (in samples) [default: 512]."/>
       <Parameter name="A_MATRIX_" type="subnet_param" value="ARG1" description="subnet_param"/>
       <Parameter name="TF_CONJ_FILENAME_" type="subnet_param" value="ARG2" description="subnet_param"/>
@@ -10,14 +10,14 @@
       <Parameter name="ADVANCE" type="int" value="160" description="subnet_param"/>
       <Parameter name="PERIOD" type="int" value="20" description="subnet_param"/>
     </Node>
-    <Node name="node_RosNodeGenerator_1" type="RosNodeGenerator" x="100" y="320">
+    <Node name="node_RosNodeGenerator_1" type="RosNodeGenerator" x="100" y="330">
       <Parameter name="NODE_NAME" type="string" value="HARK_MASTER_NODE" description="Node name for ROS"/>
     </Node>
-    <Node name="node_InputStream_1" type="InputStream" x="400" y="110">
+    <Node name="node_InputStream_1" type="InputStream" x="400" y="120">
       <Parameter name="TYPE" type="string" value="" description="Type of stream: stream, fd, or FILE (default stream)"/>
       <Parameter name="RETRY" type="int" value="" description="If set to N, InputStream will retry N times on open fail"/>
     </Node>
-    <Node name="node_Constant_1" type="Constant" x="110" y="120">
+    <Node name="node_Constant_1" type="Constant" x="110" y="130">
       <Parameter name="VALUE" type="subnet_param" value="ARG4" description="The value"/>
     </Node>
     <Link from="node_InputStream_1" output="OUTPUT" to="node_MAIN_LOOP_1" input="INPUT"/>
@@ -320,7 +320,7 @@
       <Parameter name="DEBUG" type="bool" value="false" description="Debug option. If the parameter is true, this node outputs sound localization results to a standard output."/>
     </Node>
     <Node name="node_SourceTracker_1" type="SourceTracker" x="490" y="130">
-      <Parameter name="THRESH" type="float" value="35" description="Power threshold for localization results. A localization result with higher power than THRESH is tracked, otherwise ignored."/>
+      <Parameter name="THRESH" type="float" value="34" description="Power threshold for localization results. A localization result with higher power than THRESH is tracked, otherwise ignored."/>
       <Parameter name="PAUSE_LENGTH" type="float" value="1200" description="Life duration of source in ms. When any localization result for a source is found for more than PAUSE_LENGTH / 10 iterations, the source is terminated. [default: 800]"/>
       <Parameter name="MIN_SRC_INTERVAL" type="float" value="20" description="Source interval threshold in degree. When the angle between a localization result and a source is smaller than MIN_SRC_INTERVAL, the same ID is given to the localization result. [default: 20]"/>
       <Parameter name="MIN_ID" type="int" value="0" description="Minimum ID of source locations. MIN_ID should be greater than 0 or equal."/>
