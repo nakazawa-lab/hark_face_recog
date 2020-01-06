@@ -29,7 +29,7 @@ class YOLO2Dlib:
         self.set_camera_info()
 
         self.person_bboxes = []
-        self.padding = 10
+        self.padding = 40
         self.c = 0
         self.debug_image = np.zeros((800, 800, 3))
         self.here_path = os.path.dirname(__file__)
@@ -39,13 +39,11 @@ class YOLO2Dlib:
         self.face = dm.FaceDLib(predictor_path)
         self.predictor = dlib.shape_predictor(predictor_path)
         self.detector = dlib.get_frontal_face_detector()
-        self.MAR_THRESH = 0.06
         self.id = 10000 # 人物判定用のid
         self.speaking_flag = 0 # 話している間１にし、話していないときは0にする
-        # self.mouth_close_count = 0  # 口がどれくらいの時間閉まっているかをカウントするために用意
-        # self.start_flag = 0  # 口の動きを判定し始める際の合図
         self.last_mar = 1
         self.frame = 0
+        self.MAR_THRESH = 0.04
         self.MOUTH_OPEN_DURATION_THRESH = 25
         self.mouth_count = self.MOUTH_OPEN_DURATION_THRESH * (-1)
         self.is_open_flag = False
@@ -103,12 +101,13 @@ class YOLO2Dlib:
         self.person_bboxes = person_bboxes
 
     def image_callback(self, img, mode):
+        print("get image id: " + str(self.id))
         self.is_open_flag = False
         debug_img = img
         x = 0
         y = 0
         z = 0
-        # id = 0
+        id = 10000000
         # personを認識した場合
         if len(self.person_bboxes) != 0:
             for i, pbox in enumerate(self.person_bboxes):
@@ -122,11 +121,11 @@ class YOLO2Dlib:
                         mar = self.face.mouth_aspect_ratio(img_gray, dlib_rects)
                         debug_img = self.dlib_display(debug_img, img_gray, dlib_rects, mar, self.MAR_THRESH)
                         self.last_mar = mar
-                        # if self.is_open_flag:
-                    x = -(self.nose_x - self.width/2)
-                    y = (self.nose_y - self.height/2)
-                    z = self.f
-                    id = self.id
+                        if self.is_open_flag:
+                            x = -(self.nose_x - self.width/2)
+                            y = (self.nose_y - self.height/2)
+                            z = self.f
+                            id = self.id
         if self.last_is_open_flag and not self.is_open_flag:
             self.id += 1
         self.send_to_ROS(x, y, z, id)

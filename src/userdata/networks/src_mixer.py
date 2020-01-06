@@ -19,10 +19,9 @@ class HarkNode(harkbasenode.HarkBaseNode):
         if len(self.SRC_ROS)!=0:
             self.tmp_src = self.SRC_ROS
         self.set_src(self.tmp_src)
-        # for s in self.SRC_OFFSET:
-        #     s['id'] += 20000
+        for s in self.SRC_OFFSET:
+            s['id'] += 20000
         # self.set_src(self.SRC_OFFSET)
-        print(self.outputValues["OUTPUT"])
         self.outputValues["OUTPUT"] = self.output_srcs
 
     def set_src(self, srcs):
