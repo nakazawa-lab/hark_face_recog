@@ -46,7 +46,7 @@
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate (Hz) [default: 16000]."/>
       <Parameter name="DEVICETYPE" type="string" value="ALSA" description="Device type [default: WS]."/>
       <Parameter name="GAIN" type="string" value="0dB" description="capture gain (dB)  [default: 0dB]."/>
-      <Parameter name="DEVICE" type="string" value="plughw:3,0" description="Device name or IP address [default: 127.0.0.1]"/>
+      <Parameter name="DEVICE" type="string" value="plughw:2,0" description="Device name or IP address [default: 127.0.0.1]"/>
     </Node>
     <Node name="node_RosHarkMsgsSubscriber_1" type="RosHarkMsgsSubscriber" x="240" y="460">
       <Parameter name="STREAM_SELECTION" type="string" value="HarkSource" description="Selector of stream you want to realize. All other subscription will be disabled."/>
@@ -98,21 +98,21 @@
     <NetCondition name="CONDITION" node="node_AudioStreamFromMic_1" terminal="NOT_EOF"/>
   </Network>
   <Network type="subnet" name="sub_separation">
-    <Node name="node_PowerCalcForMap_1" type="PowerCalcForMap" x="440" y="120">
+    <Node name="node_PowerCalcForMap_1" type="PowerCalcForMap" x="460" y="150">
       <Parameter name="POWER_TYPE" type="string" value="POW" description="Measure for computing the POW or MAG (i.e. power or magnitude) of the complex spectrum [default: POW]"/>
     </Node>
-    <Node name="node_CalcSpecAddPower_1" type="CalcSpecAddPower" x="1230" y="140">
+    <Node name="node_CalcSpecAddPower_1" type="CalcSpecAddPower" x="1250" y="170">
     </Node>
-    <Node name="node_CalcSpecSubGain_1" type="CalcSpecSubGain" x="610" y="380">
+    <Node name="node_CalcSpecSubGain_1" type="CalcSpecSubGain" x="630" y="410">
       <Parameter name="ALPHA" type="float" value="1.0" description="Overestimation factor."/>
       <Parameter name="BETA" type="float" value="0.0" description="Spectral floor."/>
       <Parameter name="SS_METHOD" type="int" value="2" description="1: Magnitude Spectral Subtraction, 2: Power SS"/>
     </Node>
-    <Node name="node_EstimateLeak_1" type="EstimateLeak" x="800" y="240">
+    <Node name="node_EstimateLeak_1" type="EstimateLeak" x="820" y="270">
       <Parameter name="LEAK_FACTOR" type="float" value="0.25" description="Leak factor [default:0.25]"/>
       <Parameter name="OVER_CANCEL_FACTOR" type="float" value="1" description="Over cancel value [default:1]"/>
     </Node>
-    <Node name="node_HRLE_1" type="HRLE" x="860" y="100">
+    <Node name="node_HRLE_1" type="HRLE" x="880" y="130">
       <Parameter name="LX" type="float" value="0.20" description="Lx value of estimation, e.g. Lx=0 -&amp;gt; Minimum (MCRA), Lx=0.5 -&amp;gt; Median , Lx=1.0 -&amp;gt; Maximum [default:0.85]"/>
       <Parameter name="TIME_CONST_METHOD" type="string" value="LEGACY" description="Time constant value definition, &quot;LEGACY&quot; uses time constant value for HARK 2.0.0,&quot;MILLISECOND&quot; uses time constant value in frames. [default: LEGACY]"/>
       <Parameter name="TIME_CONSTANT" type="float" value="16000" description="Time constant for exponential decay window in samples [default:]"/>
@@ -124,13 +124,13 @@
       <Parameter name="STEP_LEVEL" type="float" value="0.2" description="Step level of histogram bin (Width of each histogram bin) in dB [default:0.2]"/>
       <Parameter name="DEBUG" type="bool" value="false" description="Prints the histogram for each 100 iterations."/>
     </Node>
-    <Node name="node_SpectralGainFilter_1" type="SpectralGainFilter" x="590" y="510">
+    <Node name="node_SpectralGainFilter_1" type="SpectralGainFilter" x="610" y="540">
     </Node>
-    <Node name="node_WhiteNoiseAdder_1" type="WhiteNoiseAdder" x="1270" y="390">
+    <Node name="node_WhiteNoiseAdder_1" type="WhiteNoiseAdder" x="1290" y="420">
       <Parameter name="LENGTH" type="subnet_param" value="LENGTH" description="Size of window length in sample. [default: 512]"/>
       <Parameter name="WN_LEVEL" type="float" value="15" description="An amplitude of white noise to be added. [default: 0]"/>
     </Node>
-    <Node name="node_GHDSS_1" type="GHDSS" x="80" y="70">
+    <Node name="node_GHDSS_1" type="GHDSS" x="100" y="100">
       <Parameter name="LENGTH" type="int" value="512" description="The frame length of each channel (in samples) [default: 512]."/>
       <Parameter name="ADVANCE" type="int" value="160" description="The shift length beween adjacent frames (in samples)[default: 160]."/>
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate (Hz) [default: 16000]."/>
@@ -152,14 +152,14 @@
       <Parameter name="EXPORT_W_FILENAME" type="string" value="" description="The filename to export W."/>
       <Parameter name="UPDATE" type="string" value="STEP" description="The update method of separation matrix. &quot;STEP&quot; updates W sequentially, i.e., based on SS and then on LC cost. &quot;TOTAL&quot; updates W based on an integrated value of SS and LC cost [default: STEP]"/>
     </Node>
-    <Node name="node_SaveWavePCM_1" type="SaveWavePCM" x="1450" y="560">
+    <Node name="node_SaveWavePCM_1" type="SaveWavePCM" x="1470" y="590">
       <Parameter name="BASENAME" type="subnet_param" value="BASENAME" description="Basename of files. [default: sep_]"/>
       <Parameter name="ADVANCE" type="int" value="160" description="The shift length beween adjacent frames (in samples)[default: 160]."/>
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate (in samples)[default: 16000]."/>
       <Parameter name="BITS" type="string" value="int16" description="Bit format of samples. int16 and int24  bits are supported."/>
       <Parameter name="INPUT_BITS" type="string" value="as_BITS" description="Bit format of input wav file."/>
     </Node>
-    <Node name="node_Synthesize_1" type="Synthesize" x="1140" y="690">
+    <Node name="node_Synthesize_1" type="Synthesize" x="1160" y="720">
       <Parameter name="LENGTH" type="int" value="512" description="Size of window length in sample. [default: 512]"/>
       <Parameter name="ADVANCE" type="int" value="160" description="The length in sample between a frame and a previous frame. [default: 160]"/>
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate (Hz) [default: 16000]."/>
@@ -168,7 +168,7 @@
       <Parameter name="WINDOW" type="string" value="HAMMING" description="A window function for overlap-add. WINDOW should be CONJ, HAMMING, RECTANGLE, or HANNING. [default: HAMMING]"/>
       <Parameter name="OUTPUT_GAIN" type="float" value="1.0" description="Output gain factor. [default: 1.0]"/>
     </Node>
-    <Node name="node_BeamForming_1" type="BeamForming" x="740" y="700">
+    <Node name="node_BeamForming_1" type="BeamForming" x="760" y="730">
       <Parameter name="LENGTH" type="int" value="512" description="The frame length of each channel (in samples) [default: 512]."/>
       <Parameter name="ADVANCE" type="int" value="160" description="The shift length beween adjacent frames (in samples)[default: 160]."/>
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate (Hz) [default: 16000]."/>
@@ -211,10 +211,10 @@
     <Link from="node_Synthesize_1" output="OUTPUT" to="node_SaveWavePCM_1" input="INPUT"/>
     <Link from="node_BeamForming_1" output="OUTPUT" to="node_WhiteNoiseAdder_1" input="INPUT"/>
     <Link from="node_BeamForming_1" output="OUTPUT" to="node_Synthesize_1" input="INPUT"/>
-    <NetOutput name="POSTFLT_SPEC" node="node_WhiteNoiseAdder_1" terminal="OUTPUT" object_type="Map&lt;int,ObjectRef&gt;" description="The white-noise-added spectrum. The key is source ID, and the value is output spectrum (Vector&lt;complex&lt;float&gt; &gt;)."/>
-    <NetOutput name="OUTPUT" node="node_SaveWavePCM_1" terminal="OUTPUT" object_type="Map&amp;lt;int,ObjectRef&amp;gt;" description="The same as input."/>
     <NetInput name="INPUT_FRAMES" node="node_BeamForming_1" terminal="INPUT_FRAMES" object_type="Matrix&amp;lt;complex&amp;lt;float&amp;gt; &amp;gt;" description="Input multi-channel spectrum. A row is a channel, and a column is a spectrum for the corresponding channel."/>
     <NetInput name="INPUT_SOURCES" node="node_BeamForming_1" terminal="INPUT_SOURCES" object_type="Vector&amp;lt;ObjectRef&amp;gt;" description="Source locations with ID. Each element of the vector is a source location with ID specified by &quot;Source&quot;."/>
+    <NetOutput name="POSTFLT_SPEC" node="node_WhiteNoiseAdder_1" terminal="OUTPUT" object_type="Map&lt;int,ObjectRef&gt;" description="The white-noise-added spectrum. The key is source ID, and the value is output spectrum (Vector&lt;complex&lt;float&gt; &gt;)."/>
+    <NetOutput name="OUTPUT" node="node_SaveWavePCM_1" terminal="OUTPUT" object_type="Map&amp;lt;int,ObjectRef&amp;gt;" description="The same as input."/>
   </Network>
   <Network type="subnet" name="sub_recognition">
     <Node name="node_Delta_1" type="Delta" x="390" y="530">
