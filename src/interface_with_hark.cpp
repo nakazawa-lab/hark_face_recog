@@ -61,10 +61,10 @@ void HarkInterface::publish_to_hark(int data_array[10][10], int num_speaker)
     // 話者ごとに位置と方向、talk_idをHarkSourceValMsgに格納 → HarkSourceMsgにまとめて格納し、HARKへ送信
     for(int human_id=0; human_id<num_speaker; human_id++)
     {
-        x = data_array[human_id][4 * human_id];
-        y = data_array[human_id][4 * human_id + 1];
-        z = data_array[human_id][4 * human_id + 2];
-        talk_id = data_array[human_id][4 * human_id + 3];
+        x = data_array[human_id][0];
+        y = data_array[human_id][1];
+        z = data_array[human_id][2];
+        talk_id = data_array[human_id][3];
         theta = 180.0 / M_PI * atan2(y, x);
         // 話者の位置と方向、talk_idをHarkSourceValMsgに格納
         hark_msgs::HarkSourceVal HarkSourceValMsg;

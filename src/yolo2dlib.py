@@ -113,7 +113,6 @@ class YOLO2Dlib:
                 human_data_list = []  # 人の位置データとtalk IDを格納するリスト
                 # 複数人の開口判定・閉口判定を同時に行うために画面に映る人それぞれに対してインスタンスを生成し、ディクショナリに格納する。
                 # インスタンスがディクショナリにすでに含まれている場合は生成しない。
-                # if len(self.human_dict) < len(self.person_bboxes):
                 if len(self.human_dict) < len(self.person_bboxes) and human_id not in self.human_dict:
                     human_data = Human_data(human_id)
                     self.human_dict[human_id] = human_data
@@ -126,7 +125,6 @@ class YOLO2Dlib:
                     # もしdlibの顔認識に成功したら
                     if len(dlib_rects) != 0:
                         self.human_dict[human_id].mar = self.face.mouth_aspect_ratio(img_gray, dlib_rects)
-                        # debug_img = self.dlib_display(debug_img, img_gray, dlib_rects, self.human_dict[human_id].mar, self.MAR_THRESH, human_id)
                         debug_img = self.dlib_display(debug_img, img_gray, dlib_rects, human_id)
                         self.human_dict[human_id].last_mar = self.human_dict[human_id].mar
                         # 口が動いているときは顔の定位情報をHARKに送る, 口が動いていないときは0をHARKに送る
