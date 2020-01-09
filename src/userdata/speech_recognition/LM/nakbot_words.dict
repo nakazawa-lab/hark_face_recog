@@ -1,15 +1,7 @@
-0	[<s>]	silB
-1	[</s>]	silE
-2   [right]	r a i t o
-2   [left]	r e f u t o
-2   [go]	g o:
-2   [back]	b a q k u
-2   [stop]	s u t o q p u
-2   [come]	k a m u
-2   [push]	p u q sh u
-2   [stay]	s u t e i
-2   [sleep]	s u r i: p u
-2   [yes]	i e s u
-2   [no]      n o:
-2   [ok]	o: k e:
-2   [nakbot]	n a q k u b o q t o
+<s>	[]	silB
+</s>	[。]	silE
+2   [go]	m a e n i s u s u m e
+2   [back]	u s i r o n i s a g a r e 
+2   [right]	m a w a r e m i g i
+2   [left]	m a w a r e h i d a r i
+2   [come]	k o q t i n i o i d e

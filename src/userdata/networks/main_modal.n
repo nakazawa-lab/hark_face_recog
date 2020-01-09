@@ -50,7 +50,7 @@
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling Rate (Hz)."/>
       <Parameter name="A_MATRIX" type="subnet_param" value="A_MATRIX_" description="subnet_param"/>
       <Parameter name="PERIOD" type="subnet_param" value="PERIOD" description="subnet_param"/>
-      <Parameter name="THRESH" type="float" value="30" description="subnet_param"/>
+      <Parameter name="THRESH" type="float" value="35" description="subnet_param"/>
     </Node>
     <Node name="node_RosHarkMsgsSubscriber_1" type="RosHarkMsgsSubscriber" x="230" y="610">
       <Parameter name="STREAM_SELECTION" type="string" value="HarkSource" description="Selector of stream you want to realize. All other subscription will be disabled."/>

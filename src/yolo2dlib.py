@@ -43,11 +43,16 @@ class YOLO2Dlib:
         self.speaking_flag = 0 # 話している間１にし、話していないときは0にする
         self.last_mar = 1
         self.frame = 0
-        self.MAR_THRESH = 0.04
-        self.MOUTH_OPEN_DURATION_THRESH = 25
+        self.MAR_THRESH = 0.07
+        self.MOUTH_OPEN_DURATION_THRESH = 40
         self.mouth_count = self.MOUTH_OPEN_DURATION_THRESH * (-1)
         self.is_open_flag = False
         self.last_is_open_flag = False
+
+        self.x = 0
+        self.y = 0
+        self.z = 0
+        # self.id = 10000000
 
 
         self._bridge = CvBridge()
@@ -101,13 +106,9 @@ class YOLO2Dlib:
         self.person_bboxes = person_bboxes
 
     def image_callback(self, img, mode):
-        print("get image id: " + str(self.id))
         self.is_open_flag = False
         debug_img = img
-        x = 0
-        y = 0
-        z = 0
-        id = 10000000
+
         # personを認識した場合
         if len(self.person_bboxes) != 0:
             for i, pbox in enumerate(self.person_bboxes):
@@ -121,14 +122,24 @@ class YOLO2Dlib:
                         mar = self.face.mouth_aspect_ratio(img_gray, dlib_rects)
                         debug_img = self.dlib_display(debug_img, img_gray, dlib_rects, mar, self.MAR_THRESH)
                         self.last_mar = mar
-                        if self.is_open_flag:
-                            x = -(self.nose_x - self.width/2)
-                            y = (self.nose_y - self.height/2)
-                            z = self.f
-                            id = self.id
+                        # if self.is_open_flag:
+                        self.x = -(self.nose_x - self.width/2)
+                        self.y = (self.nose_y - self.height/2)
+                        self.z = self.f
+        if self.frame - self.mouth_count < self.MOUTH_OPEN_DURATION_THRESH:
+            cv2.putText(img, "Mouth is Open!", (30, 120),
+                        cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 2)
+            self.is_open_flag = True
+            id = self.id
+        else:
+            self.is_open_flag = False
+            self.x = 0
+            self.y = 0
+            self.z = 0
+            id = 10000000000
         if self.last_is_open_flag and not self.is_open_flag:
             self.id += 1
-        self.send_to_ROS(x, y, z, id)
+        self.send_to_ROS(self.x, self.y, self.z, id)
         if mode == "usb":
             debug_img = cv2.cvtColor(debug_img, cv2.COLOR_RGBA2BGR)
         debug_img = cv2.resize(debug_img, dsize=None, fx=0.5, fy=0.5)
@@ -160,12 +171,12 @@ class YOLO2Dlib:
             # 口が開いている場合、画面に表示する
             if dmar > MAR_THRESH:
                 self.mouth_count = self.frame
-            if self.frame - self.mouth_count < self.MOUTH_OPEN_DURATION_THRESH:
-                cv2.putText(img, "Mouth is Open!", (30,120),
-                cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255),2)
-                self.is_open_flag = True
-            else:
-                self.is_open_flag = False
+            # if self.frame - self.mouth_count < self.MOUTH_OPEN_DURATION_THRESH:
+            #     cv2.putText(img, "Mouth is Open!", (30,120),
+            #     cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255),2)
+            #     self.is_open_flag = True
+            # else:
+            #     self.is_open_flag = False
             # landmarkを画像に書き込む 48:68が口
             mouth_hull = cv2.convexHull(shape[48:68])
             cv2.drawContours(img, [mouth_hull], -1, (0, 0, 255), 2)
