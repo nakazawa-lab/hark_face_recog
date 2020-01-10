@@ -15,7 +15,8 @@ subjects = os.listdir(dataset_path)
 for subject in subjects:
     for cmd in cmd_array:
         file.write(subject + '-' + cmd)
-        e0 = "pkill -KILL -f 'roslaunch hark_face_recog dataset.launch"
+
+        e0 = "pkill -KILL -f 'roslaunch hark_face_recog dataset.launch'"
         print(e0)
 
         e1 = 'rm ' + movie_path + '*'
@@ -26,8 +27,8 @@ for subject in subjects:
 
         e3 = 'roslaunch hark_face_recog dataset.launch &' + \
             'sleep 2 && ' + \
-             './hark_ros_julius_main_modal.n ../config/tamago_geotf.zip ../config/tamago_geotf.zip ' \
-             '../records/sep_files/record_' + subject + '_' + cmd + ' ' \
+             './main_modal.n ../config/tamago_geotf.zip ../config/tamago_geotf.zip ' \
+             '../records/sep_files/' + subject + '_' + cmd + ' ' \
              + dataset_path + subject + '/' + cmd + "*.wav "
         print(e3)
 
@@ -38,3 +39,7 @@ for subject in subjects:
 
         print('')
         file.write('\n')
+
+e4 = 'roslaunch hark_face_recog dataset.launch'
+os.system(e4)
+os.system(e0)

@@ -31,7 +31,7 @@ class YOLO2Dlib:
         self.set_camera_info()
 
         self.person_bboxes = []
-        self.padding = 10
+        self.padding = 40
         self.c = 0
         self.debug_image = np.zeros((800, 800, 3))
         self.here_path = os.path.dirname(__file__)

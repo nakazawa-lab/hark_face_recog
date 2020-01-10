@@ -16,9 +16,9 @@ class HarkModalPub(harkbasenode.HarkBaseNode):
         self.outputValues["OUTPUT"] = 1
         self._count_pub.publish(self.c)
 
-        print("=" * 14 + str(type(self.INPUT)) + "=" * 14)
-        print(self.INPUT)
-        print("frame no." + str(self.c))
-        print("")
+        # print("=" * 14 + str(type(self.INPUT)) + "=" * 14)
+        # print(self.INPUT)
+        # print("frame no." + str(self.c))
+        # print("")
 
         self.c = self.c + 1

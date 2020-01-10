@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <hark_xml version="1.3">
     <positions frame="0">
     </positions>
@@ -5685,3 +5686,5 @@
         <position x="0.7337" y="-0.6157" z="0.2874" id="6"/>
     </positions>
 </hark_xml>
+=======
+>>>>>>> master
