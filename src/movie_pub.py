@@ -15,18 +15,20 @@ from std_msgs.msg import Int32
 class MultiModal:
     def __init__(self):
         self.frame_no = 0
+        self.length = 512
+        self.advance = 160
         np.set_printoptions(threshold=0)
         self._bridge = CvBridge()
-        self._movie_data_pub = rospy.Publisher('moviedata_py', Image, queue_size=10)
-        self._HarkWave_count_sub = rospy.Subscriber('hp_count', Int32, self.count_callback)
-        # self._image_debug_sub = rospy.Subscriber('moviedata_py', Image, self.img_debug_callback)
 
         self.here_path = os.path.dirname(__file__)
         if self.here_path == "":
             self.here_path = "."
 
-        self.length = 512
-        self.advance = 160
+        self.read_frames(self.here_path  + "/input/mp4file")
+        self.set_audio_sampling_rate(16000)
+
+        self._movie_data_pub = rospy.Publisher('moviedata_py', Image, queue_size=10)
+        self._HarkWave_count_sub = rospy.Subscriber('/HarkWave', HarkWave, self.count_callback)
 
     def set_audio_sampling_rate(self, rate):
         self.audio_sr = rate
@@ -45,8 +47,7 @@ class MultiModal:
             ret, cv_img = self.cap.read()
 
     def count_callback(self, data):
-        audio_frame_no = data.data
-        print(audio_frame_no)
+        audio_frame_no = data.count
         imgs = self.frames
         audio_samples = (audio_frame_no + 1) * self.advance
         if audio_samples > (self.frame_no + 1) * self.sample_threshold:
@@ -74,8 +75,8 @@ if __name__ == '__main__':
 
     # 動画データに関する処理
     movie = MultiModal()
-    movie.read_frames(movie.here_path + "/input/mp4file")
-    movie.set_audio_sampling_rate(16000)
+    # movie.read_frames(movie.here_path + "/input/mp4file")
+    # movie.set_audio_sampling_rate(16000)
 
     rospy.loginfo('running..')
     rospy.spin()

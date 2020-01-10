@@ -46,7 +46,7 @@
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate (Hz) [default: 16000]."/>
       <Parameter name="DEVICETYPE" type="string" value="ALSA" description="Device type [default: WS]."/>
       <Parameter name="GAIN" type="string" value="0dB" description="capture gain (dB)  [default: 0dB]."/>
-      <Parameter name="DEVICE" type="string" value="plughw:3,0" description="Device name or IP address [default: 127.0.0.1]"/>
+      <Parameter name="DEVICE" type="string" value="plughw:2,0" description="Device name or IP address [default: 127.0.0.1]"/>
     </Node>
     <Node name="node_RosHarkMsgsSubscriber_1" type="RosHarkMsgsSubscriber" x="100" y="670">
       <Parameter name="STREAM_SELECTION" type="string" value="HarkSource" description="Selector of stream you want to realize. All other subscription will be disabled."/>
@@ -73,7 +73,7 @@
       <Parameter name="VERTICAL_RANGE" type="object" value="&lt;Vector&lt;int&gt; -180 180&gt;" description="Plot range of the vertical axis"/>
       <Parameter name="PLOT_TYPE" type="string" value="AZIMUTH" description="Coordinate setting for the plotting"/>
     </Node>
-    <Node name="node_PyCodeExecutor3_1" type="PyCodeExecutor3" x="790" y="530">
+    <Node name="node_PyCodeExecutor3_1" type="PyCodeExecutor3" x="730" y="500">
       <Parameter name="DIRECTORY_NAME" type="string" value="." description="[optional] The directory name of your python code. It will inserted to sys.path."/>
       <Parameter name="MODULENAME" type="string" value="src_mixer" description="Your python module name to import, i.e., your python code file name WITHOUT extension."/>
       <Parameter name="CLASSNAME" type="string" value="HarkNode" description="Your class name to call in this node."/>
@@ -88,6 +88,9 @@
       <Parameter name="POWER" type="object" value="&lt;Vector&lt;float&gt; &gt;" description="Power of sources. Each element represents a power of each source."/>
       <Parameter name="MIN_ID" type="int" value="0" description="Minimum ID of source locations. ID is given from MIN_ID and incremented for the latter sources."/>
     </Node>
+    <Node name="node_SourceIntervalExtender_1" type="SourceIntervalExtender" x="430" y="610">
+      <Parameter name="PREROLL_LENGTH" type="int" value="200" description="Preroll length in frame. [default: 50]"/>
+    </Node>
     <Link from="node_MultiFFT_1" output="OUTPUT" to="node_sub_localization_1" input="WAV"/>
     <Link from="node_sub_separation_1" output="POSTFLT_SPEC" to="node_sub_recognition_1" input="SPEC"/>
     <Link from="node_AudioStreamFromMic_1" output="AUDIO" to="node_MultiGain_1" input="INPUT"/>
@@ -95,10 +98,11 @@
     <Link from="node_MultiFFT_1" output="OUTPUT" to="node_sub_separation_1" input="INPUT_FRAMES"/>
     <Link from="node_ConstantLocalization_1" output="SOURCES" to="node_PyCodeExecutor3_1" input="SRC_OFFSET"/>
     <Link from="node_sub_localization_1" output="OUTPUT" to="node_PyCodeExecutor3_1" input="SRC_MUSIC"/>
+    <Link from="node_RosHarkMsgsSubscriber_1" output="SRCOUT" to="node_SourceIntervalExtender_1" input="SOURCES"/>
+    <Link from="node_SourceIntervalExtender_1" output="OUTPUT" to="node_PyCodeExecutor3_1" input="SRC_ROS"/>
     <Link from="node_PyCodeExecutor3_1" output="OUTPUT" to="node_DisplayLocalization_1" input="SOURCES"/>
     <Link from="node_PyCodeExecutor3_1" output="OUTPUT" to="node_sub_recognition_1" input="SRC_INFO"/>
     <Link from="node_PyCodeExecutor3_1" output="OUTPUT" to="node_sub_separation_1" input="INPUT_SOURCES"/>
-    <Link from="node_RosHarkMsgsSubscriber_1" output="SRCOUT" to="node_PyCodeExecutor3_1" input="SRC_ROS"/>
     <NetOutput name="RECOG" node="node_sub_recognition_1" terminal="RECOG" object_type="any" description="No description available"/>
     <NetOutput name="OUTPUT_1" node="node_DisplayLocalization_1" terminal="OUTPUT" object_type="Vector&amp;lt;ObjectRef&amp;gt;" description="The same as input."/>
     <NetOutput name="OUTPUT" node="node_sub_separation_1" terminal="OUTPUT" object_type="Map&amp;lt;int,ObjectRef&amp;gt;" description="The same as input."/>
@@ -321,7 +325,7 @@
       <Parameter name="DEBUG" type="bool" value="false" description="Debug option. If the parameter is true, this node outputs sound localization results to a standard output."/>
     </Node>
     <Node name="node_SourceTracker_1" type="SourceTracker" x="440" y="100">
-      <Parameter name="THRESH" type="float" value="35.0" description="Power threshold for localization results. A localization result with higher power than THRESH is tracked, otherwise ignored."/>
+      <Parameter name="THRESH" type="float" value="32.0" description="Power threshold for localization results. A localization result with higher power than THRESH is tracked, otherwise ignored."/>
       <Parameter name="PAUSE_LENGTH" type="float" value="1200" description="Life duration of source in ms. When any localization result for a source is found for more than PAUSE_LENGTH / 10 iterations, the source is terminated. [default: 800]"/>
       <Parameter name="MIN_SRC_INTERVAL" type="float" value="20" description="Source interval threshold in degree. When the angle between a localization result and a source is smaller than MIN_SRC_INTERVAL, the same ID is given to the localization result. [default: 20]"/>
       <Parameter name="MIN_ID" type="int" value="0" description="Minimum ID of source locations. MIN_ID should be greater than 0 or equal."/>

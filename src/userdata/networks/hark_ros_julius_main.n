@@ -84,14 +84,14 @@
     </Node>
     <Link from="node_MultiFFT_1" output="OUTPUT" to="node_sub_localization_1" input="WAV"/>
     <Link from="node_sub_separation_1" output="POSTFLT_SPEC" to="node_sub_recognition_1" input="SPEC"/>
+    <Link from="node_MultiFFT_1" output="OUTPUT" to="node_sub_separation_1" input="SPEC"/>
     <Link from="node_sub_localization_1" output="OUTPUT" to="node_PyCodeExecutor3_1" input="SOURCES"/>
     <Link from="node_RosHarkMsgsSubscriber_1" output="SRCOUT" to="node_PyCodeExecutor3_1" input="SOURCES2"/>
+    <Link from="node_PyCodeExecutor3_1" output="OUTPUT" to="node_sub_separation_1" input="SRC_INFO"/>
     <Link from="node_PyCodeExecutor3_1" output="OUTPUT" to="node_sub_recognition_1" input="SRC_INFO"/>
     <Link from="node_PyCodeExecutor3_1" output="OUTPUT" to="node_DisplayLocalization_1" input="SOURCES"/>
     <Link from="node_AudioStreamFromMic_1" output="AUDIO" to="node_MultiGain_1" input="INPUT"/>
     <Link from="node_MultiGain_1" output="OUTPUT" to="node_MultiFFT_1" input="INPUT"/>
-    <Link from="node_PyCodeExecutor3_1" output="OUTPUT" to="node_sub_separation_1" input="INPUT_SOURCES"/>
-    <Link from="node_MultiFFT_1" output="OUTPUT" to="node_sub_separation_1" input="INPUT_FRAMES"/>
     <NetOutput name="RECOG" node="node_sub_recognition_1" terminal="RECOG" object_type="any" description="No description available"/>
     <NetOutput name="OUTPUT_1" node="node_DisplayLocalization_1" terminal="OUTPUT" object_type="Vector&amp;lt;ObjectRef&amp;gt;" description="The same as input."/>
     <NetOutput name="OUTPUT" node="node_sub_separation_1" terminal="OUTPUT" object_type="Map&amp;lt;int,ObjectRef&amp;gt;" description="The same as input."/>
@@ -103,7 +103,7 @@
     </Node>
     <Node name="node_CalcSpecAddPower_1" type="CalcSpecAddPower" x="1250" y="170">
     </Node>
-    <Node name="node_CalcSpecSubGain_1" type="CalcSpecSubGain" x="630" y="410">
+    <Node name="node_CalcSpecSubGain_1" type="CalcSpecSubGain" x="460" y="450">
       <Parameter name="ALPHA" type="float" value="1.0" description="Overestimation factor."/>
       <Parameter name="BETA" type="float" value="0.0" description="Spectral floor."/>
       <Parameter name="SS_METHOD" type="int" value="2" description="1: Magnitude Spectral Subtraction, 2: Power SS"/>
@@ -124,13 +124,13 @@
       <Parameter name="STEP_LEVEL" type="float" value="0.2" description="Step level of histogram bin (Width of each histogram bin) in dB [default:0.2]"/>
       <Parameter name="DEBUG" type="bool" value="false" description="Prints the histogram for each 100 iterations."/>
     </Node>
-    <Node name="node_SpectralGainFilter_1" type="SpectralGainFilter" x="610" y="540">
+    <Node name="node_SpectralGainFilter_1" type="SpectralGainFilter" x="650" y="710">
     </Node>
-    <Node name="node_WhiteNoiseAdder_1" type="WhiteNoiseAdder" x="1290" y="420">
+    <Node name="node_WhiteNoiseAdder_1" type="WhiteNoiseAdder" x="1420" y="380">
       <Parameter name="LENGTH" type="subnet_param" value="LENGTH" description="Size of window length in sample. [default: 512]"/>
       <Parameter name="WN_LEVEL" type="float" value="15" description="An amplitude of white noise to be added. [default: 0]"/>
     </Node>
-    <Node name="node_GHDSS_1" type="GHDSS" x="100" y="100">
+    <Node name="node_GHDSS_1" type="GHDSS" x="100" y="240">
       <Parameter name="LENGTH" type="int" value="512" description="The frame length of each channel (in samples) [default: 512]."/>
       <Parameter name="ADVANCE" type="int" value="160" description="The shift length beween adjacent frames (in samples)[default: 160]."/>
       <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate (Hz) [default: 16000]."/>
@@ -168,38 +168,6 @@
       <Parameter name="WINDOW" type="string" value="HAMMING" description="A window function for overlap-add. WINDOW should be CONJ, HAMMING, RECTANGLE, or HANNING. [default: HAMMING]"/>
       <Parameter name="OUTPUT_GAIN" type="float" value="1.0" description="Output gain factor. [default: 1.0]"/>
     </Node>
-    <Node name="node_BeamForming_1" type="BeamForming" x="760" y="730">
-      <Parameter name="LENGTH" type="int" value="512" description="The frame length of each channel (in samples) [default: 512]."/>
-      <Parameter name="ADVANCE" type="int" value="160" description="The shift length beween adjacent frames (in samples)[default: 160]."/>
-      <Parameter name="SAMPLING_RATE" type="int" value="16000" description="Sampling rate (Hz) [default: 16000]."/>
-      <Parameter name="LOWER_BOUND_FREQUENCY" type="int" value="0" description="Lower bound of frequency (Hz). [default: 0]"/>
-      <Parameter name="UPPER_BOUND_FREQUENCY" type="int" value="8000" description="Upper bound of frequency (Hz). [default: 8000]"/>
-      <Parameter name="TF_CONJ_FILENAME" type="subnet_param" value="TF_CONJ_FILENAME" description="Filename of a pre-measured transfer function for separation."/>
-      <Parameter name="INITW_FILENAME" type="string" value="" description="Filename of an initial separation matrix. If specified, a matrix in INITW_FILENAME is used as an initial separation matrix. Otherwise, initial separation matrix is estimated from the geometrical relationship or pre-measured TF according to TF_CONJ."/>
-      <Parameter name="GICA_SS_METHOD" type="string" value="ADAPTIVE" description="The calculation method for SS step size parameter corresponding to the blind separation part. &quot;FIX&quot; uses a fixed step size as GICA_SS_MYU, &quot;LC_MYU&quot; uses the same value as GICA_LC_MYU, and &quot;ADAPTIVE&quot; adaptively estimates an optimal step size. This is used only when BF_METHOD=GICA. [default: ADAPTIVE]"/>
-      <Parameter name="GHDSS_SS_METHOD" type="string" value="ADAPTIVE" description="The calculation method for SS step size parameter corresponding to the blind separation part. &quot;FIX&quot; uses a fixed step size as GHDSS_SS_MYU, &quot;LC_MYU&quot; uses the same value as GHDSS_LC_MYU, and &quot;ADAPTIVE&quot; adaptively estimates an optimal step size. This is used only when BF_METHOD=GHDSS. [default: ADAPTIVE]"/>
-      <Parameter name="GICA_SS_MYU" type="float" value="0.001" description="SS step size value if GICA_SS_METHOD=FIX. SS adaptive step size scaler if GICA_SS_METHOD=ADAPTIVE. [default 0.001]"/>
-      <Parameter name="GHDSS_SS_MYU" type="float" value="0.001" description="SS step size value if GHDSS_SS_METHOD=FIX. SS adaptive step size scaler if GHDSS_SS_METHOD=ADAPTIVE. [default 0.001]"/>
-      <Parameter name="LCMV_LC_METHOD" type="string" value="ADAPTIVE" description="The calculation method for LC step size corresponding to geometric constraints. &quot;FIX&quot; uses a fixed value as LCMV_LC_MYU, and &quot;Adaptive&quot; adaptively estimates an optimal step size as LCMV_LC_MYU. This is used only when BF_METHOD=LCMV. [default: ADAPTIVE]"/>
-      <Parameter name="GJ_LC_METHOD" type="string" value="ADAPTIVE" description="The calculation method for LC step size corresponding to geometric constraints. &quot;FIX&quot; uses a fixed value as GJ_LC_MYU, and &quot;Adaptive&quot; adaptively estimates an optimal step size as GJ_LC_MYU. This is used only when BF_METHOD=GJ. [default: ADAPTIVE]"/>
-      <Parameter name="GICA_LC_METHOD" type="string" value="ADAPTIVE" description="The calculation method for LC step size corresponding to geometric constraints. &quot;FIX&quot; uses a fixed value as GICA_LC_MYU, and &quot;Adaptive&quot; adaptively estimates an optimal step size as GICA_LC_MYU. This is used only when BF_METHOD=GICA. [default: ADAPTIVE]"/>
-      <Parameter name="GHDSS_LC_METHOD" type="string" value="ADAPTIVE" description="The calculation method for LC step size corresponding to geometric constraints. &quot;FIX&quot; uses a fixed value as GHDSS_LC_MYU, and &quot;Adaptive&quot; adaptively estimates an optimal step size as GHDSS_LC_MYU. This is used only when BF_METHOD=GHDSS. [default: ADAPTIVE]"/>
-      <Parameter name="LCMV_LC_MYU" type="float" value="0.001" description="LC step size value if LCMV_LC_METHOD=FIX. LC adaptive step size scaler if LCMV_LC_METHOD=ADAPTIVE. [default 0.001]"/>
-      <Parameter name="GJ_LC_MYU" type="float" value="0.001" description="LC step size value if GJ_LC_METHOD=FIX. LC adaptive step size scaler if GJ_LC_METHOD=ADAPTIVE. [default 0.001]"/>
-      <Parameter name="GICA_LC_MYU" type="float" value="0.001" description="LC step size value if GICA_LC_METHOD=FIX. LC adaptive step size scaler if GICA_LC_METHOD=ADAPTIVE and if GICA_SS_METHOD=LC_MYU. [default 0.001]"/>
-      <Parameter name="GHDSS_LC_MYU" type="float" value="0.001" description="LC step size value if GHDSS_LC_METHOD=FIX. LC adaptive step size scaler if GHDSS_LC_METHOD=ADAPTIVE and if GHDSS_SS_METHOD=LC_MYU. [default 0.001]"/>
-      <Parameter name="GHDSS_LC_CONST" type="string" value="FULL" description="The calculation method for geometric constraints. &quot;FULL&quot; uses all elements of a matrix, and &quot;DIAG&quot; only uses diagonal parts. [default: FULL]"/>
-      <Parameter name="GICA_SS_SCAL" type="float" value="1" description="Scaling factor of the nonlinear function for SS step size. [default: 1.0]"/>
-      <Parameter name="GHDSS_SS_SCAL" type="float" value="1" description="Scaling factor of the nonlinear function for SS step size. [default: 1.0]"/>
-      <Parameter name="GHDSS_NOISE_FLOOR" type="float" value="0" description="Noise floor value. [default 0.0]"/>
-      <Parameter name="GHDSS_UPDATE" type="string" value="STEP" description="The update method of separation matrix. &quot;STEP&quot; updates W sequentially, i.e., based on SS and then on LC cost. &quot;TOTAL&quot; updates W based on an integrated value of SS and LC cost [default: STEP]"/>
-      <Parameter name="UPDATE_METHOD_W" type="string" value="ID" description="Switching method of separation matrix, W. [default: ID]"/>
-      <Parameter name="UPDATE_ACCEPT_DISTANCE" type="float" value="300" description="Angle allowance to switch separation matrix in mm. This parameter is available when UPDATE_METHOD_W is POS or ID_POS and when INITW_FILENAME is set. [default: 300.0]"/>
-      <Parameter name="EXPORT_W" type="bool" value="false" description="Separation matrix W is exported if true. [default: false]"/>
-      <Parameter name="EXPORT_W_FILENAME" type="string" value="" description="The filename to export W."/>
-      <Parameter name="BF_METHOD" type="string" value="DS" description="beam-forming algorithm type."/>
-      <Parameter name="ENABLE_DEBUG" type="bool" value="false" description="enable debug print"/>
-    </Node>
     <Link from="node_HRLE_1" output="NOISE_SPEC" to="node_CalcSpecAddPower_1" input="INPUT_POWER_SPEC1"/>
     <Link from="node_EstimateLeak_1" output="LEAK_POWER_SPEC" to="node_CalcSpecAddPower_1" input="INPUT_POWER_SPEC2"/>
     <Link from="node_PowerCalcForMap_1" output="OUTPUT" to="node_CalcSpecSubGain_1" input="INPUT_POWER_SPEC"/>
@@ -208,11 +176,13 @@
     <Link from="node_PowerCalcForMap_1" output="OUTPUT" to="node_HRLE_1" input="INPUT_SPEC"/>
     <Link from="node_CalcSpecSubGain_1" output="VOICE_PROB" to="node_SpectralGainFilter_1" input="VOICE_PROB"/>
     <Link from="node_CalcSpecSubGain_1" output="GAIN" to="node_SpectralGainFilter_1" input="GAIN"/>
+    <Link from="node_SpectralGainFilter_1" output="OUTPUT_SPEC" to="node_WhiteNoiseAdder_1" input="INPUT"/>
+    <Link from="node_GHDSS_1" output="OUTPUT" to="node_PowerCalcForMap_1" input="INPUT"/>
+    <Link from="node_GHDSS_1" output="OUTPUT" to="node_SpectralGainFilter_1" input="INPUT_SPEC"/>
     <Link from="node_Synthesize_1" output="OUTPUT" to="node_SaveWavePCM_1" input="INPUT"/>
-    <Link from="node_BeamForming_1" output="OUTPUT" to="node_WhiteNoiseAdder_1" input="INPUT"/>
-    <Link from="node_BeamForming_1" output="OUTPUT" to="node_Synthesize_1" input="INPUT"/>
-    <NetInput name="INPUT_FRAMES" node="node_BeamForming_1" terminal="INPUT_FRAMES" object_type="Matrix&amp;lt;complex&amp;lt;float&amp;gt; &amp;gt;" description="Input multi-channel spectrum. A row is a channel, and a column is a spectrum for the corresponding channel."/>
-    <NetInput name="INPUT_SOURCES" node="node_BeamForming_1" terminal="INPUT_SOURCES" object_type="Vector&amp;lt;ObjectRef&amp;gt;" description="Source locations with ID. Each element of the vector is a source location with ID specified by &quot;Source&quot;."/>
+    <Link from="node_SpectralGainFilter_1" output="OUTPUT_SPEC" to="node_Synthesize_1" input="INPUT"/>
+    <NetInput name="SPEC" node="node_GHDSS_1" terminal="INPUT_FRAMES" object_type="Matrix&lt;complex&lt;float&gt; &gt;" description="Input multi-channel spectrum. A row is a channel, and a column is a spectrum for the corresponding channel."/>
+    <NetInput name="SRC_INFO" node="node_GHDSS_1" terminal="INPUT_SOURCES" object_type="Vector&lt;ObjectRef&gt;" description="Source locations with ID. Each element of the vector is a source location with ID specified by &quot;Source&quot;."/>
     <NetOutput name="POSTFLT_SPEC" node="node_WhiteNoiseAdder_1" terminal="OUTPUT" object_type="Map&lt;int,ObjectRef&gt;" description="The white-noise-added spectrum. The key is source ID, and the value is output spectrum (Vector&lt;complex&lt;float&gt; &gt;)."/>
     <NetOutput name="OUTPUT" node="node_SaveWavePCM_1" terminal="OUTPUT" object_type="Map&amp;lt;int,ObjectRef&amp;gt;" description="The same as input."/>
   </Network>

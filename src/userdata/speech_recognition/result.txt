@@ -23,7 +23,7 @@ Stat: hmm_lookup: 18 pseudo phones are added to logical HMM list
 STAT: *** AM00 _default loaded
 STAT: *** loading LM00 _default
 STAT: reading [LM/nakbot_words.dfa] and [LM/nakbot_words.dict]...
-Stat: init_voca: read 15 words
+Stat: init_voca: read 7 words
 STAT: done
 STAT: Gram #0 nakbot_words registered
 STAT: Gram #0 nakbot_words: new grammar loaded, now mash it up for recognition
@@ -39,7 +39,7 @@ STAT: [1] create MFCC extraction instance(s)
 STAT: [2] create recognition processing instance(s) with AM and LM
 STAT: composing recognizer instance SR00 _default (AM00 _default, LM00 _default)
 STAT: Building HMM lexicon tree
-STAT: lexicon size: 189+0=189
+STAT: lexicon size: 159+0=159
 STAT: coordination check passed
 STAT: wchmm (re)build completed
 STAT: SR00 _default composed
@@ -121,9 +121,9 @@ Language Model(s)
       category-pair matrix: 16 bytes (448 bytes allocated)
 
  Vocabulary Info:
-        vocabulary size  = 15 words, 66 models
-        average word len = 4.4 models, 13.2 states
-       maximum state num = 30 nodes per word
+        vocabulary size  = 7 words, 59 models
+        average word len = 8.4 models, 25.3 states
+       maximum state num = 39 nodes per word
        transparent words = not exist
        words under class = not exist
 
@@ -136,9 +136,9 @@ Recognizer(s)
 [SR00 "_default"]  AM00 "_default"  +  LM00 "_default"
 
  Lexicon tree:
-	 total node num =    189
-	  root node num =     13
-	  leaf node num =     15
+	 total node num =    159
+	  root node num =      5
+	  leaf node num =      7
 
 	(-penalty1) IW penalty1 = +0.0
 	(-penalty2) IW penalty2 = +0.0
@@ -146,7 +146,7 @@ Recognizer(s)
 
  Search parameters: 
 	    multi-path handling = no
-	(-b) trellis beam width = 189
+	(-b) trellis beam width = 159
 	(-bs)score pruning thres= disabled
 	(-n)search candidate num= 1
 	(-s)  search stack size = 500
@@ -189,17 +189,27 @@ FrontEnd:
 ### read waveform input
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
+<<<<<<< HEAD
 forked process [1398] handles this request
 input name function was called
 STAT: multigram_exec_activate() hook = 2
 source_id = 6, azimuth = 84.998909, elevation = 16.702362, sec = 1578555415, usec = 684070
 read_count < 0, read_count=-1, veclen=54
 STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 272
+=======
+forked process [12203] handles this request
+input name function was called
+STAT: multigram_exec_activate() hook = 2
+source_id = 101, azimuth = 29.999376, elevation = 16.702362, sec = 1578562669, usec = 923997
+read_count < 0, read_count=-1, veclen=54
+STAT: 00 _default: 7 generated, 7 pushed, 4 nodes popped in 272
+>>>>>>> recall100
 
 connection end
 ERROR: an error occured while recognition, terminate stream
 waiting connection...
 Stat: server-client: connect from 127.0.0.1
+<<<<<<< HEAD
 forked process [1399] handles this request
 input name function was called
 STAT: multigram_exec_activate() hook = 2
@@ -220,3 +230,10 @@ STAT: 00 _default: 15 generated, 15 pushed, 4 nodes popped in 172
 
 connection end
 ERROR: an error occured while recognition, terminate stream
+=======
+forked process [12209] handles this request
+waiting connection...
+Stat: server-client: connect from 127.0.0.1
+forked process [12210] handles this request
+input name function was called
+>>>>>>> recall100

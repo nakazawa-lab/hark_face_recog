@@ -1,9 +1,6 @@
+#!/usr/bin/env python
+## coding: UTF-8
 from harkpython import harkbasenode
-import math
-import os
-import datetime
-from pathlib import Path
-import copy
 
 class HarkNode(harkbasenode.HarkBaseNode):
     def __init__(self):
@@ -14,17 +11,29 @@ class HarkNode(harkbasenode.HarkBaseNode):
         self.tmp_src = []
 
     def calculate(self):
+        # 最終的に送信する配列を用意
         self.output_srcs = []
+
+        # 音源定位結果の反映
+        for s in self.SRC_MUSIC:
+            s['id'] += 100
         self.set_src(self.SRC_MUSIC)
+
+        # ROSからの顔方向情報の反映
         if len(self.SRC_ROS)!=0:
             self.tmp_src = self.SRC_ROS
         self.set_src(self.tmp_src)
-        # for s in self.SRC_OFFSET:
-        #     s['id'] += 20000
+        print(self.output_srcs)
+
+        # 角度を定数として扱う場合
+        for s in self.SRC_OFFSET:
+            s['id'] += 20000
         # self.set_src(self.SRC_OFFSET)
-        print(self.outputValues["OUTPUT"])
+
+        # 下記でHARKの次ノードへ送信
         self.outputValues["OUTPUT"] = self.output_srcs
 
+    # 定位情報を配列に加える関数
     def set_src(self, srcs):
         if len(srcs)!=0:
             for src in srcs:

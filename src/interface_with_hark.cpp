@@ -58,7 +58,8 @@ void HarkInterface::publish_to_hark(float x, float y, float z, int id)
     HarkSourceValMsg.y     = y;
     HarkSourceValMsg.z     = z;
     HarkSourceValMsg.azimuth   = theta;
-    HarkSourceValMsg.elevation = 180.0 / M_PI * atan2(z, sqrt(x * x + y * y));
+//    HarkSourceValMsg.elevation = 180.0 / M_PI * atan2(z, sqrt(x * x + y * y));
+    HarkSourceValMsg.elevation = 0;
 
     // 口が動いていない場合
     if(x==0 && y==0 && z==0){
