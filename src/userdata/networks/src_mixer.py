@@ -16,7 +16,7 @@ class HarkNode(harkbasenode.HarkBaseNode):
 
         # 音源定位結果の反映
         for s in self.SRC_MUSIC:
-            s['id'] += 100
+            s['id'] += 101
         self.set_src(self.SRC_MUSIC)
 
         # ROSからの顔方向情報の反映
