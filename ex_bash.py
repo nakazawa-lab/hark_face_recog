@@ -5,7 +5,8 @@ import os
 import sys
 
 os.chdir("/home/nvidia/catkin_ws/src/hark_face_recog/src/userdata/networks")
-cmd_array = ['come', 'go', 'right', 'left', 'no', 'nakbot', 'sleep']
+# cmd_array = ['come', 'go', 'right', 'left', 'no', 'nakbot', 'sleep']
+cmd_array = ['come', 'go', 'right', 'left', 'back']
 dataset_path = '/home/nvidia/projects/dataset2/dataset_trim/'
 output_path = '/home/nvidia/Desktop/order.txt'
 file = open(output_path, 'w')
@@ -29,7 +30,7 @@ for subject in subjects:
             'sleep 2 && ' + \
              './main_modal.n ../config/tamago_geotf.zip ../config/tamago_geotf.zip ' \
              '../records/sep_files/' + subject + '_' + cmd + ' ' \
-             + dataset_path + subject + '/' + cmd + "*.wav "
+             + dataset_path + subject + '/*' + cmd + "*.wav "
         print(e3)
 
         os.system(e0)
